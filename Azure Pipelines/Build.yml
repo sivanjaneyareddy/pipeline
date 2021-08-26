@@ -15,11 +15,13 @@ resources:
           - pom.xml
 
 stages:
+
 - stage: build
   displayName: Build
   jobs:
   - job: Build
     steps:
+    - checkout: other
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom.xml'
