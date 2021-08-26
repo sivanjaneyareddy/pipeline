@@ -12,7 +12,7 @@ resources:
           - feature/java-vprofile
       paths:
         include:
-          - ./
+          - pom.xml
 
 stages:
 - stage: build
