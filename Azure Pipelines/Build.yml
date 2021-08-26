@@ -20,7 +20,7 @@ stages:
     - checkout: self
     - checkout: other
 
-    - task: replacetokens@4
+    - task: replacetokens@3
       inputs:
         rootDirectory: '$(System.DefaultWorkingDirectory)\Vprofile\src\main\resources\'
         targetFiles: 'application.properties'
