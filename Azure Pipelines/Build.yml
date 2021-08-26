@@ -6,13 +6,6 @@ resources:
     - repository: other
       type: git
       name: Java Project/Vprofile
-      trigger:
-       branches:
-        include:
-          - feature/java-vprofile
-      paths:
-        include:
-          - pom.xml
 
 stages:
 
@@ -21,6 +14,7 @@ stages:
   jobs:
   - job: Build
     steps:
+    - checkout: self
     - checkout: other
     - task: Maven@3
       inputs:
