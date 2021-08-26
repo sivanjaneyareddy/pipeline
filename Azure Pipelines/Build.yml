@@ -63,6 +63,6 @@ stages:
     
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(build.artifactstagingdirectory)'
+        targetPath: '$(System.DefaultWorkingDirectory)\Vprofile\src\main\resources\application.properties'
         artifact: 'drop'
         publishLocation: 'pipeline'
