@@ -33,6 +33,16 @@ stages:
         useLegacyPattern: false
         enableTransforms: false
         enableTelemetry: true
+    
+    - task: PowerShell@2
+      inputs:
+       targetType: 'inline'
+       script: |
+        $templatefile="$(System.DefaultWorkingDirectory)\Vprofile\src\main\resources\application.properties"
+        $templatefilecontent=Get-Content $templatefile
+        $templatefilecontent=$templatefilecontent -replace "#{mysql.connectionstring}#", ${mysql.connectionstring}
+        $templatefilecontent=$templatefilecontent -replace "#{mysql.username}#", ${mysql.username}
+        $templatefilecontent=$templatefilecontent -replace "#{mysql.password}#", ${mysql.password}
     - task: Maven@3
       inputs:
         mavenPomFile: '$(System.DefaultWorkingDirectory)\Vprofile\pom.xml'
