@@ -1,0 +1,22 @@
+pool:
+  name: Hosted VS2017
+
+resources:
+  repositories:
+    - repository: other
+      type: git
+      name: Java Project/Java Project
+      trigger:
+       branches:
+        include:
+          - feature/java-vprofile
+      paths:
+        include:
+          - ./
+
+stages:
+- stage: build
+  displayName: Build
+  jobs:
+  - job: Build
+    steps:
