@@ -11,11 +11,28 @@ stages:
 
 - stage: build
   displayName: Build
+  variables: 
+  - group: Vprofile
+  
   jobs:
   - job: Build
     steps:
     - checkout: self
     - checkout: other
+
+    - task: replacetokens@4
+      inputs:
+        rootDirectory: '$(System.DefaultWorkingDirectory)\Vprofile\src\main\resources\'
+        targetFiles: 'application.properties'
+        encoding: 'auto'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+        useLegacyPattern: false
+        enableTransforms: false
+        enableTelemetry: true
     - task: Maven@3
       inputs:
         mavenPomFile: '$(System.DefaultWorkingDirectory)\Vprofile\pom.xml'
