@@ -5,7 +5,7 @@ resources:
   repositories:
     - repository: other
       type: git
-      name: Java Project/Java Project
+      name: Java Project/Java Project@feature/java-vprofile
       trigger:
        branches:
         include:
