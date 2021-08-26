@@ -60,3 +60,9 @@ stages:
         Contents: |
             **Vprofile\src\main\resources\application.properties"
         TargetFolder: '$(build.artifactstagingdirectory)'
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(build.artifactstagingdirectory)'
+        artifact: 'drop'
+        publishLocation: 'pipeline'
