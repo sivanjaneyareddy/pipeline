@@ -27,4 +27,4 @@ stages:
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
 
-    - task: WhiteSource Bolt@20
+    - task: WhiteSource@21
