@@ -26,4 +26,8 @@ stages:
         mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
+
     - task: WhiteSource@21
+      inputs:
+        cwd: '$(System.DefaultWorkingDirectory)\Vprofile'
+        projectName: 'Vprofile'
