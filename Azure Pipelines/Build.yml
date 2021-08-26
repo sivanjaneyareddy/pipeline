@@ -27,7 +27,4 @@ stages:
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
 
-    - task: WhiteSource@21
-      inputs:
-        cwd: '$(System.DefaultWorkingDirectory)\Vprofile'
-        projectName: 'Vprofile'
+    - task: WhiteSource Bolt@20
