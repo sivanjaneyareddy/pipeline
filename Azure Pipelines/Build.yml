@@ -26,5 +26,3 @@ stages:
         mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
-
-    - task: WhiteSource@21
