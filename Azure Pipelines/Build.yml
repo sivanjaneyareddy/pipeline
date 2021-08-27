@@ -7,12 +7,22 @@ resources:
       type: git
       name: Java Project/Vprofile
 
+parameters:
+  - name: Environments
+    displayName: Select Environment
+    default: none
+    values:
+      - none
+      - QA
+      - STG
+      - PROD  
+
 stages:
 
 - stage: build
   displayName: Build
   variables: 
-  - group: Vprofile
+  - group: ${{ parameters.Environments }}Vprofile
   
   jobs:
   - job: Build
