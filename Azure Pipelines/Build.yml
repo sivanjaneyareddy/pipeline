@@ -45,7 +45,7 @@ stages:
         scannerMode: 'Other'
     - task: Maven@3
       inputs:
-        mavenPomFile: '$(System.DefaultWorkingDirectory)\Vprofile\pom.xml'
+        mavenPomFile: 'pom.xml'
         publishJUnitResults: true
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
         javaHomeOption: 'JDKVersion'
@@ -53,7 +53,7 @@ stages:
         mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
+        sqMavenPluginVersionChoice: 'pom'
     
     - task: SonarCloudPublish@1
       inputs:
