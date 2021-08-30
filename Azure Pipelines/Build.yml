@@ -57,7 +57,7 @@ stages:
     - task: Maven@3
       inputs:
         mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
-        goals: 'Package'
+        goals: 'install'
         publishJUnitResults: true
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
         javaHomeOption: 'JDKVersion'
