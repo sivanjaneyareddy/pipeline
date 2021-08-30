@@ -12,7 +12,6 @@ parameters:
     displayName: Select Environment
     default: none
     values:
-      - none
       - QA
       - STG
       - PROD  
@@ -38,6 +37,12 @@ stages:
         $templatefilecontent=$templatefilecontent -replace "#{mysql.connectionstring}#", ${mysql.connectionstring}
         $templatefilecontent=$templatefilecontent -replace "#{mysql.username}#", ${mysql.username}
         $templatefilecontent=$templatefilecontent -replace "#{mysql.password}#", ${mysql.password}
+
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'Sonar-connection'
+        organization: 'devops05'
+        scannerMode: 'Other'
     - task: Maven@3
       inputs:
         mavenPomFile: '$(System.DefaultWorkingDirectory)\Vprofile\pom.xml'
@@ -49,6 +54,11 @@ stages:
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
     
+    - task: SonarCloudAnalyze@1
+    
+    - task: SonarCloudPublish@1
+      inputs:
+        pollingTimeoutSec: '300'
     - task: CopyFiles@2
       inputs:
         SourceFolder: '$(system.defaultworkingdirectory)'
