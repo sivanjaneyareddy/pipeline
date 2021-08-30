@@ -43,9 +43,21 @@ stages:
         SonarCloud: 'Sonar-connection'
         organization: 'devops05'
         scannerMode: 'Other'
+    # - task: Maven@3
+    #   inputs:
+    #     mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
+    #     publishJUnitResults: true
+    #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    #     javaHomeOption: 'JDKVersion'
+    #     mavenVersionOption: 'Default'
+    #     mavenAuthenticateFeed: false
+    #     effectivePomSkip: false
+    #     sonarQubeRunAnalysis: true
+    #     sqMavenPluginVersionChoice: 'pom'
     - task: Maven@3
       inputs:
-        mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
+        mavenPomFile: 'pom.xml'
+        goals: 'package -e'
         publishJUnitResults: true
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
         javaHomeOption: 'JDKVersion'
@@ -54,7 +66,6 @@ stages:
         effectivePomSkip: false
         sonarQubeRunAnalysis: true
         sqMavenPluginVersionChoice: 'pom'
-    
     - task: SonarCloudPublish@1
       inputs:
         pollingTimeoutSec: '300'
