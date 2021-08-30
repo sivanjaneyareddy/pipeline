@@ -45,7 +45,7 @@ stages:
         scannerMode: 'Other'
     - task: Maven@3
       inputs:
-        mavenPomFile: 'pom.xml'
+        mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
         publishJUnitResults: true
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
         javaHomeOption: 'JDKVersion'
