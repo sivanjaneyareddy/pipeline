@@ -64,9 +64,8 @@ stages:
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
         effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        isJacocoCoverageReportXML: true
-        sqMavenPluginVersionChoice: 'latest'
+        sonarQubeRunAnalysis: false
+
     - task: SonarCloudPublish@1
       inputs:
         pollingTimeoutSec: '300'
