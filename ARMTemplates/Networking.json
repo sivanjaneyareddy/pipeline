@@ -11,7 +11,7 @@
     },
     "envLocation": {
       "type": "string",
-      "defaultValue": "EUS",
+      "defaultValue": "East US",
       "metadata": {
         "description": "Name of the virtual network"
       }
