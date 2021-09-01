@@ -188,9 +188,9 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
-      "name": "[concat(variables('vnet'), '/','frontend']",
+      "name": "[concat(variables('vnet'), '/','frontend')]",
       "properties": {
-          "addressPrefix": "[parameters('subnetAddressPrefix').frontend)]"
+          "addressPrefix": "[parameters('subnetAddressPrefix').frontend]"
       }
     }
   ],
