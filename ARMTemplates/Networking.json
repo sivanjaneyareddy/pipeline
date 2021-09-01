@@ -188,7 +188,7 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
-      "name": "[variables('subnet').frontend]",
+      "name": "[concat(parameters('siteName'), '/[variables('subnet').frontend]')]",
       "tags": {
         "Project": "Vprofile",
         "Environment": "[parameters('envName')]"
@@ -203,7 +203,7 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
-      "name": "[variables('subnet').backend]",
+      "name": "[concat(parameters('siteName'), '/[variables('subnet').backend]')]",
       "tags": {
         "Project": "Vprofile",
         "Environment": "[parameters('envName')]"
@@ -218,7 +218,7 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
-      "name": "[variables('subnet').businessTier]",
+      "name": "[concat(parameters('siteName'), '/[variables('subnet').businessTier]')]",
       "tags": {
         "Project": "Vprofile",
         "Environment": "[parameters('envName')]"
@@ -233,7 +233,7 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
-      "name": "[variables('subnet').applicationGW]",
+      "name": "[concat(parameters('siteName'), '/[variables('subnet').applicationGW]')]",
       "tags": {
         "Project": "Vprofile",
         "Environment": "[parameters('envName')]"
