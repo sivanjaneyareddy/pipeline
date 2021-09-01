@@ -38,18 +38,18 @@
     }
   },
   "variables": { 
-    "vnet": "[concat('vnet','-', parameters('envLocation'), '-',parameters('envName'),'-',parameters('application'))]",
+    "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
     "subnet": {
-        "frontend": "[concat('frontendSub-', parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
-        "backend": "[concat('backendSub','-', parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
-        "businessTier": "[concat('businessTierSub','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
-        "applicationGW": "[concat('applicationGWsub','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]"
+        "frontend": "[concat('frontendSub-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "backend": "[concat('backendSub','-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "businessTier": "[concat('businessTierSub','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "applicationGW": "[concat('applicationGWsub','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
     },
     "networkSecurityGroupName": {
-        "frontend": "[concat('frontendNSG','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
-        "backend": "[concat('backendNSG','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
-        "businessTier": "[concat('businessTierNSG','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
-        "applicationGW": "[concat('applicationGWNSG','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]"
+        "frontend": "[concat('frontendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "backend": "[concat('backendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "businessTier": "[concat('businessTierNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "applicationGW": "[concat('applicationGWNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
     }
   },
    "resources": [ 
