@@ -192,10 +192,6 @@
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
       "name": "[concat(variables('vnet'), '/', variables('subnet').frontend)]",
-      "tags": {
-        "Project": "Vprofile",
-        "Environment": "[parameters('envName')]"
-      },
       "properties": {
           "addressPrefix": "[parameters('subnetAddressPrefix').frontend]"
       },
@@ -207,10 +203,6 @@
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
       "name": "[concat(variables('vnet'), '/', variables('subnet').backend)]",
-      "tags": {
-        "Project": "Vprofile",
-        "Environment": "[parameters('envName')]"
-      },
       "properties": {
           "addressPrefix": "[parameters('subnetAddressPrefix').backend]"
       },
@@ -222,10 +214,6 @@
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
       "name": "[concat(variables('vnet'), '/', variables('subnet').businessTier)]",
-      "tags": {
-        "Project": "Vprofile",
-        "Environment": "[parameters('envName')]"
-      },
       "properties": {
           "addressPrefix": "[parameters('subnetAddressPrefix').businessTier]"
       },
@@ -237,10 +225,6 @@
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
       "name": "[concat(variables('vnet'), '/', variables('subnet').applicationGW)]",
-      "tags": {
-        "Project": "Vprofile",
-        "Environment": "[parameters('envName')]"
-      },
       "properties": {
           "addressPrefix": "[parameters('subnetAddressPrefix').applicationGW]"
       },
