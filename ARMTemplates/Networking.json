@@ -205,7 +205,7 @@
     "apiVersion": "2017-06-01",
     "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnet1Name'))]",
     "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
     ],
     "properties": {
       "addressPrefix": "192.168.0.0/24"
