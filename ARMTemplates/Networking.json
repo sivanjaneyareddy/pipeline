@@ -204,11 +204,11 @@
     "type": "Microsoft.Network/virtualNetworks/subnets",
     "apiVersion": "2017-06-01",
     "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnet1Name'))]",
+    "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]",
+    ],
     "properties": {
-      "addressPrefix": "[parameters('subnetAddressPrefix').frontend]",
-      "networkSecurityGroup": {
-        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
-      }
+      "addressPrefix": "192.168.0.0/24"
     }
   }
   ],
