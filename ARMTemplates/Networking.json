@@ -204,7 +204,8 @@
           "addressPrefix": "[parameters('subnetAddressPrefix').backend]"
       },
       "dependsOn": [
-          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
+          "[resourceId('Microsoft.Network/virtualNetworks/subnets', concat(variables('vnet'), '/', variables('subnet').frontend))]"
       ]
     },
     {
@@ -215,7 +216,8 @@
           "addressPrefix": "[parameters('subnetAddressPrefix').businessTier]"
       },
       "dependsOn": [
-          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
+          "[resourceId('Microsoft.Network/virtualNetworks/subnets', concat(variables('vnet'), '/', variables('subnet').backend))]"
       ]
     },
     {
@@ -226,7 +228,8 @@
           "addressPrefix": "[parameters('subnetAddressPrefix').applicationGW]"
       },
       "dependsOn": [
-          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
+          "[resourceId('Microsoft.Network/virtualNetworks/subnets', concat(variables('vnet'), '/', variables('subnet').businessTier))]"
       ]
     }
   ],
