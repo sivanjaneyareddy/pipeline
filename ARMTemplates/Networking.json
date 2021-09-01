@@ -9,6 +9,20 @@
         "description": "Name of the virtual network"
       }
     },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "vnet-EUS-QA-Vprofile",
+      "metadata": {
+        "description": "Name of the virtual network"
+      }
+    },
+    "subnet1Name": {
+      "type": "string",
+      "defaultValue": "frontendsub",
+      "metadata": {
+        "description": "Name of the virtual network"
+      }
+    },
     "envLocation": {
       "type": "string",
       "defaultValue": "East US",
@@ -187,16 +201,16 @@
       }
     },
     {
-  "type": "Microsoft.Network/virtualNetworks/subnets",
-  "apiVersion": "2017-06-01",
-  "name": "[concat(variables('vnet'), '/', variables('subnet').frontend)]",
-  "properties": {
-    "addressPrefix": "[parameters('subnetAddressPrefix').backend]",
-    "networkSecurityGroup": {
-          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
-        }
+    "type": "Microsoft.Network/virtualNetworks/subnets",
+    "apiVersion": "2017-06-01",
+    "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnet1Name'))]",
+    "properties": {
+      "addressPrefix": "[parameters('subnetAddressPrefix').frontend]",
+      "networkSecurityGroup": {
+        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
+      }
     }
   }
   ],
-  "outputs": {  }
+  "outputs": { }
 }
