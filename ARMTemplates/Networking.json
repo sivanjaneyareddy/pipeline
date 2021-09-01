@@ -173,6 +173,7 @@
       "apiVersion": "2017-06-01",
       "name": "[variables('vnet')]",
       "location": "[parameters('envLocation')]",
+      "dependsOn": ["[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').applicationGW)]"],
       "tags": {
         "Project": "Vprofile",
         "Environment": "[parameters('envName')]"
