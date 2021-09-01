@@ -171,7 +171,11 @@
       "name": "[variables('vnet')]",
       "location": "[parameters('envLocation')]",
       "dependsOn": [
-          "[resourceId('Microsoft.Network/virtualNetworks', variables('networkSecurityGroupName').frontend)]"],
+          "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]",
+          "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').backend)]",
+          "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').businessTier)]",
+          "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').applicationGW)]"
+      ],
       "tags": {
         "Project": "Vprofile",
         "Environment": "[parameters('envName')]"
