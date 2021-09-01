@@ -188,7 +188,33 @@
     {
       "type": "Microsoft.Network/virtualNetworks/subnets",
       "apiVersion": "2017-06-01",
+      "name": "[concat(variables('vnet'), '/', variables('subnet').frontend)]",
+      "properties": {
+          "addressPrefix": "[parameters('subnetAddressPrefix').frontend]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2017-06-01",
+      "name": "[concat(variables('vnet'), '/', concat(variables('vnet'), '/', variables('subnet').frontend))]",
+      "properties": {
+          "addressPrefix": "[parameters('subnetAddressPrefix').backend]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2017-06-01",
+      "name": "[concat(variables('vnet'), '/', variables('subnet').businessTier)]",
+       "dependsOn": ["[resourceId('Microsoft.Network/virtualNetworks/subnets', concat(variables('vnet'), '/', variables('subnet').backend))]"],
+      "properties": {
+          "addressPrefix": "[parameters('subnetAddressPrefix').businessTier]"
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2017-06-01",
       "name": "[concat(variables('vnet'), '/', variables('subnet').applicationGW)]",
+      "dependsOn": ["[resourceId('Microsoft.Network/virtualNetworks/subnets', concat(variables('vnet'), '/', variables('subnet').businessTier))]"],
       "properties": {
           "addressPrefix": "[parameters('subnetAddressPrefix').applicationGW]"
       }
