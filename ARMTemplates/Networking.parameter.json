@@ -8,12 +8,6 @@
       "envLocation": {
         "value": "East US"
       },
-      "vnetName": {
-        "value": "vnet-EUS-QA-Vprofile"
-      },
-      "subnet1Name": {
-        "value": "frontendsub"
-      },
       "application": {
         "value": "Vprofile"
       },
