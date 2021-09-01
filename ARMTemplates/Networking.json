@@ -215,7 +215,7 @@
       "name": "[concat(variables('vnet'), '/', variables('subnet').applicationGW)]",
       "properties": {
           "addressPrefix": "[parameters('subnetAddressPrefix').applicationGW]"
-      },
+      }
     }
   ],
   "outputs": {  }
