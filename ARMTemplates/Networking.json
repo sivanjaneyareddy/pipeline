@@ -9,20 +9,6 @@
         "description": "Name of the virtual network"
       }
     },
-    "vnetName": {
-      "type": "string",
-      "defaultValue": "vnet-EUS-QA-Vprofile",
-      "metadata": {
-        "description": "Name of the virtual network"
-      }
-    },
-    "subnet1Name": {
-      "type": "string",
-      "defaultValue": "frontendsub",
-      "metadata": {
-        "description": "Name of the virtual network"
-      }
-    },
     "envLocation": {
       "type": "string",
       "defaultValue": "East US",
@@ -211,6 +197,48 @@
       "addressPrefix": "[parameters('subnetAddressPrefix').frontend]",
       "networkSecurityGroup": {
         "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
+      }
+    }
+  },
+  {
+    "type": "Microsoft.Network/virtualNetworks/subnets",
+    "apiVersion": "2017-06-01",
+    "name": "[concat(variables('vnet'), '/', variables('subnet').backend)]",
+    "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+    ],
+		 "properties": {
+      "addressPrefix": "[parameters('subnetAddressPrefix').backend]",
+      "networkSecurityGroup": {
+        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').backend)]"
+      }
+    }
+  },
+  {
+    "type": "Microsoft.Network/virtualNetworks/subnets",
+    "apiVersion": "2017-06-01",
+    "name": "[concat(variables('vnet'), '/', variables('subnet').businessTier)]",
+    "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+    ],
+		 "properties": {
+      "addressPrefix": "[parameters('subnetAddressPrefix').businessTier]",
+      "networkSecurityGroup": {
+        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').businessTier)]"
+      }
+    }
+  },
+  {
+    "type": "Microsoft.Network/virtualNetworks/subnets",
+    "apiVersion": "2017-06-01",
+    "name": "[concat(variables('vnet'), '/', variables('subnet').applicationGW)]",
+    "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+    ],
+		 "properties": {
+      "addressPrefix": "[parameters('subnetAddressPrefix').applicationGW]",
+      "networkSecurityGroup": {
+        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').applicationGW)]"
       }
     }
   }
