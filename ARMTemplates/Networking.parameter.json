@@ -1,26 +1,26 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "envName": {
-      "Value": "QA"
-    },
-	"envLocation": {
-      "Value": "East US"
-    },
-	"application": {
-      "Value": "Vprofile"
-    },
-	"vnetAddressPrefix": {
-      "Value": "192.168.0.0/16"
-    },
-	"subnetAddressPrefix": {
-      "value": {
-        "frontend": "192.168.0.0/24",
-        "backend": "192.168.1.0/24",
-        "businessTier": "192.168.2.0/24",
-        "applicationGW": "192.168.3.0/24"
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "envName": {
+        "value": "QA"
+      },
+      "envLocation": {
+        "value": "East US"
+      },
+      "application": {
+        "value": "Vprofile"
+      },
+      "vnetAddressPrefix": {
+        "value": "192.168.0.0/16"
+      },
+      "subnetAddressPrefix": {
+        "value": {
+          "frontend": "192.168.0.0/24",
+          "backend": "192.168.1.0/24",
+          "businessTier": "192.168.2.0/24",
+          "applicationGW": "192.168.3.0/24"
+        }
       }
     }
   }
-}
