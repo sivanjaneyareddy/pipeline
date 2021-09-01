@@ -1,0 +1,250 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": { 
+    "envName": {
+      "type": "string",
+      "defaultValue": "Qa1",
+      "metadata": {
+        "description": "Name of the virtual network"
+      }
+    },
+    "envLocation": {
+      "type": "string",
+      "defaultValue": "EUS",
+      "metadata": {
+        "description": "Name of the virtual network"
+      }
+    },
+    "application": {
+      "type": "string",
+      "defaultValue": "EUS",
+      "metadata": {
+        "description": "Name of the virtual network"
+      }
+    },
+    "vnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "EUS",
+      "metadata": {
+        "description": "Name of the virtual network"
+      }
+    },
+    "subnetAddressPrefix": {
+      "type": "object",
+      "metadata": {
+        "description": "Pricing Tier of app service plan"
+      }
+    }
+  },
+  "variables": { 
+    "vnet": "[concat('vnet','-', parameters('envLocation'), '-',parameters('envName'),'-',parameters('application'))]",
+    "subnet": {
+        "frontend": "[concat('frontendSub-', parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
+        "backend": "[concat('backendSub','-', parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
+        "businessTier": "[concat('businessTierSub','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
+        "applicationGW": "[concat('applicationGWsub','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]"
+    },
+    "networkSecurityGroupName": {
+        "frontend": "[concat('frontendNSG','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
+        "backend": "[concat('backendNSG','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
+        "businessTier": "[concat('businessTierNSG','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]",
+        "applicationGW": "[concat('applicationGWNSG','-',parameters('envLocation'),'-', parameters('envName'),'-',parameters('application'))]"
+    }
+  },
+   "resources": [ 
+    {
+      "comments": "Default Network Security Group for template",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2019-08-01",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "name": "[variables('networkSecurityGroupName').frontend]",
+      "location": "[parameters('envLocation')]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-3389",
+            "properties": {
+              "priority": 1000,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "3389",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comments": "Default Network Security Group for template",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2019-08-01",
+      "name": "[variables('networkSecurityGroupName').backend]",
+      "location": "[parameters('envLocation')]",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-3389",
+            "properties": {
+              "priority": 1000,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "3389",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comments": "Default Network Security Group for template",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2019-08-01",
+      "name": "[variables('networkSecurityGroupName').businessTier]",
+      "location": "[parameters('envLocation')]",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-3389",
+            "properties": {
+              "priority": 1000,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "3389",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "comments": "Default Network Security Group for template",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2019-08-01",
+      "name": "[variables('networkSecurityGroupName').applicationGW]",
+      "location": "[parameters('envLocation')]",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "default-allow-3389",
+            "properties": {
+              "priority": 1000,
+              "access": "Allow",
+              "direction": "Inbound",
+              "destinationPortRange": "3389",
+              "protocol": "Tcp",
+              "sourceAddressPrefix": "*",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2017-06-01",
+      "name": "[variables('vnet')]",
+      "location": "[parameters('envLocation')]",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('vnetAddressPrefix')]"
+          ]
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('networkSecurityGroupName').frontend)]"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2017-06-01",
+      "name": "[variables('subnet').frontend]",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "properties": {
+          "addressPrefix": "[parameters('subnetAddressPrefix').frontend]"
+      },
+      "dependsOn": [
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2017-06-01",
+      "name": "[variables('subnet').backend]",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "properties": {
+          "addressPrefix": "[parameters('subnetAddressPrefix').backend]"
+      },
+      "dependsOn": [
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2017-06-01",
+      "name": "[variables('subnet').businessTier]",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "properties": {
+          "addressPrefix": "[parameters('subnetAddressPrefix').businessTier]"
+      },
+      "dependsOn": [
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "apiVersion": "2017-06-01",
+      "name": "[variables('subnet').applicationGW]",
+      "tags": {
+        "Project": "Vprofile",
+        "Environment": "[parameters('envName')]"
+      },
+      "properties": {
+          "addressPrefix": "[parameters('subnetAddressPrefix').applicationGW]"
+      },
+      "dependsOn": [
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+      ]
+    }
+  ],
+  "outputs": {  }
+}
