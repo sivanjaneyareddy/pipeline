@@ -170,6 +170,8 @@
       "apiVersion": "2017-06-01",
       "name": "[variables('vnet')]",
       "location": "[parameters('envLocation')]",
+      "dependsOn": [
+          "[resourceId('Microsoft.Network/virtualNetworks', variables('networkSecurityGroupName').frontend)]"],
       "tags": {
         "Project": "Vprofile",
         "Environment": "[parameters('envName')]"
@@ -179,10 +181,7 @@
           "addressPrefixes": [
             "[parameters('vnetAddressPrefix')]"
           ]
-        },
-        "dependsOn": [
-          "[resourceId('Microsoft.Network/virtualNetworks', variables('networkSecurityGroupName').frontend)]"
-        ]
+        }
       }
     },
     {
