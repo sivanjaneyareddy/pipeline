@@ -184,14 +184,6 @@
           ]
         }
       }
-    },
-    {
-      "type": "Microsoft.Network/virtualNetworks/subnets",
-      "apiVersion": "2017-06-01",
-      "name": "[concat(variables('vnet'), '/', variables('subnet').applicationGW)]",
-      "properties": {
-          "addressPrefix": "[parameters('subnetAddressPrefix').applicationGW]"
-      }
     }
   ],
   "outputs": {  }
