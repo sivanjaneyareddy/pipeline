@@ -1,0 +1,74 @@
+pool:
+  name: Hosted VS2017
+
+resources:
+  repositories:
+    - repository: other
+      type: git
+      name: Java Project/Vprofile
+
+parameters:
+  - name: Environments
+    displayName: Select Environment
+    default: none
+    values:
+      - QA
+      - STG
+      - PROD  
+
+stages:
+
+- stage: build
+  displayName: Build
+  variables: 
+  - group: ${{ parameters.Environments }}Vprofile
+  
+  jobs:
+  - job: Build
+    steps:
+    - checkout: self
+    - checkout: other   
+    - task: PowerShell@2
+      inputs:
+       targetType: 'inline'
+       script: |
+        $templatefile="$(System.DefaultWorkingDirectory)\Vprofile\src\main\resources\application.properties"
+        $templatefilecontent=Get-Content $templatefile
+        $templatefilecontent=$templatefilecontent -replace "#{mysql.connectionstring}#", ${mysql.connectionstring}
+        $templatefilecontent=$templatefilecontent -replace "#{mysql.username}#", ${mysql.username}
+        $templatefilecontent=$templatefilecontent -replace "#{mysql.password}#", ${mysql.password}
+    # - task: Maven@3
+    #   inputs:
+    #     mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
+    #     publishJUnitResults: true
+    #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    #     javaHomeOption: 'JDKVersion'
+    #     mavenVersionOption: 'Default'
+    #     mavenAuthenticateFeed: false
+    #     effectivePomSkip: false
+    #     sonarQubeRunAnalysis: true
+    #     sqMavenPluginVersionChoice: 'pom'
+    - task: Maven@3
+      inputs:
+        mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(system.defaultworkingdirectory)'
+        Contents: |
+            **\Vprofile\src\main\resources\application.properties
+            **\Vprofile\target\vprofile-v2.war
+        TargetFolder: '$(build.artifactstagingdirectory)'
+    
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(build.artifactstagingdirectory)'
+        artifact: 'drop'
+        publishLocation: 'pipeline'
