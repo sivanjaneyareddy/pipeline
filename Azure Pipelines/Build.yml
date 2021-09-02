@@ -10,8 +10,7 @@ resources:
 parameters:
   - name: Environments
     displayName: Select Environment
-    default: none
-    values:
+    default: QA
       - QA
       - STG
       - PROD  
