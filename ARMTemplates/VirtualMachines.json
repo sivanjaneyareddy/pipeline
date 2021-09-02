@@ -74,7 +74,7 @@
     "storageAccountName": "[concat('sa-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
     "storageAccountType": "Standard_LRS",
     "vmStorageAccountContainerName": "vhds",
-    "vmName": "[substring(concat('appvm','EUS',parameters('envName'),parameters('application')))]",
+    "vmName": "[concat('appvm','EUS',parameters('envName'),parameters('application'))]",
     "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnet'))]",
     "subnetRef": {
