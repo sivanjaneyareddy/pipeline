@@ -92,17 +92,6 @@
   },
   "resources": [
     {
-      "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2019-06-01",
-      "name": "[variables('storageAccountName')]",
-      "location": "[variables('location')]",
-      "sku": {
-        "name": "[variables('storageAccountType')]"
-      },
-      "kind": "StorageV2",
-      "properties": {}
-    },
-    {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
     "name": "[variables('dnsNameForPublicIP')]",
@@ -180,12 +169,7 @@
               "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
             }
           ]
-        },
-        "diagnosticsProfile": { 
-          "bootDiagnostics": { 
-            "enabled": "true", 
-            "storageUri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).primaryEndpoints.blob)]"
-          }
+        }
         }
       }
     }
