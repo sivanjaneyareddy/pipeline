@@ -74,7 +74,7 @@
     "storageAccountName": "[concat('sa-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
     "storageAccountType": "Standard_LRS",
     "vmStorageAccountContainerName": "vhds",
-    "vmName": "[substring(concat('simplelinuxvm',resourceGroup().Name),0,14)]",
+    "vmName": "[substring(concat('appvm','-', 'EUS', '-',parameters('envName'),'-',parameters('application')))]",
     "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnet'))]",
     "subnetRef": {
@@ -116,10 +116,6 @@
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName')]",
       "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
-        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
-      ],
       "properties": {
         "networkSecurityGroup": {
           "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
