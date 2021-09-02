@@ -117,7 +117,7 @@
       "name": "[variables('nicName')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/virtualNetworks/', variables('vnet'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
         "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
       ],
       "properties": {
