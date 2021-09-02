@@ -118,7 +118,7 @@
       "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/virtualNetworks/', variables('vnet'))]",
-        "[variables('networkSecurityGroupName').frontend]"
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
       ],
       "properties": {
         "networkSecurityGroup": {
