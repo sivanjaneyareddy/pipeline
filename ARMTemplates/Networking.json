@@ -45,6 +45,12 @@
         "businessTier": "[concat('businessTierSub','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
         "applicationGW": "[concat('applicationGWsub','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
     },
+    "subnetName": {
+        "frontend": "[concat(variables('vnet'), '/', variables('subnet').frontend)]",
+        "backend": "[concat(variables('vnet'), '/', variables('subnet').backend)]",
+        "businessTier": "[concat(variables('vnet'), '/', variables('subnet').businessTier)]",
+        "applicationGW": "[concat(variables('vnet'), '/', variables('subnet').applicationGW)]"
+    },
     "networkSecurityGroupName": {
         "frontend": "[concat('frontendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
         "backend": "[concat('backendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
@@ -189,7 +195,7 @@
     {
     "type": "Microsoft.Network/virtualNetworks/subnets",
     "apiVersion": "2017-06-01",
-    "name": "[concat(variables('vnet'), '/', variables('subnet').frontend)]",
+    "name": "[variables('subnetName').frontend]",
     "dependsOn": [
                 "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
     ],
@@ -203,23 +209,10 @@
   {
     "type": "Microsoft.Network/virtualNetworks/subnets",
     "apiVersion": "2017-06-01",
-    "name": "[concat(variables('vnet'), '/', variables('subnet').backend)]",
+    "name": "[variables('subnetName').businessTier]",
     "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
-    ],
-		 "properties": {
-      "addressPrefix": "[parameters('subnetAddressPrefix').backend]",
-      "networkSecurityGroup": {
-        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').backend)]"
-      }
-    }
-  },
-  {
-    "type": "Microsoft.Network/virtualNetworks/subnets",
-    "apiVersion": "2017-06-01",
-    "name": "[concat(variables('vnet'), '/', variables('subnet').businessTier)]",
-    "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName').frontend)]"
     ],
 		 "properties": {
       "addressPrefix": "[parameters('subnetAddressPrefix').businessTier]",
@@ -231,9 +224,25 @@
   {
     "type": "Microsoft.Network/virtualNetworks/subnets",
     "apiVersion": "2017-06-01",
-    "name": "[concat(variables('vnet'), '/', variables('subnet').applicationGW)]",
+    "name": "[variables('subnetName').backend]",
     "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName').businessTier)]"
+    ],
+		 "properties": {
+      "addressPrefix": "[parameters('subnetAddressPrefix').backend]",
+      "networkSecurityGroup": {
+        "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').backend)]"
+      }
+    }
+  },
+  {
+    "type": "Microsoft.Network/virtualNetworks/subnets",
+    "apiVersion": "2017-06-01",
+    "name": "[variables('subnetName').applicationGW]",
+    "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName').backend)]"
     ],
 		 "properties": {
       "addressPrefix": "[parameters('subnetAddressPrefix').applicationGW]",
