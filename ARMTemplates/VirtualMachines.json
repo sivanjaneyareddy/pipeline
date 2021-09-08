@@ -58,6 +58,10 @@
       "metadata": {
         "description": "Name of the virtual network"
       }
+    },
+    "listToDeploy": {
+      "type": "array",
+      "defaultValue": []
     }
   },
   "variables": {
@@ -102,6 +106,7 @@
   },
   "resources": [
     {
+    "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
     "name": "[variables('dnsNameForPublicIP').frontend]",
@@ -114,6 +119,7 @@
     }
     },
     {
+      "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName').frontend]",
       "location": "[variables('location')]",
@@ -141,6 +147,7 @@
       }
     },
     {
+      "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName').appvm]",
       "location": "[variables('location')]",
@@ -184,6 +191,7 @@
       }
     },
     {
+    "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
     "name": "[variables('dnsNameForPublicIP').businessTier]",
@@ -196,6 +204,7 @@
     }
     },
     {
+      "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName').businessTier]",
       "location": "[variables('location')]",
@@ -223,6 +232,7 @@
       }
     },
     {
+      "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName').webvm]",
       "location": "[variables('location')]",
@@ -266,6 +276,7 @@
       }
     },
     {
+    "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
     "name": "[variables('dnsNameForPublicIP').backend]",
@@ -278,6 +289,7 @@
     }
     },
     {
+      "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName').backend]",
       "location": "[variables('location')]",
@@ -305,6 +317,7 @@
       }
     },
     {
+      "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName').mysqlvm]",
       "location": "[variables('location')]",
