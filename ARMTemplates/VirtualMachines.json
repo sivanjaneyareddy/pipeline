@@ -61,20 +61,30 @@
     }
   },
   "variables": {
-    "dnsNameForPublicIP": "[tolower(concat('pip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+    "dnsNameForPublicIP": {
+      "frontend": "[tolower(concat('frontendpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "backend": "[tolower(concat('backendpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "businessTier": "[tolower(concat('businessTierpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "applicationGW": "[tolower(concat('applicationGWpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]"
+    },
     "location": "[resourceGroup().location]",
-    "OSDiskName": "osdisk",
-    "nicName": "[tolower(concat('nic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
+    "nicName": {
+      "frontend": "[tolower(concat('frontendnic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "backend": "[tolower(concat('backendnic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "businessTier": "[tolower(concat('businessTiernic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "applicationGW": "[tolower(concat('applicationGWnic-','EUS','-', parameters('envName'),'-',parameters('application')))]"
+    },
     "subnet": {
       "frontend": "[concat('frontendSub-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
       "backend": "[concat('backendSub','-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
       "businessTier": "[concat('businessTierSub','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
       "applicationGW": "[concat('applicationGWsub','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
     },
-    "storageAccountName": "[concat('sa-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
-    "storageAccountType": "Standard_LRS",
-    "vmStorageAccountContainerName": "vhds",
-    "vmName": "[concat('appvm','EUS',parameters('envName'),parameters('application'))]",
+    "vmName": {
+      "appvm": "[concat('appvm','EUS',parameters('envName'),parameters('application'))]",
+      "webvm": "[concat('webvm','EUS',parameters('envName'),parameters('application'))]",
+      "mysqlvm": "[concat('mysqlvm','EUS',parameters('envName'),parameters('application'))]"
+    },
     "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnet'))]",
     "subnetRef": {
@@ -94,21 +104,21 @@
     {
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
-    "name": "[variables('dnsNameForPublicIP')]",
+    "name": "[variables('dnsNameForPublicIP').frontend]",
     "location": "[variables('location')]",
     "properties": {
       "publicIPAllocationMethod": "Static"
     },
     "tags": {
-      "displayName": "PublicIPAddress - Web"
+      "displayName": "PublicIPAddress - App"
     }
     },
     {
       "type": "Microsoft.Network/networkInterfaces",
-      "name": "[variables('nicName')]",
+      "name": "[variables('nicName').frontend]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP'))]"
+        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').frontend)]"
       ],
       "properties": {
         "networkSecurityGroup": {
@@ -120,7 +130,7 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP'))]"
+              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').frontend)]"
             },
               "subnet": {
                 "id": "[variables('subnetRef').frontend]"
@@ -132,17 +142,17 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines",
-      "name": "[variables('vmName')]",
+      "name": "[variables('vmName').appvm]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]"
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').frontend)]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
         },
         "osProfile": {
-          "computerName": "[variables('vmName')]",
+          "computerName": "[variables('vmName').appvm]",
           "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
@@ -167,7 +177,171 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').frontend)]"
+            }
+          ]
+        }
+      }
+    },
+    {
+    "apiVersion": "2015-06-15",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "name": "[variables('dnsNameForPublicIP').businessTier]",
+    "location": "[variables('location')]",
+    "properties": {
+      "publicIPAllocationMethod": "Static"
+    },
+    "tags": {
+      "displayName": "PublicIPAddress - Web"
+    }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName').businessTier]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').businessTier)]"
+      ],
+      "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').businessTier)]"
+        },
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').businessTier)]"
+            },
+              "subnet": {
+                "id": "[variables('subnetRef').businessTier]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName').webvm]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').businessTier)]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName').webvm]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('imagePublisher')]",
+            "offer": "[parameters('imageOffer')]",
+            "sku": "[parameters('imageSku')]",
+            "version": "latest"
+          },
+          "osDisk": {
+                "createOption": "FromImage"
+          },
+          "dataDisks": [
+                {
+                    "diskSizeGB": 1023,
+                    "lun": 0,
+                    "createOption": "Empty"
+                }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').businessTier)]"
+            }
+          ]
+        }
+      }
+    },
+    {
+    "apiVersion": "2015-06-15",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "name": "[variables('dnsNameForPublicIP').backend]",
+    "location": "[variables('location')]",
+    "properties": {
+      "publicIPAllocationMethod": "Static"
+    },
+    "tags": {
+      "displayName": "PublicIPAddress - MySQL"
+    }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName').backend]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').backend)]"
+      ],
+      "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').backend)]"
+        },
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').backend)]"
+            },
+              "subnet": {
+                "id": "[variables('subnetRef').backend]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName').mysqlvm]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').backend)]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName').mysqlvm]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('imagePublisher')]",
+            "offer": "[parameters('imageOffer')]",
+            "sku": "[parameters('imageSku')]",
+            "version": "latest"
+          },
+          "osDisk": {
+                "createOption": "FromImage"
+          },
+          "dataDisks": [
+                {
+                    "diskSizeGB": 1023,
+                    "lun": 0,
+                    "createOption": "Empty"
+                }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').backend)]"
             }
           ]
         }
