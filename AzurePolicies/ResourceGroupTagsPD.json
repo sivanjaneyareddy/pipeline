@@ -8,10 +8,12 @@
 	},
 	"parameters": {
 		"tagName": {
-			"type": "string"
+			"type": "string",
+			"defaultValue": "Project"
 		},
 		"tagValue": {
-			"type": "string"
+			"type": "string",
+			"defaultValue": "Vprofile"
 		}
 	},
 	"resources": [{
