@@ -6,10 +6,10 @@
       "policyName":"Add a tag to resource groups",
       "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/726aca4c-86e9-4b04-b0c5-073027359532",
       "policyParameters":{
-        "Tag Name":{
+        "tagName":{
           "value":"Project"
           },
-        "Tag Name":{
+        "tagValue":{
           "value":"Vprofile"
           }
       }
