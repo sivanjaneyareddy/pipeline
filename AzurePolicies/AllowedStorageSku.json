@@ -20,8 +20,13 @@
             "metadata": {
                "description": "The list of SKUs that can be specified for storage accounts.",
                "displayName": "Allowed SKUs",
-               "strongType": "StorageSKUs"
-            }
+               //"strongType": "StorageSKUs"
+            },
+            "defaultValue": [ "Standard_LRS" ],
+        "allowedValues": [
+            "Standard_LRS",
+            "Standard_GRS"
+        ]
          }
     },
     "variables": {
