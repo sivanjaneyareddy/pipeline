@@ -22,6 +22,7 @@
             "identity": {
                 "type": "SystemAssigned"
             },
+            "location": "East US",
             "properties": {
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[variables('policyDefinitionID')]",
