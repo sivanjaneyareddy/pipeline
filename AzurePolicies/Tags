@@ -41,11 +41,6 @@
         "policyAssignmentMode": {
             "type": "string",
 			"defaultValue": "disabled"
-            "metadata": {
-                "displayName": "Policy assignment mode",
-                "description": "Enforced (default) or disabled."
-            }
-        }
         },
 		"tagName": {
 			"type": "string"
