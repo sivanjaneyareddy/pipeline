@@ -4,7 +4,15 @@
 	"variables": {
 		"policyName": "restrict-allowed-locations-policy",
 		"policyDisplayName": "Add a tag to resource groups",
-		"policyDescription": "Adds the specified tag and value when any resource group missing this tag is created or updated. Existing resource groups can be remediated by triggering a remediation task. If the tag exists with a different value it will not be changed."
+		"policyDescription": "Adds the specified tag and value when any resource group missing this tag is created or updated. Existing resource groups can be remediated by triggering a remediation task. If the tag exists with a different value it will not be changed.",
+		"policyParameters":{
+        "tagName":{
+          "value":"Project"
+          },
+        "tagValue":{
+          "value":"Vprofile"
+          }
+      }
 	},
 	"parameters": {
         "policyDefinitionName": {
@@ -32,6 +40,7 @@
         },
         "policyAssignmentMode": {
             "type": "string",
+			"defaultValue": "Enforced"
             "metadata": {
                 "displayName": "Policy assignment mode",
                 "description": "Enforced (default) or disabled."
@@ -39,17 +48,8 @@
             "allowedValues": [
                 "Default",
                 "DoNotEnforce"
-            ],
-            "defaultValue": "Default"
-        },
-        "policyParameters": {
-            "type": "object",
-            "metadata": {
-                "displayName": "Policy parameters",
-                "description": "Policy parameters as an object parameter type."
-            },
-            "defaultValue": {
-            }
+            ]
+        }
         },
 		"tagName": {
 			"type": "string"
@@ -119,7 +119,7 @@
                 "scope": "[if(empty(parameters('resourceGroupName')), subscription().id, concat(subscription().id, '/resourceGroups/', parameters('resourceGroupName')))]",
                 "enforcementMode": "[parameters('policyAssignmentMode')]",
                 "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', parameters('policyDefinitionName'))]",
-                "parameters": "[parameters('policyParameters')]"
+                "parameters": "[varaibles('policyParameters')]"
             }
         }
 	]
