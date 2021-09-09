@@ -17,7 +17,7 @@
 	"parameters": {
         "policyDefinitionName": {
             "type": "string",
-			"defaultValue": "Tags"
+			"defaultValue": "Tags",
             "metadata": {
                 "displayName": "Policy definition name",
                 "description": "Name of the policy to assign."
@@ -109,7 +109,7 @@
                 "scope": "[if(empty(parameters('resourceGroupName')), subscription().id, concat(subscription().id, '/resourceGroups/', parameters('resourceGroupName')))]",
                 "enforcementMode": "[parameters('policyAssignmentMode')]",
                 "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', parameters('policyDefinitionName'))]",
-                "parameters": "[varaibles('policyParameters')]"
+                "parameters": "[variables('policyParameters')]"
             }
         }
 	]
