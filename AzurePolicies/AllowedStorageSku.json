@@ -2,19 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "effect": {
-          "type": "String",
-          "metadata": {
-             "displayName": "Effect",
-             "description": "Enable or disable the execution of the audit policy"
-            },
-           "allowedValues": [
-              "Audit",
-              "Deny",
-              "Disabled"
-                ],
-           "defaultValue": "Deny"
-        }
+
     },
     "variables": {
       "policyName":"Allowed Locations",
@@ -74,7 +62,7 @@
                     {
                         "not": {
                         "field": "Microsoft.Storage/storageAccounts/sku.name",
-                        "in": "[variables('policySkuParameters')]"
+                        "in": "[parameters('listOfAllowedSKUs')]"
                         }
                     }
                     ]
