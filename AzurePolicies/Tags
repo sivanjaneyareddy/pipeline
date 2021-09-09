@@ -39,7 +39,7 @@
         },
         "policyAssignmentMode": {
             "type": "string",
-			"defaultValue": "disabled"
+			"defaultValue": "Default"
         },
 		"tagName": {
 			"type": "string",
