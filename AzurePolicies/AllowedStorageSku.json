@@ -14,15 +14,7 @@
               "Disabled"
                 ],
            "defaultValue": "Deny"
-        },
-        "listOfAllowedSKUs": {
-          "type": "Array",
-          "metadata": {
-            "description": "The list of SKUs that can be specified for storage accounts.",
-            "displayName": "Allowed SKUs",
-            "strongType": "StorageSKUs"
         }
-      }
     },
     "variables": {
       "policyName":"Allowed Locations",
@@ -60,7 +52,7 @@
                     {
                         "not": {
                         "field": "Microsoft.Storage/storageAccounts/sku.name",
-                        "in": "[parameters('listOfAllowedSKUs')]"
+                        "in": "[variables('policySkuParameters')]"
                         }
                     }
                     ]
