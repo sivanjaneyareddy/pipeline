@@ -1,0 +1,93 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "variables": {
+      "policyName":"Allowed Locations",
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+      "policyParameters":{
+        "listOfAllowedLocations":{
+          "value":["East US","Central US"]}},
+      "policySkuParameters":{
+        "listOfAllowedLocations":{
+          "value":["Standard_LRS"]}}
+    },
+    "resources": [
+        {
+            "name": "storage-creation-in-approved-sku-definition",
+            "type": "Microsoft.Authorization/policyDefinitions",
+            "apiVersion": "2018-05-01",
+            "location": "West Europe",
+            "properties": {
+                "displayName": "Storage accounts should be limited by allowed SKUs",
+                "policyType": "BuiltIn",
+                "mode": "Indexed",
+                "description": "Restrict the set of storage account SKUs that your organization can deploy.",
+                "metadata": {
+                "version": "1.1.0",
+                "category": "Storage"
+                },
+                "parameters": {
+                "effect": {
+                    "type": "String",
+                    "metadata": {
+                    "displayName": "Effect",
+                    "description": "Enable or disable the execution of the audit policy"
+                    },
+                    "allowedValues": [
+                    "Audit",
+                    "Deny",
+                    "Disabled"
+                    ],
+                    "defaultValue": "Deny"
+                },
+                "listOfAllowedSKUs": {
+                    "type": "Array",
+                    "metadata": {
+                    "description": "The list of SKUs that can be specified for storage accounts.",
+                    "displayName": "Allowed SKUs",
+                    "strongType": "StorageSKUs",
+                    "allowedValues": [
+                    "Standard_LRS"
+                    ]
+                    }
+                }
+                },
+                "policyRule": {
+                "if": {
+                    "allOf": [
+                    {
+                        "field": "type",
+                        "equals": "Microsoft.Storage/storageAccounts"
+                    },
+                    {
+                        "not": {
+                        "field": "Microsoft.Storage/storageAccounts/sku.name",
+                        "in": "[parameters('listOfAllowedSKUs')]"
+                        }
+                    }
+                    ]
+                },
+                "then": {
+                    "effect": "[parameters('effect')]"
+                }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[variables('policyName')]",
+            "apiVersion": "2018-03-01",
+            "dependsOn": [
+                "[resourceId('Microsoft.Authorization/policyDefinitions/', 'storage-creation-in-approved-sku-definition')]"
+            ],
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyType": "Custom",
+                "mode": "All",
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', 'storage-creation-in-approved-sku-definition')]",
+                "parameters": "[variables('policySkuParameters')]"
+            }
+        }
+    ]
+}
