@@ -1,0 +1,126 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"variables": {
+		"policyName": "restrict-allowed-locations-policy",
+		"policyDisplayName": "Add a tag to resource groups",
+		"policyDescription": "Adds the specified tag and value when any resource group missing this tag is created or updated. Existing resource groups can be remediated by triggering a remediation task. If the tag exists with a different value it will not be changed."
+	},
+	"parameters": {
+        "policyDefinitionName": {
+            "type": "string",
+            "metadata": {
+                "displayName": "Policy definition name",
+                "description": "Name of the policy to assign."
+            }
+        },
+        "policyAssignmentName": {
+            "type": "string",
+            "metadata": {
+                "displayName": "Policy assignment name",
+                "description": "Name to use for a specific policy assignment."
+            }
+        },
+        "resourceGroupName": {
+            "type": "string",
+            "metadata": {
+                "displayName": "Resource group to limit policy assignment scope",
+                "description": "Optional resource group name to limit the policy scope.",
+                "strongType": "existingResourceGroups"
+            },
+            "defaultValue": ""
+        },
+        "policyAssignmentMode": {
+            "type": "string",
+            "metadata": {
+                "displayName": "Policy assignment mode",
+                "description": "Enforced (default) or disabled."
+            },
+            "allowedValues": [
+                "Default",
+                "DoNotEnforce"
+            ],
+            "defaultValue": "Default"
+        },
+        "policyParameters": {
+            "type": "object",
+            "metadata": {
+                "displayName": "Policy parameters",
+                "description": "Policy parameters as an object parameter type."
+            },
+            "defaultValue": {
+            }
+        },
+		"tagName": {
+			"type": "string"
+		},
+		"tagValue": {
+			"type": "string"
+		}
+	},
+	"resources": [{
+	"type": "Microsoft.Authorization/policyDefinitions",
+	"name": "[variables('policyName')]",
+	"apiVersion": "2019-09-01",
+	"properties": {
+		"displayName": "[variables('policyDisplayName')]",
+		"policyType": "Custom",
+		"mode": "All",
+		"description": "[variables('policyDescription')]",
+		"metadata": {
+			"version": "1.0.0",
+			"category": "Tags"
+		},
+		"parameters": {
+			"tagName": {
+				"type": "String"
+			},
+			"tagValue": {
+				"type": "String"
+			}
+		},
+		"policyRule": {
+			"if": {
+				"allOf": [{
+						"field": "type",
+						"equals": "Microsoft.Resources/subscriptions/resourceGroups"
+					},
+					{
+						"field": "[concat('tags[', parameters('tagName'), ']')]",
+						"exists": "false"
+					}
+				]
+			},
+			"then": {
+				"effect": "modify",
+				"details": {
+					"roleDefinitionIds": [
+						"/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+					],
+					"operations": [{
+						"operation": "add",
+						"field": "[concat('tags[', parameters('tagName'), ']')]",
+						"value": "[parameters('tagValue')]"
+					}]
+				}
+			}
+		}
+	    }
+	},
+    {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[parameters('policyAssignmentName')]",
+            "apiVersion": "2019-09-01",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "location": "East US",
+            "properties": {
+                "scope": "[if(empty(parameters('resourceGroupName')), subscription().id, concat(subscription().id, '/resourceGroups/', parameters('resourceGroupName')))]",
+                "enforcementMode": "[parameters('policyAssignmentMode')]",
+                "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', parameters('policyDefinitionName'))]",
+                "parameters": "[parameters('policyParameters')]"
+            }
+        }
+	]
+}
