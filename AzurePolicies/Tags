@@ -17,6 +17,7 @@
 	"parameters": {
         "policyDefinitionName": {
             "type": "string",
+			"defaultValue": "Tags"
             "metadata": {
                 "displayName": "Policy definition name",
                 "description": "Name of the policy to assign."
@@ -24,10 +25,8 @@
         },
         "policyAssignmentName": {
             "type": "string",
-            "metadata": {
-                "displayName": "Policy assignment name",
-                "description": "Name to use for a specific policy assignment."
-            }
+			"defaultValue": "Tagsassignment"
+  
         },
         "resourceGroupName": {
             "type": "string",
