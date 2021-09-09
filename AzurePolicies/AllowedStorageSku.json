@@ -3,29 +3,26 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "effect": {
-                    "type": "String",
-                    "metadata": {
-                    "displayName": "Effect",
-                    "description": "Enable or disable the execution of the audit policy"
-                    },
-                    "allowedValues": [
-                    "Audit",
-                    "Deny",
-                    "Disabled"
-                    ],
-                    "defaultValue": "Deny"
-                },
+          "type": "String",
+          "metadata": {
+             "displayName": "Effect",
+             "description": "Enable or disable the execution of the audit policy"
+            },
+           "allowedValues": [
+              "Audit",
+              "Deny",
+              "Disabled"
+                ],
+           "defaultValue": "Deny"
+        },
         "listOfAllowedSKUs": {
-                    "type": "Array",
-                    "metadata": {
-                    "description": "The list of SKUs that can be specified for storage accounts.",
-                    "displayName": "Allowed SKUs",
-                    "strongType": "StorageSKUs",
-                    "allowedValues": [
-                    "Standard_LRS"
-                    ]
-                    }
-                }
+          "type": "Array",
+          "metadata": {
+            "description": "The list of SKUs that can be specified for storage accounts.",
+            "displayName": "Allowed SKUs",
+            "strongType": "StorageSKUs"
+        }
+      }
     },
     "variables": {
       "policyName":"Allowed Locations",
