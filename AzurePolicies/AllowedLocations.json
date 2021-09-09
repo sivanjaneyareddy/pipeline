@@ -7,7 +7,7 @@
       "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
       "policyParameters":{
         "listOfAllowedLocations":{
-          "value":["NorthEurope","WestEurope"]}}
+          "value":["East US","Central US"]}}
     },
     "resources": [
         {
