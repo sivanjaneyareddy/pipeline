@@ -40,7 +40,7 @@
         },
         "policyAssignmentMode": {
             "type": "string",
-			"defaultValue": "Enforced"
+			"defaultValue": "disabled"
             "metadata": {
                 "displayName": "Policy assignment mode",
                 "description": "Enforced (default) or disabled."
