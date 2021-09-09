@@ -15,14 +15,6 @@
       }
 	},
 	"parameters": {
-        "policyDefinitionName": {
-            "type": "string",
-			"defaultValue": "Tags",
-            "metadata": {
-                "displayName": "Policy definition name",
-                "description": "Name of the policy to assign."
-            }
-        },
         "policyAssignmentName": {
             "type": "string",
 			"defaultValue": "Tagsassignment"
@@ -110,7 +102,7 @@
             "properties": {
                 "scope": "[if(empty(parameters('resourceGroupName')), subscription().id, concat(subscription().id, '/resourceGroups/', parameters('resourceGroupName')))]",
                 "enforcementMode": "[parameters('policyAssignmentMode')]",
-                "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', parameters('policyDefinitionName'))]",
+                "policyDefinitionId": "[concat(subscription().id, '/providers/Microsoft.Authorization/policyDefinitions/', variables('policyName'))]",
                 "parameters": "[variables('policyParameters')]"
             }
         }
