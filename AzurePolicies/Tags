@@ -44,11 +44,7 @@
             "metadata": {
                 "displayName": "Policy assignment mode",
                 "description": "Enforced (default) or disabled."
-            },
-            "allowedValues": [
-                "Default",
-                "DoNotEnforce"
-            ]
+            }
         }
         },
 		"tagName": {
