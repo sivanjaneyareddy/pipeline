@@ -2,7 +2,7 @@
 	"$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"variables": {
-		"policyName": "restrict-allowed-locations-policy",
+		"policyName": "Add or replace a tag on resource groups",
 		"policyDisplayName": "Add a tag to resource groups",
 		"policyDescription": "Adds the specified tag and value when any resource group missing this tag is created or updated. Existing resource groups can be remediated by triggering a remediation task. If the tag exists with a different value it will not be changed."
 	},
