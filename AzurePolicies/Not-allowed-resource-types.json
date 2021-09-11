@@ -1,77 +1,96 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-        "parameters": {
-      "effect": {
-                    "type": "String",
-                    "metadata": {
-                    "displayName": "Effect",
-                    "description": "Enable or disable the execution of the policy"
-                    },
-                    "allowedValues": [
-                    "Audit",
-                    "Deny",
-                    "Disabled"
-                    ],
-                    "defaultValue": "Deny"
-                },
-      "listOfResourceTypesNotAllowed": {
-                    "type": "Array",
-                    "metadata": {
-                    "description": "The list of resource types that cannot be deployed.",
-                    "displayName": "Not allowed resource types",
-                    "defaultValue": ["Key vault"]
-             }
+    "parameters": {
+        "listOfNotAllowedResourceTypes" : {
+            "type": "array",
+            "defaultValue": ["Microsoft.ServiceBus/namespaces", "Microsoft.Logic/workflows"]
+        },
+        "effect" : {
+            "type": "string",
+            "defaultValue": "Deny"
         }
-
     },
     "variables": {
-      "policyName": {
-            "type": "String",
-            "metadata": {
-            "displayName": "Subnet ID",
-            "strongType": "Microsoft.Network/virtualNetworks/subnets",
-            "description": "The resource ID of the virtual network subnet that should have a rule enabled. Example: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet"
-            }
-        },
-      "policyDefinitionID": "/providers/Microsoft.Authorization/policyDefinitions/6c112d4e-5bc7-47ae-a041-ea2d9dccd749"
+      "policyName":"Not Allowed Resource Types",
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/6c112d4e-5bc7-47ae-a041-ea2d9dccd749",
+      "policyParameters":{
+        "effect":{
+          "value":"[parameters('effect')]"
+          },
+        "listOfAllowedSKUs":{
+          "value":"[parameters('listOfNotAllowedResourceTypes')]"
+          }
+      }
     },
     "resources": [
+    {
+      "name": "[variables('policyName')]",
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "apiVersion": "2018-05-01",
+      "location": "East US",
+      "properties": {
+    "displayName": "Storage accounts should be limited by allowed SKUs",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "Restrict the set of storage account SKUs that your organization can deploy.",
+    "metadata": {
+      "version": "1.1.0",
+      "category": "Storage"
+    },
+    "parameters": {
+      "effect": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Effect",
+          "description": "Enable or disable the execution of the audit policy"
+        },
+        "allowedValues": [
+          "Audit",
+          "Deny",
+          "Disabled"
+        ],
+        "defaultValue": "Deny"
+      },
+      "listOfAllowedSKUs": {
+        "type": "Array",
+        "metadata": {
+          "description": "The list of SKUs that can be specified for storage accounts.",
+          "displayName": "Allowed SKUs",
+          "strongType": "StorageSKUs"
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "type",
+            "equals": "Microsoft.Storage/storageAccounts"
+          },
+          {
+            "not": {
+              "field": "Microsoft.Storage/storageAccounts/sku.name",
+              "in": "[[parameters('listOfNotAllowedResourceTypes')]"
+            }
+          }
+        ]
+      },
+      "then": {
+        "effect": "[[parameters('effect')]"
+      }
+    }
+  }
+},
         {
             "type": "Microsoft.Authorization/policyAssignments",
-            "apiVersion": "2018-03-01",
             "name": "[variables('policyName')]",
-            
+            "apiVersion": "2018-05-01",
+            "location": "East US",
             "properties": {
-                "displayName": "Not allowed resource types",
-                "policyType": "BuiltIn",
-                "mode": "All",
-                "description": "Restrict which resource types can be deployed in your environment. Limiting resource types can reduce the complexity and attack surface of your environment while also helping to manage costs. Compliance results are only shown for non-compliant resources.",
-                "metadata": {
-                "version": "2.0.0",
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[variables('policyDefinitionID')]",
-                "category": "General"
-                },
-                "parameters": {
-                },
-                "policyRule": {
-                "if": {
-                    "allOf": [
-                    {
-                        "field": "type",
-                        "in": "[[parameters('listOfResourceTypesNotAllowed')]"
-                    },
-                    {
-                        "value": "[[field('type')]",
-                        "exists": true
-                    }
-                    ]
-                },
-                "then": {
-                    "effect": "[parameters('effect')]"
-                }
-                }
+                "parameters": "[variables('policyParameters')]"
             }
         }
     ]
