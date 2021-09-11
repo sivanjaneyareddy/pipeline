@@ -19,7 +19,7 @@
             "type": "Array",
             "metadata": {
                "description": "The list of SKUs that can be specified for storage accounts.",
-               "displayName": "Allowed SKUs",
+               "displayName": "Allowed SKUs"
                //"strongType": "StorageSKUs"
             },
             "defaultValue": [ "Standard_LRS" ],
@@ -37,7 +37,7 @@
           "value":["East US","Central US"]}},
       "policySkuParameters":{
         "listOfAllowedLocations":{
-          "value":["Standard_LRS"]}}
+          "value":"[parameters('listOfAllowedSKUs')]"}}
     },
     "resources": [
         {
@@ -72,7 +72,7 @@
             "type": "Array",
             "metadata": {
                "description": "The list of SKUs that can be specified for storage accounts.",
-               "displayName": "Allowed SKUs",
+               "displayName": "Allowed SKUs"
                //"strongType": "StorageSKUs"
             },
             "defaultValue": [ "Standard_LRS" ],
