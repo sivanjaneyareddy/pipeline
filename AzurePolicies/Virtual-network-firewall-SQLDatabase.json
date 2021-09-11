@@ -1,7 +1,7 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-        "parameters": {
+    "parameters": {
       "vnet": {
            "type": "string",
            "defaultValue": "myvnet"
@@ -13,46 +13,30 @@
       "subnetId": {
           "type": "string",
           "defaultvalue": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet'), parameters('subnet'))]"
-      },
-    "effect": {
-          "type": "string",
-          "defaultvalue": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet'), parameters('subnet'))]"
       }
-
+      },
+    "variables": {
+      "policyName":"Virtual network firewall rule on Azure SQL Database should be enabled to allow traffic from the specified subnet",
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/77e8b146-0078-4fb2-b002-e112381199f0",
+      "policyParameters":{
+        "tagName":{
+          "value":"[parameters('subnetId')]"
+        }
+      }
     },
-    "variables": {},
     "resources": [
-        {  
-            "name": "vnet",
+        {
             "type": "Microsoft.Authorization/policyAssignments",
-            "apiVersion": "2018-03-01",
-             "properties": {
-            "displayName": "Virtual network firewall rule on Azure SQL Database should be enabled to allow traffic from the specified subnet",
-            //"mode": "Indexed",
-            "description": "Virtual network based firewall rules are used to enable traffic from a specific subnet to Azure SQL Database while ensuring the traffic stays within the Azure boundary.",
-            "metadata": {
-            "version": "1.0.0",
-            "category": "SQL"
+            "name": "[variables('policyName')]",
+            "apiVersion": "2018-05-01",
+            "identity": {
+                "type": "SystemAssigned"
             },
-            "parameters": {
-            
-            },
-            "policyRule": {
-            "if": {
-                "field": "type",
-                "equals": "Microsoft.Sql/servers"
-            },
-            "then": {
-                "effect": "[parameters('effect')]",
-                "details": {
-                "type": "Microsoft.Sql/servers/virtualNetworkRules",
-                "existenceCondition": {
-                "field": "Microsoft.Sql/servers/virtualNetworkRules/virtualNetworkSubnetId",
-                "equals": "[parameters('subnetId')]"
-                }
-                }
-            }
-            }
+            "location": "East US",
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[variables('policyDefinitionID')]",
+                "parameters": "[variables('policyParameters')]"
             }
         }
     ]
