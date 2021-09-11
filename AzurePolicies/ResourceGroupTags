@@ -28,7 +28,6 @@
             "type": "Microsoft.Authorization/policyAssignments",
             "name": "[variables('policyName')]",
             "apiVersion": "2018-05-01",
-            "enforcementMode": "Enabled",
             "identity": {
                 "type": "SystemAssigned"
             },
