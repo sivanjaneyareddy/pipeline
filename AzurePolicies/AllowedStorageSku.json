@@ -71,13 +71,13 @@
           {
             "not": {
               "field": "Microsoft.Storage/storageAccounts/sku.name",
-              "in": "[parameters('listOfAllowedSKUs')]"
+              "in": "[[parameters('listOfAllowedSKUs')]"
             }
           }
         ]
       },
       "then": {
-        "effect": "[parameters('effect')]"
+        "effect": "[[parameters('effect')]"
       }
     }
   }
