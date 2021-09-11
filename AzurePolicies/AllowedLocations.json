@@ -15,9 +15,7 @@
     "variables": {
       "policyName":"Allowed Locations",
       "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
-      "policyParameters":{
-        "storageAccountId": "[concat('/subscriptions/', parameters('SubscriptionID'))]"
-      }
+        "subscriptionId": "[concat('/subscriptions/', parameters('SubscriptionID'))]"
     },
     "resources": [
         {
@@ -25,7 +23,7 @@
             "name": "[variables('policyName')]",
             "apiVersion": "2018-03-01",
             "properties": {
-                "scope": "[variables('policyParameters')]",
+                "scope": "[variables('subscriptionId')]",
                 "policyDefinitionId": "[variables('policyDefinitionID')]",
                 "parameters": "[parameters('listOfAllowedLocations')]"
             }
