@@ -3,10 +3,12 @@
     "contentVersion": "1.0.0.0",
         "parameters": {
       "vnet": {
-           "type": "string"
+           "type": "string",
+           "defaultValue": "myvnet"
       },
       "subnet": {
-          "type": "string"
+          "type": "string",
+          "defaultValue": "mysubnet"
       },
       "subnetId": {
           "type": "string",
