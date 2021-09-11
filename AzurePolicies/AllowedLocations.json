@@ -1,16 +1,13 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
-      "listOfAllowedLocations": {
-          "type": "array",
-          "defaultvalue": "East US"
-      }
-
-    },
+    "parameters": {},
     "variables": {
       "policyName":"Allowed Locations",
-      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c"
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+      "policyParameters":{
+        "listOfAllowedLocations":{
+          "value":["NorthEurope","WestEurope"]}}
     },
     "resources": [
         {
@@ -20,7 +17,7 @@
             "properties": {
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[variables('policyDefinitionID')]",
-                "parameters": "[parameters('listOfAllowedLocations')]"
+                "parameters": "[variables('policyParameters')]"
             }
         }
     ]
