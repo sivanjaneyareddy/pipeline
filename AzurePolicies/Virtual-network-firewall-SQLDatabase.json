@@ -16,7 +16,7 @@
       }
       },
     "variables": {
-      "policyName":"Virtual network firewall rule on Azure SQL Database should be enabled to allow traffic from the specified subnet",
+      "policyName":"Virtual network firewall rule on Azure SQL Database",
       "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/77e8b146-0078-4fb2-b002-e112381199f0",
       "policyParameters":{
         "tagName":{
