@@ -3,27 +3,25 @@
     "contentVersion": "1.0.0.0",
         "parameters": {
       "vnet": {
-           "type": "string",
-          "defaultvalue": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnet'))]"
+           "type": "string"
+      },
+      "subnet": {
+          "type": "string"
       },
       "subnetId": {
           "type": "string",
-          "defaultvalue": "[resourceId('Microsoft.Network/virtualNetworks',parameters('vnet'),'/subnets/mySubnet')]"
+          "defaultvalue": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet'), parameters('subnet'))]"
+      },
+    "effect": {
+          "type": "string",
+          "defaultvalue": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet'), parameters('subnet'))]"
       }
 
     },
-    "variables": {
-      "subnetId": {
-            "type": "String",
-            "metadata": {
-            "displayName": "Subnet ID",
-            "strongType": "Microsoft.Network/virtualNetworks/subnets",
-            "description": "The resource ID of the virtual network subnet that should have a rule enabled. Example: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet"
-            }
-        }
-    },
+    "variables": {},
     "resources": [
-        {
+        {  
+            "name": "vnet",
             "type": "Microsoft.Authorization/policyAssignments",
             "apiVersion": "2018-03-01",
              "properties": {
@@ -43,7 +41,7 @@
                 "equals": "Microsoft.Sql/servers"
             },
             "then": {
-                "effect": "AuditIfNotExists",
+                "effect": "[parameters('effect')]",
                 "details": {
                 "type": "Microsoft.Sql/servers/virtualNetworkRules",
                 "existenceCondition": {
