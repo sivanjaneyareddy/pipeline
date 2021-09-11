@@ -18,7 +18,7 @@
         "effect":{
           "value":"[parameters('effect')]"
           },
-        "listOfAllowedSKUs":{
+        "listOfResourceTypesNotAllowed":{
           "value":"[parameters('listOfResourceTypesNotAllowed')]"
           }
       }
