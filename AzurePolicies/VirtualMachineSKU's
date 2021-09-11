@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "Allowed Size SKUs" : {
+            "type": "array",
+            "defaultValue": ["Standard_B1s", "Standard_B1ms"]
+        }
+    },
+    "variables": {
+      "policyName":"Allowed Virtual Machine SKU's",
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/cccc23c7-8427-4f53-ad12-b6a63eb452b3",
+      "policyParameters":{
+        "listOfResourceTypesNotAllowed":{
+          "value":"[parameters('Allowed Size SKUs')]"
+          }
+      }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[variables('policyName')]",
+            "apiVersion": "2018-05-01",
+            "location": "East US",
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[variables('policyDefinitionID')]",
+                "parameters": "[variables('policyParameters')]"
+            }
+        }
+    ]
+}
