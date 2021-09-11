@@ -23,7 +23,7 @@
             "name": "[variables('policyName')]",
             "apiVersion": "2018-03-01",
             "properties": {
-                "scope": "[variables('subscriptionId')]",
+                "scope": "[parameters('SubscriptionId')]",
                 "policyDefinitionId": "[variables('policyDefinitionID')]",
                 "parameters": "[parameters('listOfAllowedLocations')]"
             }
