@@ -3,8 +3,8 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
       "listOfAllowedLocations": {
-          "type": "array",
-          "defaultvalue": ["East US", "Central US"]
+          "type": "string",
+          "defaultvalue": "East US"
       }
 
     },
