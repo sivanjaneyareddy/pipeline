@@ -1,0 +1,74 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+        "parameters": {
+      "effect": {
+                    "type": "String",
+                    "metadata": {
+                    "displayName": "Effect",
+                    "description": "Enable or disable the execution of the policy"
+                    },
+                    "allowedValues": [
+                    "Audit",
+                    "Deny",
+                    "Disabled"
+                    ],
+                    "defaultValue": "Deny"
+                },
+      "listOfResourceTypesNotAllowed": {
+                    "type": "Array",
+                    "metadata": {
+                    "description": "The list of resource types that cannot be deployed.",
+                    "displayName": "Not allowed resource types",
+                    "defaultValue": ["Key vault"]
+             }
+        }
+
+    },
+    "variables": {
+      "policyName": {
+            "type": "String",
+            "metadata": {
+            "displayName": "Subnet ID",
+            "strongType": "Microsoft.Network/virtualNetworks/subnets",
+            "description": "The resource ID of the virtual network subnet that should have a rule enabled. Example: /subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Network/virtualNetworks/testvnet/subnets/testsubnet"
+            }
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "apiVersion": "2018-03-01",
+            "name": "[variables('policyName')]",
+            "properties": {
+                "displayName": "Not allowed resource types",
+                "policyType": "BuiltIn",
+                "mode": "All",
+                "description": "Restrict which resource types can be deployed in your environment. Limiting resource types can reduce the complexity and attack surface of your environment while also helping to manage costs. Compliance results are only shown for non-compliant resources.",
+                "metadata": {
+                "version": "2.0.0",
+                "category": "General"
+                },
+                "parameters": {
+                },
+                "policyRule": {
+                "if": {
+                    "allOf": [
+                    {
+                        "field": "type",
+                        "in": "[parameters('listOfResourceTypesNotAllowed')]"
+                    },
+                    {
+                        "value": "[[field('type')]",
+                        "exists": true
+                    }
+                    ]
+                },
+                "then": {
+                    "effect": "[parameters('effect')]"
+                }
+                }
+            }
+        }
+    ]
+}
