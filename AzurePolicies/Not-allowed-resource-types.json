@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "listOfNotAllowedResourceTypes" : {
+        "listOfResourceTypesNotAllowed" : {
             "type": "array",
             "defaultValue": ["Microsoft.ServiceBus/namespaces", "Microsoft.Logic/workflows"]
         },
@@ -19,7 +19,7 @@
           "value":"[parameters('effect')]"
           },
         "listOfAllowedSKUs":{
-          "value":"[parameters('listOfNotAllowedResourceTypes')]"
+          "value":"[parameters('listOfResourceTypesNotAllowed')]"
           }
       }
     },
@@ -71,7 +71,7 @@
           {
             "not": {
               "field": "Microsoft.Storage/storageAccounts/sku.name",
-              "in": "[[parameters('listOfNotAllowedResourceTypes')]"
+              "in": "[[parameters('listOfResourceTypesNotAllowed')]"
             }
           }
         ]
