@@ -112,7 +112,7 @@
                 "policyType": "Custom",
                 "mode": "All",
                 "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', 'storage-creation-in-approved-sku-definition')]",
-                "parameters":["[variables('policySkuParameters')]", "[variables('effect')]"]
+                "parameters":["[parameters('listOfAllowedSKUs')]", "[parameters('effect')]"]
             }
         }
     ]
