@@ -31,7 +31,7 @@
       "location": "East US",
       "properties": {
     "displayName": "Storage accounts should be limited by allowed SKUs",
-    "policyType": "BuiltIn",
+    "policyType": "Custom",
     "mode": "Indexed",
     "description": "Restrict the set of storage account SKUs that your organization can deploy.",
     "metadata": {
