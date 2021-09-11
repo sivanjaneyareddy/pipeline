@@ -9,18 +9,12 @@
       "subnet": {
           "type": "string",
           "defaultValue": "mysubnet"
-      },
-      "subnetId": {
-          "type": "string",
-          "defaultvalue": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet'), parameters('subnet'))]"
       }
       },
     "variables": {
       "policyName":"Virtual network firewall rule on Azure SQL Database",
       "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/77e8b146-0078-4fb2-b002-e112381199f0",
-      "subnetId":{
-          "value":"[parameters('subnetId')]"
-        }
+      "subnetId": "[concat('/subscriptions/', subscription().subscriptionId, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnet'), parameters('subnet'))]"
     },
     "resources": [
         {
