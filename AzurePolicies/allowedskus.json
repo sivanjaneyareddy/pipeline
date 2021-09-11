@@ -2,6 +2,19 @@
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+           "effect": {
+            "type": "String",
+            "metadata": {
+              "displayName": "Effect",
+              "description": "Enable or disable the execution of the audit policy"
+            },
+            "allowedValues": [
+               "Audit",
+               "Deny",
+               "Disabled"
+            ],
+            "defaultValue": "Deny"
+         },
          "listOfAllowedSKUs": {
             "type": "Array",
             "metadata": {
@@ -18,10 +31,7 @@
     },
     "variables": {
       "policyName":"Allowed Locations",
-      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
-      "policyParameters":{
-        "listOfAllowedLocations":{
-          "value":["East US","Central US"]}},
+	  "effect": "[parameters('effect')]",
       "policySkuParameters":{
         "listOfAllowedLocations":{
           "value":"[parameters('listOfAllowedSKUs')]"}}
@@ -85,7 +95,7 @@
                     ]
                 },
                 "then": {
-                    "effect": "Deny"
+                    "effect": "[parameters('effect')]"
                 }
                 }
             }
@@ -102,7 +112,7 @@
                 "policyType": "Custom",
                 "mode": "All",
                 "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', 'storage-creation-in-approved-sku-definition')]",
-                "parameters": "[variables('policySkuParameters')]"
+                "parameters":["[variables('policySkuParameters')]", "[variables('effect')]"]
             }
         }
     ]
