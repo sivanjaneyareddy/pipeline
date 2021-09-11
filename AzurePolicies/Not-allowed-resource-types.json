@@ -60,7 +60,7 @@
                     "allOf": [
                     {
                         "field": "type",
-                        "in": "[parameters('listOfResourceTypesNotAllowed')]"
+                        "in": "[[parameters('listOfResourceTypesNotAllowed')]"
                     },
                     {
                         "value": "[[field('type')]",
