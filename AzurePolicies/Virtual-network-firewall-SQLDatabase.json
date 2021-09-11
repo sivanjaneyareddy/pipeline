@@ -28,7 +28,7 @@
             "apiVersion": "2018-03-01",
              "properties": {
             "displayName": "Virtual network firewall rule on Azure SQL Database should be enabled to allow traffic from the specified subnet",
-            "mode": "Indexed",
+            //"mode": "Indexed",
             "description": "Virtual network based firewall rules are used to enable traffic from a specific subnet to Azure SQL Database while ensuring the traffic stays within the Azure boundary.",
             "metadata": {
             "version": "1.0.0",
