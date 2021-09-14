@@ -161,16 +161,15 @@
                     "description": "The list of locations that can be specified when deploying resources",
                     "strongType": "location",
                     "displayName": "Allowed locations"
-                },
-                "defaultvalue": ["East US","Central Us"]
-      }
+                }
+  }
         },
         "policyDefinitions": [
           {
             "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Storage-SKUs')]",
             "parameters": {
               "listOfAllowedSKUs": {
-                "value": "[[parameters('listOfAllowedSKUs')]"
+                "value": "[variables('listOfAllowedSKUs')]"
               }
             }
           },
@@ -178,7 +177,7 @@
             "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Locations')]",
             "parameters": {
               "listOfAllowedSKUs": {
-                "value": "[[parameters('listOfAllowedLocations')]"
+                "value": "[variables('listOfAllowedLocations')]"
               }
             }
           }
