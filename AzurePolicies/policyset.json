@@ -19,7 +19,7 @@
         "listOfAllowedSKUs":{
           "value":"[parameters('listOfAllowedSKUs')]"
           },
-        "listOfResourceTypesAllowed":{
+        "listOfAllowedLocations":{
           "value":"[parameters('listOfAllowedLocations')]"
           }
     },
@@ -83,11 +83,61 @@
   }
 },
       {
+      "name": "Allowed-Locations",
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "apiVersion": "2018-05-01",
+      "location": "East US",
+      "dependsOn": [
+        "Allowed-Storage-SKUs"
+      ],
+  "properties": {
+    "displayName": "Allowed locations",
+    "policyType": "Custom",
+    "mode": "Indexed",
+    "description": "This policy enables you to restrict the locations your organization can specify when deploying resources. Use to enforce your geo-compliance requirements. Excludes resource groups, Microsoft.AzureActiveDirectory/b2cDirectories, and resources that use the 'global' region.",
+    "metadata": {
+      "version": "1.0.0",
+      "category": "General"
+    },
+    "parameters": {
+      "listOfAllowedLocations": {
+        "type": "Array",
+        "metadata": {
+          "description": "The list of locations that can be specified when deploying resources.",
+          "strongType": "location",
+          "displayName": "Allowed locations"
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "field": "location",
+            "notIn": "[[parameters('listOfAllowedLocations')]"
+          },
+          {
+            "field": "location",
+            "notEquals": "global"
+          },
+          {
+            "field": "type",
+            "notEquals": "Microsoft.AzureActiveDirectory/b2cDirectories"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+    }
+  }
+},
+      {
       "type": "Microsoft.Authorization/policySetDefinitions",
       "name": "My-Policy-Initiative",
       "apiVersion": "2018-05-01",
       "dependsOn": [
-        "Allowed-Storage-SKUs"
+        "Allowed-Locations"
       ],
       "properties": {
         "displayName": "Allowed StorageSKUs",
@@ -104,13 +154,9 @@
           "strongType": "StorageSKUs"
         }
       },
-      "listOfAllowedLocations": {
-        "type": "Array",
-        "metadata": {
-          "description": "The list of Resources alloewd.",
-          "displayName": "Allowed Resource Types"
-        }
-      }
+         "listOfAllowedLocations": {
+        "type": "Array"
+         }
         },
         "policyDefinitions": [
           {
@@ -121,12 +167,12 @@
               }
             }
           },
-                  {
-            "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/a08ec900-254a-4555-9bf5-e42af04b5c5c",
+          {
+            "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Locations')]",
             "parameters": {
-              "listOfResourceTypesAllowed":{
-              "value":"[variables('listOfResourceTypesAllowed')]"
-            }
+              "listOfAllowedSKUs": {
+                "value": "[[parameters('listOfAllowedLocations')]"
+              }
             }
           }
         ]
@@ -143,7 +189,7 @@
             "properties": {
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
-                "parameters": ["[variables('listOfAllowedSKUs')]", "[variables('listOfResourceTypesAllowed')]"]
+                "parameters": ["[variables('listOfAllowedSKUs')]", "[variables('listOfAllowedLocations')]"]
             }
         }
     ],
