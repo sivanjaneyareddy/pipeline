@@ -10,17 +10,17 @@
             "type": "string",
             "defaultValue": "Deny"
         },
-        "listOfResourceTypesAllowed" : {
-            "type": "array",
-            "defaultValue": ["Microsoft.Network/virtualNetworks", "Microsoft.Network/NetworkSecurityGroups", "Microsoft.Network/networkinterfaces"]
-        }
+        "listOfAllowedLocations": {
+          "type": "array",
+          "defaultvalue": ["East US","Central Us"]
+      }
     },
     "variables": {
         "listOfAllowedSKUs":{
           "value":"[parameters('listOfAllowedSKUs')]"
           },
         "listOfResourceTypesAllowed":{
-          "value":"[parameters('listOfResourceTypesAllowed')]"
+          "value":"[parameters('listOfAllowedLocations')]"
           }
     },
     "resources": [
@@ -104,7 +104,7 @@
           "strongType": "StorageSKUs"
         }
       },
-      "listOfResourceTypesAllowed": {
+      "listOfAllowedLocations": {
         "type": "Array",
         "metadata": {
           "description": "The list of Resources alloewd.",
