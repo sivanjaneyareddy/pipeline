@@ -91,14 +91,14 @@
           "category": "DiagSettings"
         },
         "parameters": {
-          "logAnalytics": {
-            "type": "string",
-            "metadata": {
-              "displayName": "Log Analyitcs workspace",
-              "description": "Select the Log Analytics workspace from dropdown list",
-              "strongType": "omsWorkspace"
-            }
-          }
+            "listOfAllowedSKUs": {
+        "type": "Array",
+        "metadata": {
+          "description": "The list of SKUs that can be specified for storage accounts.",
+          "displayName": "Allowed SKUs",
+          "strongType": "StorageSKUs"
+        }
+      }
         },
         "policyDefinitions": [
           {
