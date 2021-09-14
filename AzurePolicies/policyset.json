@@ -53,7 +53,7 @@
         "allOf": [
           {
             "field": "location",
-            "notIn": "[parameters('allowedLocations')]"
+            "notIn": "[[parameters('allowedLocations')]"
           },
           {
             "field": "location",
