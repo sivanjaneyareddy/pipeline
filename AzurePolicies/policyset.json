@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "listOfAllowedSKUs" : {
+        "listOfAllowedStorageSKUs" : {
             "type": "array",
             "defaultValue": ["Standard_LRS", "Standard_ZRS"]
         },
@@ -13,8 +13,8 @@
     },
     "variables": {
        "policyParameters":{
-        "listOfAllowedSKUs":{
-          "value":"[parameters('listOfAllowedSKUs')]"
+        "listOfAllowedStorageSKUs":{
+          "value":"[parameters('listOfAllowedStorageSKUs')]"
           }
       }
     },
@@ -47,7 +47,7 @@
         ],
         "defaultValue": "Deny"
       },
-      "listOfAllowedSKUs": {
+      "listOfAllowedStorageSKUs": {
         "type": "Array",
         "metadata": {
           "description": "The list of SKUs that can be specified for storage accounts.",
@@ -66,7 +66,7 @@
           {
             "not": {
               "field": "Microsoft.Storage/storageAccounts/sku.name",
-              "in": "[[parameters('listOfAllowedSKUs')]"
+              "in": "[[parameters('listOfAllowedStorageSKUs')]"
             }
           }
         ]
@@ -91,7 +91,7 @@
           "category": "DiagSettings"
         },
         "parameters": {
-            "listOfAllowedSKUs": {
+            "listOfAllowedStorageSKUs": {
         "type": "Array",
         "metadata": {
           "description": "The list of SKUs that can be specified for storage accounts.",
@@ -104,8 +104,8 @@
           {
             "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Storage-SKUs')]",
             "parameters": {
-              "listOfAllowedSKUs": {
-                "value": "[[parameters('listOfAllowedSKUs')]"
+              "listOfAllowedStorageSKUs": {
+                "value": "[[parameters('listOfAllowedStorageSKUs')]"
               }
             }
           }
