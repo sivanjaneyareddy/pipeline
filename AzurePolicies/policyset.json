@@ -5,6 +5,10 @@
         "listOfAllowedSKUs" : {
             "type": "array",
             "defaultValue": ["Standard_LRS", "Standard_ZRS"]
+        },
+         "effect" : {
+            "type": "string",
+            "defaultValue": "Deny"
         }
     },
     "variables": {
@@ -68,7 +72,7 @@
         ]
       },
       "then": {
-        "effect": "Deny"
+        "effect": "[[parameters('effect')]"
       }
     }
   }
@@ -100,7 +104,7 @@
           {
             "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Storage-SKUs')]",
             "parameters": {
-              "logAnalytics": {
+              "listOfAllowedSKUs": {
                 "value": "[[parameters('listOfAllowedSKUs')]"
               }
             }
