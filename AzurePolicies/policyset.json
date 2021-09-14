@@ -12,7 +12,7 @@
         },
         "allowedLocations": {
           "type": "array",
-          "defaultvalue": "East US"
+          "defaultvalue": ["East US"]
       }
     },
     "variables": {
