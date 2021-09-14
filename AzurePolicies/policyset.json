@@ -113,6 +113,9 @@
             "name": "policysetassignment",
             "apiVersion": "2018-05-01",
             "location": "East US",
+                  "dependsOn": [
+        "My-Policy-Initiative"
+      ],
             "properties": {
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
