@@ -105,6 +105,14 @@
           "displayName": "Allowed SKUs",
           "strongType": "StorageSKUs"
         }
+      },
+      "listOfResourceTypesAllowed": {
+        "type": "Array",
+        "metadata": {
+          "description": "The list of Resources alloewd.",
+          "displayName": "Allowed Resource Types",
+          "strongType": "StorageSKUs"
+        }
       }
         },
         "policyDefinitions": [
