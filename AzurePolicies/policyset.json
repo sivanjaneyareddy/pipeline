@@ -68,7 +68,7 @@
         ]
       },
       "then": {
-        "effect": "[[parameters('effect')]"
+        "effect": "Deny"
       }
     }
   }
@@ -101,7 +101,7 @@
             "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Storage-SKUs')]",
             "parameters": {
               "logAnalytics": {
-                "value": "[parameters('listOfAllowedSKUs')]"
+                "value": "[[parameters('listOfAllowedSKUs')]"
               }
             }
           }
@@ -115,7 +115,7 @@
             "location": "East US",
             "properties": {
                 "scope": "[subscription().id]",
-                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Storage-SKUs')]",
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
                 "parameters": "[variables('policyParameters')]"
             }
         }
