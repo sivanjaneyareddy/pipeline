@@ -10,7 +10,7 @@
             "type": "string",
             "defaultValue": "Deny"
         },
-        "listOfAllowedLocations": {
+        "allowedLocations": {
           "type": "array",
           "defaultvalue": ["East US","Central Us"]
       }
@@ -19,8 +19,8 @@
         "listOfAllowedSKUs":{
           "value":"[parameters('listOfAllowedSKUs')]"
           },
-        "listOfAllowedLocations":{
-          "value":"[parameters('listOfAllowedLocations')]"
+        "allowedLocations":{
+          "value":"[parameters('allowedLocations')]"
           }
     },
     "resources": [
@@ -39,7 +39,7 @@
       "category": "General"
     },
     "parameters": {
-      "listOfAllowedLocations": {
+      "allowedLocations": {
         "type": "array",
                 "metadata": {
                     "description": "The list of locations that can be specified when deploying resources",
@@ -53,7 +53,7 @@
         "allOf": [
           {
             "field": "location",
-            "notIn": "[[parameters('listOfAllowedLocations')]"
+            "notIn": "[[parameters('allowedLocations')]"
           },
           {
             "field": "location",
@@ -93,7 +93,7 @@
           "strongType": "StorageSKUs"
         }
       },
-  "listOfAllowedLocations": {
+  "allowedLocations": {
         "type": "array",
                 "metadata": {
                     "description": "The list of locations that can be specified when deploying resources",
@@ -107,7 +107,7 @@
             "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Locations')]",
             "parameters": {
               "listOfAllowedSKUs": {
-                "value": "[variables('listOfAllowedLocations')]"
+                "value": "[variables('allowedLocations')]"
               }
             }
           }
@@ -125,7 +125,7 @@
             "properties": {
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
-                "parameters": ["[variables('listOfAllowedLocations')]"]
+                "parameters": ["[variables('allowedLocations')]"]
             }
         }
     ],
