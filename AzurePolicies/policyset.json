@@ -25,71 +25,10 @@
     },
     "resources": [
       {
-      "name": "Allowed-Storage-SKUs",
-      "type": "Microsoft.Authorization/policyDefinitions",
-      "apiVersion": "2018-05-01",
-      "location": "East US",
-      "properties": {
-    "displayName": "Storage accounts should be limited by allowed SKUs",
-    "policyType": "Custom",
-    "mode": "Indexed",
-    "description": "Restrict the set of storage account SKUs that your organization can deploy.",
-    "metadata": {
-      "version": "1.1.0",
-      "category": "Storage"
-    },
-    "parameters": {
-      "effect": {
-        "type": "String",
-        "metadata": {
-          "displayName": "Effect",
-          "description": "Enable or disable the execution of the audit policy"
-        },
-        "allowedValues": [
-          "Audit",
-          "Deny",
-          "Disabled"
-        ],
-        "defaultValue": "Deny"
-      },
-      "listOfAllowedSKUs": {
-        "type": "Array",
-        "metadata": {
-          "description": "The list of SKUs that can be specified for storage accounts.",
-          "displayName": "Allowed SKUs",
-          "strongType": "StorageSKUs"
-        }
-      }
-    },
-    "policyRule": {
-      "if": {
-        "allOf": [
-          {
-            "field": "type",
-            "equals": "Microsoft.Storage/storageAccounts"
-          },
-          {
-            "not": {
-              "field": "Microsoft.Storage/storageAccounts/sku.name",
-              "in": "[[parameters('listOfAllowedSKUs')]"
-            }
-          }
-        ]
-      },
-      "then": {
-        "effect": "[[parameters('effect')]"
-      }
-    }
-  }
-},
-      {
       "name": "Allowed-Locations",
       "type": "Microsoft.Authorization/policyDefinitions",
       "apiVersion": "2018-05-01",
       "location": "East US",
-      "dependsOn": [
-        "Allowed-Storage-SKUs"
-      ],
   "properties": {
     "displayName": "Allowed locations",
     "policyType": "Custom",
@@ -106,8 +45,7 @@
                     "description": "The list of locations that can be specified when deploying resources",
                     "strongType": "location",
                     "displayName": "Allowed locations"
-                },
-                "defaultvalue": ["East US","Central Us"]
+                }
       }
     },
     "policyRule": {
@@ -166,14 +104,6 @@
         },
         "policyDefinitions": [
           {
-            "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Storage-SKUs')]",
-            "parameters": {
-              "listOfAllowedSKUs": {
-                "value": "[variables('listOfAllowedSKUs')]"
-              }
-            }
-          },
-          {
             "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Locations')]",
             "parameters": {
               "listOfAllowedSKUs": {
@@ -195,7 +125,7 @@
             "properties": {
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
-                "parameters": ["[variables('listOfAllowedSKUs')]", "[variables('listOfAllowedLocations')]"]
+                "parameters": ["[variables('listOfAllowedLocations')]"]
             }
         }
     ],
