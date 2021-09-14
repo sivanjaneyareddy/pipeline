@@ -106,10 +106,10 @@
       },
       "listOfResourceTypesAllowed": {
         "type": "Array",
+         "defaultValue": ["Microsoft.Network/virtualNetworks", "Microsoft.Network/NetworkSecurityGroups", "Microsoft.Network/networkinterfaces"],
         "metadata": {
           "description": "The list of Resources alloewd.",
-          "displayName": "Allowed Resource Types",
-          "strongType": "StorageSKUs"
+          "displayName": "Allowed Resource Types"
         }
       }
         },
