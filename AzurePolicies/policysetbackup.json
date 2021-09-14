@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "listOfResourceTypesAllowed" : {
+            "type": "array",
+            "defaultValue": ["Microsoft.Network/virtualNetworks", "Microsoft.Network/NetworkSecurityGroups", "Microsoft.Network/networkinterfaces"]
+        }
+    },
+    "variables": {
+      "policyName":"Allowed Resource Types",
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/a08ec900-254a-4555-9bf5-e42af04b5c5c",
+      "policyParameters":{
+        "listOfResourceTypesAllowed":{
+          "value":"[parameters('listOfResourceTypesAllowed')]"
+          }
+      }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[variables('policyName')]",
+            "apiVersion": "2018-05-01",
+            "location": "East US",
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[variables('policyDefinitionID')]",
+                "parameters": "[variables('policyParameters')]"
+            }
+        }
+    ]
+}
