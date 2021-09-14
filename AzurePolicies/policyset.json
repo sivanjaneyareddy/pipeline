@@ -16,13 +16,13 @@
       }
     },
     "variables": {
+       "policyParameters":{
         "listOfAllowedSKUs":{
-          "value":"[parameters('listOfAllowedSKUs')]"
-          },
-        "allowedLocations":{
           "value":"[parameters('allowedLocations')]"
           }
+      }
     },
+
     "resources": [
       {
       "name": "Allowed-Locations",
@@ -106,8 +106,8 @@
           {
             "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Locations')]",
             "parameters": {
-              "listOfAllowedSKUs": {
-                "value": "[variables('allowedLocations')]"
+              "allowedLocations": {
+                "value": "[[parameters('allowedLocations')]"
               }
             }
           }
@@ -125,7 +125,7 @@
             "properties": {
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
-                "parameters": ["[variables('allowedLocations')]"]
+                "parameters": "[variables('policyParameters')]"
             }
         }
     ],
