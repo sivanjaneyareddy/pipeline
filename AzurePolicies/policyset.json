@@ -69,7 +69,8 @@
       ],
             "properties": {
                 "scope": "[subscription().id]",
-                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]"
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
+                "parameters": "[variables('policyParameters')]"
             }
         }
     ]
