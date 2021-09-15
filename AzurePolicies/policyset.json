@@ -2,134 +2,75 @@
     "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "listOfAllowedSKUs" : {
+        "listOfResourceTypesNotAllowed" : {
             "type": "array",
-            "defaultValue": ["Standard_LRS", "Standard_ZRS"]
+            "defaultValue": ["Microsoft.ServiceBus/namespaces", "Microsoft.Logic/workflows"]
         },
-         "effect" : {
-            "type": "string",
-            "defaultValue": "Deny"
-        },
-        "allowedLocations": {
+        "listOfAllowedLocations": {
           "type": "array",
           "defaultvalue": ["East US"]
       }
     },
     "variables": {
-       "policyParameters":{
-        "listOfAllowedSKUs":{
-          "value":"[parameters('allowedLocations')]"
-          }
-      }
+        "policySetDisplayName": "Enforce using mandatory tags for resource groups",
+        "policySetDescription": "This policy initiative enforces the usage of mandatory tags for resource groups.",
     },
-
     "resources": [
-      {
-      "name": "Allowed-Locations",
-      "type": "Microsoft.Authorization/policyDefinitions",
-      "apiVersion": "2018-05-01",
-      "location": "East US",
-  "properties": {
-    "displayName": "Allowed locations",
-    "policyType": "Custom",
-    "mode": "Indexed",
-    "description": "This policy enables you to restrict the locations your organization can specify when deploying resources. Use to enforce your geo-compliance requirements. Excludes resource groups, Microsoft.AzureActiveDirectory/b2cDirectories, and resources that use the 'global' region.",
-    "metadata": {
-      "version": "1.0.0",
-      "category": "General"
-    },
-    "parameters": {
-      "allowedLocations": {
-        "type": "array",
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2019-09-01",
+            "name": "My Policy Set",
+            "properties": {
+                "displayName": "[variables('policySetDisplayName')]",
+                "description": "[variables('policySetDescription')]",
+                "policyType": "Custom",
                 "metadata": {
-                    "description": "The list of locations that can be specified when deploying resources",
-                    "strongType": "location",
-                    "displayName": "Allowed locations"
-                }
-      }
-    },
-    "policyRule": {
-      "if": {
-        "allOf": [
-          {
-            "field": "location",
-            "notIn": "[[parameters('allowedLocations')]"
-          },
-          {
-            "field": "location",
-            "notEquals": "global"
-          },
-          {
-            "field": "type",
-            "notEquals": "Microsoft.AzureActiveDirectory/b2cDirectories"
-          }
-        ]
+                    "category": "Tags"
+                },
+                "parameters": {
+      "listOfAllowedLocations": {
+          "type": "array"
       },
-      "then": {
-        "effect": "deny"
-      }
-    }
-  }
-},
-      {
-      "type": "Microsoft.Authorization/policySetDefinitions",
-      "name": "My-Policy-Initiative",
-      "apiVersion": "2018-05-01",
-      "dependsOn": [
-        "Allowed-Locations"
-      ],
-      "properties": {
-        "displayName": "Allowed StorageSKUs",
-        "description": "The list of SKUs that can be specified for storage accounts.",
-        "metadata": {
-          "category": "policyset"
-        },
-        "parameters": {
-            "listOfAllowedSKUs": {
-        "type": "Array",
-        "metadata": {
-          "description": "The list of SKUs that can be specified for storage accounts.",
-          "displayName": "Allowed SKUs",
-          "strongType": "StorageSKUs"
+              "listOfResourceTypesNotAllowed" : {
+            "type": "array"
         }
-      },
-  "allowedLocations": {
-        "type": "array",
-                "metadata": {
-                    "description": "The list of locations that can be specified when deploying resources",
-                    "strongType": "location",
-                    "displayName": "Allowed locations"
-                }
-  }
-        },
-        "policyDefinitions": [
-          {
-            "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions/', 'Allowed-Locations')]",
-            "parameters": {
-              "allowedLocations": {
-                "value": "[[parameters('allowedLocations')]"
-              }
+                },
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+                        "parameters": {
+                            "allowedEnvironmentTagValues": {
+                                "value": "[[parameters('listOfAllowedLocations')]"
+                            }
+
+                        }
+                    },
+                     {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6c112d4e-5bc7-47ae-a041-ea2d9dccd749",
+                        "parameters": {
+                            "allowedEnvironmentTagValues": {
+                                "value": "[[parameters('listOfResourceTypesNotAlloweds')]"
+                            }
+
+                        }
+                    }
+
+                ]
             }
-          }
-        ]
-      }
-    },
-      {
+        },
+              {
             "type": "Microsoft.Authorization/policyAssignments",
             "name": "policysetassignment",
             "apiVersion": "2018-05-01",
             "location": "East US",
                   "dependsOn": [
-        "My-Policy-Initiative"
+       "My Policy Set"
       ],
             "properties": {
                 "scope": "[subscription().id]",
-                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
-                "parameters": "[variables('policyParameters')]"
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My Policy Set')]",
+                "parameters": ["[parameters('listOfResourceTypesNotAllowed')]", "[parameters('listOfAllowedLocations')]"]
             }
         }
-    ],
-    "outputs": {
-  
-    }
-  }
+    ]
+}
