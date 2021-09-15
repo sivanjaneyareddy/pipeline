@@ -35,14 +35,7 @@
                 "metadata": {
                     "category": "Tags"
                 },
-                "parameters": {
-      "listOfAllowedLocations": {
-          "type": "array"
-      },
-              "listOfResourceTypesNotAllowed" : {
-            "type": "array"
-        }
-                },
+  
                 "policyDefinitions": [
                     {
                         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
