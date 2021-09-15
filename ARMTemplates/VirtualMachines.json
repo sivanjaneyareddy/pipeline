@@ -196,6 +196,9 @@
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[variables('extensionName')]",
       "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[concat('Microsoft.Compute/virtualMachines', variables('vmName').webvm)]"
+      ],
       "properties": {
                 "publisher": "Microsoft.Azure.Extensions",
                 "type": "CustomScript",
