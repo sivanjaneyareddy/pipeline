@@ -25,6 +25,14 @@
     },
     "application": {
         "value": "Vprofile"
+    },
+    "listToDeploy": {
+      "value": [
+        "APPVM",
+        "WEBVM",
+        "MySQLVM"
+
+      ]
     }
   }
 }

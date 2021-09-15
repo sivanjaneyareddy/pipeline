@@ -1,0 +1,85 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "listOfResourceTypesNotAllowed" : {
+            "type": "array",
+            "defaultValue": ["Microsoft.ServiceBus/namespaces", "Microsoft.Logic/workflows"]
+        },
+        "listOfAllowedLocations": {
+          "type": "array",
+          "defaultvalue": ["East US"]
+      }
+    },
+    "variables": {
+        "policySetDisplayName": "Enforce using mandatory tags for resource groups",
+        "policySetDescription": "This policy initiative enforces the usage of mandatory tags for resource groups.",
+              "policyParameters":{
+        "listOfResourceTypesNotAllowed":{
+          "value":"[parameters('listOfResourceTypesNotAllowed')]"
+          },
+        "listOfAllowedLocations":{
+          "value":"[parameters('listOfAllowedLocations')]"
+          }
+      }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policySetDefinitions",
+            "apiVersion": "2019-09-01",
+            "name": "My-Policy-Initiative",
+            "properties": {
+                "displayName": "[variables('policySetDisplayName')]",
+                "description": "[variables('policySetDescription')]",
+                "policyType": "Custom",
+                "metadata": {
+                    "category": "Tags"
+                },
+             "parameters": {
+      "listOfAllowedLocations": {
+          "type": "array"
+      },
+              "listOfResourceTypesNotAllowed" : {
+            "type": "array"
+        }
+                },
+  
+                "policyDefinitions": [
+                    {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c",
+                        "parameters": {
+                            "listOfAllowedLocations": {
+                                "value": "[[parameters('listOfAllowedLocations')]"
+                            }
+
+                        }
+                    },
+                     {
+                        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/6c112d4e-5bc7-47ae-a041-ea2d9dccd749",
+                        "parameters": {
+                            "listOfResourceTypesNotAllowed": {
+                                "value": "[[parameters('listOfResourceTypesNotAllowed')]"
+                            }
+
+                        }
+                    }
+
+                ]
+            }
+        },
+              {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "policysetassignment",
+            "apiVersion": "2018-05-01",
+            "location": "East US",
+                  "dependsOn": [
+       "My-Policy-Initiative"
+      ],
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
+                "parameters": "[variables('policyParameters')]"
+            }
+        }
+    ]
+}

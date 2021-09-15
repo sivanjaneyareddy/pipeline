@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vnet": {
+           "type": "string",
+           "defaultValue": "myvnet"
+      },
+      "subnet": {
+          "type": "string",
+          "defaultValue": "mysubnet"
+      }
+      },
+    "variables": {
+      "policyName":"Virtual network firewall rule on Azure SQL Database",
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/77e8b146-0078-4fb2-b002-e112381199f0",
+      "policyParameters":{
+        "subnetId":{
+           "value": "[concat('/subscriptions/', subscription().subscriptionId, 'Microsoft.Network/virtualNetworks/subnets', parameters('vnet'), parameters('subnet'))]"
+          }
+      }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[variables('policyName')]",
+            "apiVersion": "2018-05-01",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "location": "East US",
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[variables('policyDefinitionID')]",
+                "parameters": "[variables('policyParameters')]"
+            }
+        }
+    ]
+}

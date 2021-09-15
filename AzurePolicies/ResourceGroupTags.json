@@ -1,0 +1,42 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "tagName" : {
+            "type": "string",
+            "defaultValue": "Project"
+        },
+        "tagValue": {
+            "type": "string",
+            "defaultValue": "Vprofile"
+        }
+    },
+    "variables": {
+      "policyName":"Add a tag to resource groups",
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/726aca4c-86e9-4b04-b0c5-073027359532",
+      "policyParameters":{
+        "tagName":{
+          "value":"[parameters('tagName')]"
+          },
+        "tagValue":{
+          "value":"[parameters('tagValue')]"
+          }
+      }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[variables('policyName')]",
+            "apiVersion": "2018-05-01",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "location": "East US",
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[variables('policyDefinitionID')]",
+                "parameters": "[variables('policyParameters')]"
+            }
+        }
+    ]
+}

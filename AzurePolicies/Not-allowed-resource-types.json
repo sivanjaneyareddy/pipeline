@@ -1,0 +1,39 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "listOfResourceTypesNotAllowed" : {
+            "type": "array",
+            "defaultValue": ["Microsoft.ServiceBus/namespaces", "Microsoft.Logic/workflows"]
+        },
+        "effect" : {
+            "type": "string",
+            "defaultValue": "Deny"
+        }
+    },
+    "variables": {
+      "policyName":"Not Allowed Resource Types",
+      "policyDefinitionID":"/providers/Microsoft.Authorization/policyDefinitions/6c112d4e-5bc7-47ae-a041-ea2d9dccd749",
+      "policyParameters":{
+        "effect":{
+          "value":"[parameters('effect')]"
+          },
+        "listOfResourceTypesNotAllowed":{
+          "value":"[parameters('listOfResourceTypesNotAllowed')]"
+          }
+      }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Authorization/policyAssignments",
+            "name": "[variables('policyName')]",
+            "apiVersion": "2018-05-01",
+            "location": "East US",
+            "properties": {
+                "scope": "[subscription().id]",
+                "policyDefinitionId": "[variables('policyDefinitionID')]",
+                "parameters": "[variables('policyParameters')]"
+            }
+        }
+    ]
+}
