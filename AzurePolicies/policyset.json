@@ -14,6 +14,14 @@
     "variables": {
         "policySetDisplayName": "Enforce using mandatory tags for resource groups",
         "policySetDescription": "This policy initiative enforces the usage of mandatory tags for resource groups.",
+              "policyParameters":{
+        "listOfResourceTypesNotAllowed":{
+          "value":"[parameters('listOfResourceTypesNotAllowed')]"
+          },
+        "listOfAllowedLocations":{
+          "value":"[parameters('listOfAllowedLocations')]"
+          }
+      }
     },
     "resources": [
         {
