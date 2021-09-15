@@ -77,7 +77,7 @@
             "properties": {
                 "scope": "[subscription().id]",
                 "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My Policy Set')]",
-                "parameters": ["[parameters('listOfResourceTypesNotAllowed')]", "[parameters('listOfAllowedLocations')]"]
+                "parameters": "[variables('policyParameters')]"
             }
         }
     ]
