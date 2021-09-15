@@ -35,6 +35,14 @@
                 "metadata": {
                     "category": "Tags"
                 },
+             "parameters": {
+      "listOfAllowedLocations": {
+          "type": "array"
+      },
+              "listOfResourceTypesNotAllowed" : {
+            "type": "array"
+        }
+                },
   
                 "policyDefinitions": [
                     {
