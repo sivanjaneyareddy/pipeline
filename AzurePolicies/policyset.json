@@ -27,7 +27,7 @@
         {
             "type": "Microsoft.Authorization/policySetDefinitions",
             "apiVersion": "2019-09-01",
-            "name": "My Policy Set",
+            "name": "My-Policy-Initiative",
             "properties": {
                 "displayName": "[variables('policySetDisplayName')]",
                 "description": "[variables('policySetDescription')]",
@@ -72,11 +72,11 @@
             "apiVersion": "2018-05-01",
             "location": "East US",
                   "dependsOn": [
-       "My Policy Set"
+       "My-Policy-Initiative"
       ],
             "properties": {
                 "scope": "[subscription().id]",
-                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My Policy Set')]",
+                "policyDefinitionId": "[resourceId('Microsoft.Authorization/policySetDefinitions/', 'My-Policy-Initiative')]",
                 "parameters": "[variables('policyParameters')]"
             }
         }
