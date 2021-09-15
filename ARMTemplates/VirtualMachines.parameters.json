@@ -30,7 +30,7 @@
       "value": [
         "APPVM",
         "WEBVM",
-        "MYSQLVM"
+        "MySQLVM"
 
       ]
     }
