@@ -89,6 +89,8 @@
       "webvm": "[concat('webvm','EUS',parameters('envName'),parameters('application'))]",
       "mysqlvm": "[concat('mysqlvm','EUS',parameters('envName'),parameters('application'))]"
     },
+    "VMextensionName": "LinuxCustomScriptExtension",
+    "extensionName": "[concat(variables('vmName').webvm,'/',variables('VMextensionName'))]",
     "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnet'))]",
     "subnetRef": {
@@ -188,6 +190,27 @@
             }
           ]
         }
+      }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/WebVM.sh"
+                    ],
+                    "commandToExecute": "sh WebVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
       }
     },
     {
