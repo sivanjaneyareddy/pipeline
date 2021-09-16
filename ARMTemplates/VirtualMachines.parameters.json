@@ -17,6 +17,15 @@
     "imageSku": {
         "value": "16.04-LTS"
     },
+    "imagePublisherCOS": {
+        "value": "Canonical"
+    },
+    "imageOfferCOS": {
+        "value": "UbuntuServer"
+    },
+    "imageSkuCOS": {
+        "value": "16.04-LTS"
+    },
     "vmSize": {
         "value": "Standard_B1s"
     },
