@@ -193,31 +193,6 @@
       }
     },
     {
-       "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[variables('extensionName')]",
-      "location": "[resourceGroup().location]",
-           "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').webvm)]"
-      ],
-      "properties": {
-                "publisher": "Microsoft.Azure.Extensions",
-                "type": "CustomScript",
-                "typeHandlerVersion": "2.1",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                },
-                "protectedSettings": {
-                    "fileUris": [
-                        "https://saeusqavprofile.blob.core.windows.net/customscripts/WebVM.sh"
-                    ],
-                    "commandToExecute": "sh WebVM.sh",
-                    "storageAccountName": "saeusqavprofile",
-                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
-                }
-      }
-    },
-    {
     "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
