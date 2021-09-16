@@ -18,13 +18,13 @@
         "value": "16.04-LTS"
     },
     "imagePublisherCOS": {
-        "value": "Canonical"
+        "value": "OpenLogic"
     },
     "imageOfferCOS": {
-        "value": "UbuntuServer"
+        "value": "CentOS"
     },
     "imageSkuCOS": {
-        "value": "16.04-LTS"
+        "value": "7.5"
     },
     "vmSize": {
         "value": "Standard_B1s"
