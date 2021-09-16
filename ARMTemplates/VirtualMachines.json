@@ -394,7 +394,7 @@
     {
       "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[variables('extensionName')]",
+      "name": "[variables('extensionName').mysqlvm]",
       "location": "[resourceGroup().location]",
            "dependsOn": [
         "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').mysqlvm)]"
