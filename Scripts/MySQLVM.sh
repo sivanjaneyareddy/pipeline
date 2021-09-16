@@ -1,4 +1,5 @@
 #!/bin/bash
+sudo -i
 DATABASE_PASS='admin123'
 sudo yum update -y
 sudo yum install epel-release -y
