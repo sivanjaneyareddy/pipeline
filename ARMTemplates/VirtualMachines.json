@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "apiProfile": "2018-03-01-hybrid",
   "parameters": {
@@ -193,6 +193,7 @@
       }
     },
     {
+       "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "name": "[variables('extensionName')]",
       "location": "[resourceGroup().location]",
@@ -302,6 +303,31 @@
       }
     },
     {
+      "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName')]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').webvm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/WebVM.sh"
+                    ],
+                    "commandToExecute": "sh WebVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
+      }
+    },
+    {
     "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
@@ -384,6 +410,31 @@
             }
           ]
         }
+      }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName')]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').mysqlvm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/MySQLVM.sh"
+                    ],
+                    "commandToExecute": "sh MySQLVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
       }
     }
   ]
