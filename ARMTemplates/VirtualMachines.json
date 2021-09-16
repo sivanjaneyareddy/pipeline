@@ -24,6 +24,13 @@
         "description": "Maps to the publisher in the Azure Stack Platform Image Repository manifest file Eg: Canonical, Suse, OpenLogic "
       }
     },
+    "imagePublisherCOS": {
+      "type": "string",
+      "defaultValue": "Canonical",
+      "metadata": {
+        "description": "Maps to the publisher in the Azure Stack Platform Image Repository manifest file Eg: Canonical, Suse, OpenLogic "
+      }
+    },
     "imageOffer": {
       "type": "string",
       "defaultValue": "UbuntuServer",
@@ -31,7 +38,21 @@
         "description": "Maps to the Offer in the Azure Stack Platform Image Repository manifest file Eg: UbuntuServer, SlesServer, CentOS "
       }
     },
+    "imageOfferCOS": {
+      "type": "string",
+      "defaultValue": "UbuntuServer",
+      "metadata": {
+        "description": "Maps to the Offer in the Azure Stack Platform Image Repository manifest file Eg: UbuntuServer, SlesServer, CentOS "
+      }
+    },
     "imageSku": {
+      "type": "string",
+      "defaultValue": "16.04-LTS",
+      "metadata": {
+        "description": "Maps to the sku in the Azure Stack Platform Image Repository manifest file Eg: 12.SP1, 6.7 , 7.2"
+      }
+    },
+    "imageSkuCOS": {
       "type": "string",
       "defaultValue": "16.04-LTS",
       "metadata": {
@@ -366,9 +387,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[parameters('imagePublisher')]",
-            "offer": "[parameters('imageOffer')]",
-            "sku": "[parameters('imageSku')]",
+            "publisher": "[parameters('imagePublisherCOS')]",
+            "offer": "[parameters('imageOfferCOS')]",
+            "sku": "[parameters('imageSkuCOS')]",
             "version": "latest"
           },
           "osDisk": {
