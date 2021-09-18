@@ -47,16 +47,6 @@ stages:
     #     effectivePomSkip: false
     #     sonarQubeRunAnalysis: true
     #     sqMavenPluginVersionChoice: 'pom'
-    - task: Maven@3
-      inputs:
-        mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        javaHomeOption: 'JDKVersion'
-        mavenVersionOption: 'Default'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: false
     
     - task: Maven@3
       inputs:
