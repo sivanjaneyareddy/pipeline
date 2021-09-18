@@ -134,10 +134,7 @@
         "businessTier": "[concat('businessTierNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
         "applicationGW": "[concat('applicationGWNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
     },
-    "galleryName": "MyCustomImages",
-    "galleryImageDefinitionName": "MySQL",
-    "galleryImageVersionName": "0.0.1",
-    "MySQLImageReference": "[resourceId('Microsoft.Compute/galleries/images/versions',variables('galleryName'),variables('galleryImageDefinitionName'),variables('galleryImageVersionName'))]"
+    "MySQLImageReference": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/RG-EUS-QA-Vprofile/providers/Microsoft.Compute/galleries/MyCustomImages/images/MySQL"
   },
   "resources": [
     {
