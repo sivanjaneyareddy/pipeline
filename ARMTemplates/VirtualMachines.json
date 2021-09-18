@@ -512,6 +512,7 @@
       "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName').mysqlvm]",
+      "apiVersion": "2021-03-01",
       "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').backend)]"
