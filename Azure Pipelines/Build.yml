@@ -47,6 +47,7 @@ stages:
     #     effectivePomSkip: false
     #     sonarQubeRunAnalysis: true
     #     sqMavenPluginVersionChoice: 'pom'
+    
     - task: Maven@3
       inputs:
         mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
@@ -57,6 +58,7 @@ stages:
         mavenAuthenticateFeed: false
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
+        checkStyleRunAnalysis: true
 
     - task: CopyFiles@2
       inputs:
