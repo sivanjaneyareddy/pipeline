@@ -527,7 +527,7 @@
         },
         "storageProfile": {
           "imageReference": {
-             "id": "[variables('MySQLImageReference')]"
+            "id": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/RG-EUS-QA-Vprofile/providers/Microsoft.Compute/galleries/MyCustomImages/images/MySQL"
           },
           "osDisk": {
                 "createOption": "FromImage"
