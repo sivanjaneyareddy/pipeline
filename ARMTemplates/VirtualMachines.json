@@ -133,7 +133,8 @@
         "backend": "[concat('backendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
         "businessTier": "[concat('businessTierNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
         "applicationGW": "[concat('applicationGWNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
-    }
+    },
+    "MySQLImageReference": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/RG-EUS-QA-Vprofile/providers/Microsoft.Compute/galleries/MyCustomImages/images/MySQL/versions/0.0.1"
   },
   "resources": [
     {
@@ -206,7 +207,7 @@
           },
           "dataDisks": [
                 {
-                    "diskSizeGB": 1023,
+                    "diskSizeGB": 30,
                     "lun": 0,
                     "createOption": "Empty"
                 }
@@ -316,7 +317,7 @@
           },
           "dataDisks": [
                 {
-                    "diskSizeGB": 1023,
+                    "diskSizeGB": 30,
                     "lun": 0,
                     "createOption": "Empty"
                 }
@@ -426,7 +427,7 @@
           },
           "dataDisks": [
                 {
-                    "diskSizeGB": 1023,
+                    "diskSizeGB": 30,
                     "lun": 0,
                     "createOption": "Empty"
                 }
@@ -526,17 +527,14 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[parameters('imagePublisherCOS')]",
-            "offer": "[parameters('imageOfferCOS')]",
-            "sku": "[parameters('imageSkuCOS')]",
-            "version": "latest"
+             "id": "[variables('MySQLImageReference')]"
           },
           "osDisk": {
                 "createOption": "FromImage"
           },
           "dataDisks": [
                 {
-                    "diskSizeGB": 1023,
+                    "diskSizeGB": 30,
                     "lun": 0,
                     "createOption": "Empty"
                 }
