@@ -17,6 +17,15 @@
     "imageSku": {
         "value": "16.04-LTS"
     },
+    "imagePublisherCOS": {
+        "value": "OpenLogic"
+    },
+    "imageOfferCOS": {
+        "value": "CentOS"
+    },
+    "imageSkuCOS": {
+        "value": "7.5"
+    },
     "vmSize": {
         "value": "Standard_B1s"
     },

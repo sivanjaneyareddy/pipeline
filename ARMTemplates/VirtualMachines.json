@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "apiProfile": "2018-03-01-hybrid",
   "parameters": {
@@ -24,6 +24,13 @@
         "description": "Maps to the publisher in the Azure Stack Platform Image Repository manifest file Eg: Canonical, Suse, OpenLogic "
       }
     },
+    "imagePublisherCOS": {
+      "type": "string",
+      "defaultValue": "Canonical",
+      "metadata": {
+        "description": "Maps to the publisher in the Azure Stack Platform Image Repository manifest file Eg: Canonical, Suse, OpenLogic "
+      }
+    },
     "imageOffer": {
       "type": "string",
       "defaultValue": "UbuntuServer",
@@ -31,7 +38,21 @@
         "description": "Maps to the Offer in the Azure Stack Platform Image Repository manifest file Eg: UbuntuServer, SlesServer, CentOS "
       }
     },
+    "imageOfferCOS": {
+      "type": "string",
+      "defaultValue": "UbuntuServer",
+      "metadata": {
+        "description": "Maps to the Offer in the Azure Stack Platform Image Repository manifest file Eg: UbuntuServer, SlesServer, CentOS "
+      }
+    },
     "imageSku": {
+      "type": "string",
+      "defaultValue": "16.04-LTS",
+      "metadata": {
+        "description": "Maps to the sku in the Azure Stack Platform Image Repository manifest file Eg: 12.SP1, 6.7 , 7.2"
+      }
+    },
+    "imageSkuCOS": {
       "type": "string",
       "defaultValue": "16.04-LTS",
       "metadata": {
@@ -88,6 +109,12 @@
       "appvm": "[concat('appvm','EUS',parameters('envName'),parameters('application'))]",
       "webvm": "[concat('webvm','EUS',parameters('envName'),parameters('application'))]",
       "mysqlvm": "[concat('mysqlvm','EUS',parameters('envName'),parameters('application'))]"
+    },
+    "VMextensionName": "LinuxCustomScriptExtension",
+    "extensionName": {
+      "appvm": "[concat(variables('vmName').appvm,'/',variables('VMextensionName'))]",
+      "webvm": "[concat(variables('vmName').webvm,'/',variables('VMextensionName'))]",
+      "mysqlvm": "[concat(variables('vmName').mysqlvm,'/',variables('VMextensionName'))]"
     },
     "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnet'))]",
@@ -276,6 +303,31 @@
       }
     },
     {
+      "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName').webvm]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').webvm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/WebVM.sh"
+                    ],
+                    "commandToExecute": "sh WebVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
+      }
+    },
+    {
     "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
     "apiVersion": "2015-06-15",
     "type": "Microsoft.Network/publicIPAddresses",
@@ -335,9 +387,9 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[parameters('imagePublisher')]",
-            "offer": "[parameters('imageOffer')]",
-            "sku": "[parameters('imageSku')]",
+            "publisher": "[parameters('imagePublisherCOS')]",
+            "offer": "[parameters('imageOfferCOS')]",
+            "sku": "[parameters('imageSkuCOS')]",
             "version": "latest"
           },
           "osDisk": {
@@ -358,6 +410,31 @@
             }
           ]
         }
+      }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName').mysqlvm]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').mysqlvm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/MySQLVM.sh"
+                    ],
+                    "commandToExecute": "sh MySQLVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
       }
     }
   ]
