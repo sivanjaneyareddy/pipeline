@@ -435,7 +435,7 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').backend)]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').Memcache)]"
             }
           ]
         }
