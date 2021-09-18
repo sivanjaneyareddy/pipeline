@@ -224,10 +224,10 @@
     {
        "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[variables('extensionName')]",
+      "name": "[variables('extensionName').appvm]",
       "location": "[resourceGroup().location]",
            "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').webvm)]"
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').appvm)]"
       ],
       "properties": {
                 "publisher": "Microsoft.Azure.Extensions",
@@ -238,9 +238,9 @@
                 },
                 "protectedSettings": {
                     "fileUris": [
-                        "https://saeusqavprofile.blob.core.windows.net/customscripts/CacheVM.sh"
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/AppVM.sh"
                     ],
-                    "commandToExecute": "sh CacheVM.sh",
+                    "commandToExecute": "sh AppVM.sh",
                     "storageAccountName": "saeusqavprofile",
                     "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
                 }
