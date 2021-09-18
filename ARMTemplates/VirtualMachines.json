@@ -134,7 +134,7 @@
         "businessTier": "[concat('businessTierNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
         "applicationGW": "[concat('applicationGWNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
     },
-    "MySQLImageReference": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/RG-EUS-QA-Vprofile/providers/Microsoft.Compute/galleries/MyCustomImages/images/MySQL"
+    "MySQLImageReference": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/RG-EUS-QA-Vprofile/providers/Microsoft.Compute/galleries/MyCustomImages/images/MySQL/versions/0.0.1"
   },
   "resources": [
     {
@@ -528,7 +528,7 @@
         },
         "storageProfile": {
           "imageReference": {
-            "id": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/RG-EUS-QA-Vprofile/providers/Microsoft.Compute/galleries/MyCustomImages/images/MySQL"
+            "id": "[variables('MySQLImageReference')]"
           }
         },
         "networkProfile": {
