@@ -117,7 +117,7 @@
     "extensionName": {
       "appvm": "[concat(variables('vmName').appvm,'/',variables('VMextensionName'))]",
       "webvm": "[concat(variables('vmName').webvm,'/',variables('VMextensionName'))]",
-      "cachevm": "[concat(variables('vmName').webvm,'/',variables('VMextensionName'))]",
+      "cachevm": "[concat(variables('vmName').cachevm,'/',variables('VMextensionName'))]",
       "mysqlvm": "[concat(variables('vmName').mysqlvm,'/',variables('VMextensionName'))]"
     },
     "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
