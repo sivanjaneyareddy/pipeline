@@ -14,15 +14,14 @@ parameters:
       - QA
       - STG
       - PROD  
-variables:
-- group: QAVprofile
+
 
 stages:
 
 - stage: build
   displayName: Build
   variables: 
-  - group: ${{ parameters.Environments }}Vprofile
+  - group: QAVprofile
   
   jobs:
   - job: Build
