@@ -75,7 +75,7 @@ stages:
         repository: 'pranay05/vproapp'
         command: 'build'
         Dockerfile: '**/Vprofile/Pipeline/Docker-Web/Dockerfile'
-        buildContext: Vprofile/target/
+        buildContext: Vprofile
    
     - task: PublishPipelineArtifact@1
       inputs:
