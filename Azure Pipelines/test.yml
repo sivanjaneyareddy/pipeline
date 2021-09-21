@@ -53,7 +53,7 @@ stages:
                   SourceFolder: '$(System.DefaultWorkingDirectory)'
                   Contents:  |
                     **\src\main\resources\application.properties
-                    **\target*.war
+                    **\target\*.war
                   TargetFolder: '$(Build.ArtifactStagingDirectory)'
               - task: PublishBuildArtifacts@1
                 inputs:
