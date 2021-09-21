@@ -21,7 +21,7 @@ stages:
 - stage: build
   displayName: Build
   variables: 
-  - group: QAVprofile
+  - group: ${{ parameters.Environments }}Vprofile
   
   jobs:
   - job: Build
