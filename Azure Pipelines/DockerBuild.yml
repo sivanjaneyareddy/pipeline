@@ -74,7 +74,7 @@ stages:
         containerRegistry: 'Docker Hub'
         repository: 'pranay05/vproapp'
         command: 'build'
-        Dockerfile: '**/Docker-Web/Dockerfile'
+        Dockerfile: '**/Vprofile/Pipeline/Docker-Web/Dockerfile'
    
     - task: PublishPipelineArtifact@1
       inputs:
