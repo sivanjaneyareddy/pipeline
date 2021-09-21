@@ -50,7 +50,7 @@ stages:
     
     - task: Maven@3
       inputs:
-        mavenPomFile: '$(system.defaultworkingdirectory)/Vprofile/pom.xml
+        mavenPomFile: '$(system.defaultworkingdirectory)/Vprofile/pom.xml'
         publishJUnitResults: false
         javaHomeOption: 'JDKVersion'
         mavenVersionOption: 'Default'
