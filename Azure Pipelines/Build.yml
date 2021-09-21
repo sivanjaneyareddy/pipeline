@@ -14,6 +14,8 @@ parameters:
       - QA
       - STG
       - PROD  
+variables:
+- group: QAVprofile
 
 stages:
 
