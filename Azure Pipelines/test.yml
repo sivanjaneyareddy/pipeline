@@ -49,8 +49,8 @@ stages:
                   findBugsRunAnalysis: true
               - task: CopyFiles@2
                 inputs:
-                  SourceFolder: '$(System.DefaultWorkingDirectory)\src\main\resources\application.properties'
-                  Contents: '**'
+                  SourceFolder: '$(System.DefaultWorkingDirectory)\src\main\resources'
+                  Contents: '\application.properties'
                   TargetFolder: '$(Build.ArtifactStagingDirectory)'
               - task: PowerShell@2
                 inputs:
@@ -58,8 +58,8 @@ stages:
                   script: 'ls $(System.DefaultWorkingDirectory)/target'
               - task: CopyFiles@2
                 inputs:
-                  SourceFolder: '$(System.DefaultWorkingDirectory)\target\*.war'
-                  Contents: '**'
+                  SourceFolder: '$(System.DefaultWorkingDirectory)\target'
+                  Contents: '\*.war'
                   TargetFolder: '$(Build.ArtifactStagingDirectory)'
               - task: PublishBuildArtifacts@1
                 inputs:
