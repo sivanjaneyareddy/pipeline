@@ -34,7 +34,7 @@ stages:
        script: |
         $templatefile="$(System.DefaultWorkingDirectory)\Vprofile\src\main\resources\application.properties"
         $templatefilecontent=Get-Content $templatefile
-        $envspecificcontent=$templatefilecontent -replace "dbservername", ${mysql.connectionstring}
+        $envspecificcontent=$templatefilecontent -replace "dbservername", "${mysql.connectionstring}"
         $envspecificcontent=$envspecificcontent -replace "dbusername", ${mysql.username}
         $envspecificcontent=$envspecificcontent -replace "dbpassword", ${mysql.password}
     # - task: Maven@3
