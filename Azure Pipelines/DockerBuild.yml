@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 resources:
   repositories:
     - repository: other
@@ -59,6 +59,8 @@ stages:
         effectivePomSkip: false
         sonarQubeRunAnalysis: false
         checkStyleRunAnalysis: true
+        pmdRunAnalysis: true
+        findBugsRunAnalysis: true
 
     - task: CopyFiles@2
       inputs:
