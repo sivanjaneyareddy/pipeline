@@ -50,7 +50,7 @@ stages:
               - task: CopyFiles@2
                 inputs:
                   SourceFolder: '$(System.DefaultWorkingDirectory)\src\main\resources'
-                  Contents: '\application.properties'
+                  Contents: 'application.properties'
                   TargetFolder: '$(Build.ArtifactStagingDirectory)'
               - task: PowerShell@2
                 inputs:
@@ -59,7 +59,7 @@ stages:
               - task: CopyFiles@2
                 inputs:
                   SourceFolder: '$(System.DefaultWorkingDirectory)\target'
-                  Contents: '\*.war'
+                  Contents: '*.war'
                   TargetFolder: '$(Build.ArtifactStagingDirectory)'
               - task: PublishBuildArtifacts@1
                 inputs:
