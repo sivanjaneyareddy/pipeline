@@ -47,3 +47,19 @@ stages:
                   checkStyleRunAnalysis: true
                   pmdRunAnalysis: true
                   findBugsRunAnalysis: true
+              - task: CopyFiles@2
+                inputs:
+                  SourceFolder: '$(System.DefaultWorkingDirectory)/src/main/resources/application.properties'
+                  Contents: '**'
+                  TargetFolder: '$(Build.ArtifactStagingDirectory)'
+              - task: CopyFiles@2
+                inputs:
+                  SourceFolder: '$(System.DefaultWorkingDirectory)/target/*.war'
+                  Contents: '**'
+                  TargetFolder: '$(Build.ArtifactStagingDirectory)'
+              - task: PublishBuildArtifacts@1
+                inputs:
+                  PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+                  ArtifactName: 'drop'
+                  publishLocation: 'Container'
+              
