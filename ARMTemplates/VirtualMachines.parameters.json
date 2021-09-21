@@ -39,8 +39,8 @@
       "value": [
         "APPVM",
         "WEBVM",
-        "MySQLVM"
-
+        "MySQLVM",
+        "CacheVM"
       ]
     }
   }

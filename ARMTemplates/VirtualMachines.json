@@ -90,6 +90,7 @@
       "frontend": "[tolower(concat('frontendpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
       "backend": "[tolower(concat('backendpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
       "businessTier": "[tolower(concat('businessTierpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "Memcache": "[tolower(concat('Memcachepip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
       "applicationGW": "[tolower(concat('applicationGWpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]"
     },
     "location": "[resourceGroup().location]",
@@ -97,6 +98,7 @@
       "frontend": "[tolower(concat('frontendnic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
       "backend": "[tolower(concat('backendnic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
       "businessTier": "[tolower(concat('businessTiernic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "Memcache": "[tolower(concat('Memcachenic', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
       "applicationGW": "[tolower(concat('applicationGWnic-','EUS','-', parameters('envName'),'-',parameters('application')))]"
     },
     "subnet": {
@@ -106,14 +108,16 @@
       "applicationGW": "[concat('applicationGWsub','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
     },
     "vmName": {
-      "appvm": "[concat('appvm','EUS',parameters('envName'),parameters('application'))]",
-      "webvm": "[concat('webvm','EUS',parameters('envName'),parameters('application'))]",
-      "mysqlvm": "[concat('mysqlvm','EUS',parameters('envName'),parameters('application'))]"
+      "appvm": "[tolower(concat('appvm','EUS',parameters('envName'),parameters('application')))]",
+      "webvm": "[tolower(concat('webvm','EUS',parameters('envName'),parameters('application')))]",
+      "cachevm": "[tolower(concat('memcachevm','EUS',parameters('envName'),parameters('application')))]",
+      "mysqlvm": "[tolower(concat('mysqlvm','EUS',parameters('envName'),parameters('application')))]"
     },
     "VMextensionName": "LinuxCustomScriptExtension",
     "extensionName": {
       "appvm": "[concat(variables('vmName').appvm,'/',variables('VMextensionName'))]",
       "webvm": "[concat(variables('vmName').webvm,'/',variables('VMextensionName'))]",
+      "cachevm": "[concat(variables('vmName').cachevm,'/',variables('VMextensionName'))]",
       "mysqlvm": "[concat(variables('vmName').mysqlvm,'/',variables('VMextensionName'))]"
     },
     "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
@@ -129,7 +133,8 @@
         "backend": "[concat('backendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
         "businessTier": "[concat('businessTierNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
         "applicationGW": "[concat('applicationGWNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
-    }
+    },
+    "MySQLImageReference": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/RG-EUS-QA-Vprofile/providers/Microsoft.Compute/galleries/MyCustomImages/images/MySQL/versions/0.0.1"
   },
   "resources": [
     {
@@ -202,7 +207,7 @@
           },
           "dataDisks": [
                 {
-                    "diskSizeGB": 1023,
+                    "diskSizeGB": 30,
                     "lun": 0,
                     "createOption": "Empty"
                 }
@@ -215,6 +220,31 @@
             }
           ]
         }
+      }
+    },
+    {
+       "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName').appvm]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').appvm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/AppVM.sh"
+                    ],
+                    "commandToExecute": "sh AppVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
       }
     },
     {
@@ -287,7 +317,7 @@
           },
           "dataDisks": [
                 {
-                    "diskSizeGB": 1023,
+                    "diskSizeGB": 30,
                     "lun": 0,
                     "createOption": "Empty"
                 }
@@ -322,6 +352,116 @@
                         "https://saeusqavprofile.blob.core.windows.net/customscripts/WebVM.sh"
                     ],
                     "commandToExecute": "sh WebVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
+      }
+    },
+    {
+    "condition": "[contains(parameters('listToDeploy'),'CacheVM')]",
+    "apiVersion": "2015-06-15",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "name": "[variables('dnsNameForPublicIP').Memcache]",
+    "location": "[variables('location')]",
+    "properties": {
+      "publicIPAllocationMethod": "Static"
+    },
+    "tags": {
+      "displayName": "PublicIPAddress - Memcache"
+    }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'CacheVM')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName').Memcache]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').Memcache)]"
+      ],
+      "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').backend)]"
+        },
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').Memcache)]"
+            },
+              "subnet": {
+                "id": "[variables('subnetRef').backend]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'CacheVM')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName').cachevm]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').Memcache)]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName').cachevm]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('imagePublisherCOS')]",
+            "offer": "[parameters('imageOfferCOS')]",
+            "sku": "[parameters('imageSkuCOS')]",
+            "version": "latest"
+          },
+          "osDisk": {
+                "createOption": "FromImage"
+          },
+          "dataDisks": [
+                {
+                    "diskSizeGB": 30,
+                    "lun": 0,
+                    "createOption": "Empty"
+                }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').Memcache)]"
+            }
+          ]
+        }
+      }
+    },
+        {
+      "condition": "[contains(parameters('listToDeploy'),'CacheVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName').cachevm]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').cachevm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/CacheVM.sh"
+                    ],
+                    "commandToExecute": "sh CacheVM.sh",
                     "storageAccountName": "saeusqavprofile",
                     "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
                 }
@@ -372,6 +512,7 @@
       "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName').mysqlvm]",
+      "apiVersion": "2021-03-01",
       "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').backend)]"
@@ -387,21 +528,8 @@
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[parameters('imagePublisherCOS')]",
-            "offer": "[parameters('imageOfferCOS')]",
-            "sku": "[parameters('imageSkuCOS')]",
-            "version": "latest"
-          },
-          "osDisk": {
-                "createOption": "FromImage"
-          },
-          "dataDisks": [
-                {
-                    "diskSizeGB": 1023,
-                    "lun": 0,
-                    "createOption": "Empty"
-                }
-          ]
+            "id": "[variables('MySQLImageReference')]"
+          }
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -410,31 +538,6 @@
             }
           ]
         }
-      }
-    },
-    {
-      "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[variables('extensionName').mysqlvm]",
-      "location": "[resourceGroup().location]",
-           "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').mysqlvm)]"
-      ],
-      "properties": {
-                "publisher": "Microsoft.Azure.Extensions",
-                "type": "CustomScript",
-                "typeHandlerVersion": "2.1",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                },
-                "protectedSettings": {
-                    "fileUris": [
-                        "https://saeusqavprofile.blob.core.windows.net/customscripts/MySQLVM.sh"
-                    ],
-                    "commandToExecute": "sh MySQLVM.sh",
-                    "storageAccountName": "saeusqavprofile",
-                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
-                }
       }
     }
   ]
