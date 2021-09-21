@@ -33,9 +33,9 @@ stages:
        script: |
         $templatefile="$(System.DefaultWorkingDirectory)\Vprofile\src\main\resources\application.properties"
         $templatefilecontent=Get-Content $templatefile
-        $templatefilecontent=$templatefilecontent -replace "#{mysql.connectionstring}#", ${mysql.connectionstring}
-        $templatefilecontent=$templatefilecontent -replace "#{mysql.username}#", ${mysql.username}
-        $templatefilecontent=$templatefilecontent -replace "#{mysql.password}#", ${mysql.password}
+        $envspecificcontent=$templatefilecontent -replace "dbservername", ${mysql.connectionstring}
+        $envspecificcontent=$envspecificcontent -replace "dbusername", ${mysql.username}
+        $envspecificcontent=$envspecificcontent -replace "dbpassword", ${mysql.password}
     # - task: Maven@3
     #   inputs:
     #     mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
