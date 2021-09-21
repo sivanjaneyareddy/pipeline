@@ -38,7 +38,7 @@ stages:
                 inputs:
                   targetType: 'inline'
                   script: |
-                    $Config_path = "src/main/resources/application.properties"
+                    $Config_path = "$(System.DefaultWorkingDirectory)/src/main/resources/application.properties"
                     $Contents = get-content $Config_path 
                     $ChangedValues = $Contents -replace "dbinstance", "dbserver"
                     $ChangedValues = $ChangedValues -replace "dbname", "dbusername"
