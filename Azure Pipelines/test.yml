@@ -50,10 +50,9 @@ stages:
 
               - task: CopyFiles@2
                 inputs:
-                  SourceFolder: '$(System.DefaultWorkingDirectory)'
                   Contents: 
-                    \src\main\resources\application.properties
-                    \target*.war
+                    $(System.DefaultWorkingDirectory)\src\main\resources\application.properties
+                    $(System.DefaultWorkingDirectory)\target*.war
                   TargetFolder: '$(Build.ArtifactStagingDirectory)'
               - task: PublishBuildArtifacts@1
                 inputs:
