@@ -50,9 +50,8 @@ stages:
     
     - task: Maven@3
       inputs:
-        mavenPomFile: '$(system.defaultworkingdirectory)/Vprofile/pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        mavenPomFile: 'pom.xml'
+        publishJUnitResults: false
         javaHomeOption: 'JDKVersion'
         mavenVersionOption: 'Default'
         mavenAuthenticateFeed: false
