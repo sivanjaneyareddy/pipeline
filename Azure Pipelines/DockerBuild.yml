@@ -69,8 +69,17 @@ stages:
             **\Vprofile\target\vprofile-v2.war
         TargetFolder: '$(build.artifactstagingdirectory)'
     
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: 'pranay05/vproapp'
+        command: 'build'
+        Dockerfile: '**/Dockerfile'
+    
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(build.artifactstagingdirectory)'
         artifact: 'drop'
         publishLocation: 'pipeline'
+    
+
