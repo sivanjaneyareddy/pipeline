@@ -28,6 +28,8 @@ parameters:
 
 stages:
     - stage: BUILD
+      variables:
+        - group: QAVprofile
       jobs:
           - job: build
             steps:
@@ -38,9 +40,9 @@ stages:
                   script: |
                     $Config_path = "$(System.DefaultWorkingDirectory)/src/main/resources/application.properties"
                     $Contents = get-content $Config_path 
-                    $ChangedValues = $Contents -replace "dbservername", "$(klodb)"
-                    $ChangedValues = $ChangedValues -replace "dbusername", "$(klousername)"
-                    $ChangedValues = $ChangedValues -replace "dbpassword", "$(klopassword)"
+                    $ChangedValues = $Contents -replace "dbservername", "$(dbservername)"
+                    $ChangedValues = $ChangedValues -replace "dbusername", "$(mysql.username)"
+                    $ChangedValues = $ChangedValues -replace "dbpassword", "$(mysql.password)"
                     $ChangedValues > $Config_path
               - task: Maven@3
                 inputs:
