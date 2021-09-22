@@ -18,7 +18,7 @@
         "value": "azureuser"
       },
       "sshRSAPublicKey": {
-        "value": "azureuser"
+        "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC2Eez/ljmjsdWLmb/YcjDwQ6jiT3CQIEWjITnDQOv5xHFwMKPNIFSbFXcVvmPkCqTfDDcHeTh3NJqHA//IlA6zCK7gnK2M4DtY1ESVklIAwjgxGfa0mq+eHO0XGpAbJQE6YxbtFFcINk/biKUllS7Ht9mm2CaKXIZIcau9hx6Tx4I13Au4Zgy0JRVdj92EEz78ZhSpVm/+IrCfsJ8yHVsXo9l1FeoSs849joFGNDjHAyE65x6c1sgTVknk3TdwCef+MbiyXZ9cCMXVHO4OA6djSfDH5Sv/aOpY3Bt8T42H4x3JBF6gvr6z5XSoQEGX6bWYVpHVLHOT9Dn9qrB2HHsMB7Eli++V2IlPOqMgPRQx+O19yi3kTpAum++EdDeIMN+7BDR/KjNm/KLEUCqIfJFMUTzaxvDMKbMAPo9BPsXtepY2wEGYI/tNHh4kx2hwZY/XMXjAW6+smklT8OML7w475noAct8ebObJVlBff9MkQgv4/C50ZvrxKmMAjToApbM= azureuser@linuxvm"
       }
     }
   }
