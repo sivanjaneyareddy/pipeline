@@ -2,25 +2,23 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "envName": {
-        "value": "QA"
+      "clusterName": {
+        "value": "aks101cluster"
       },
-      "envLocation": {
-        "value": "East US"
+      "osDiskSizeGB": {
+        "value": "1023"
       },
-      "application": {
-        "value": "Vprofile"
+      "agentCount": {
+        "value": "3"
       },
-      "vnetAddressPrefix": {
-        "value": "192.168.0.0/16"
+      "agentVMSize": {
+        "value": "Standard_D2s_v3"
       },
-      "subnetAddressPrefix": {
-        "value": {
-          "frontend": "192.168.0.0/24",
-          "backend": "192.168.1.0/24",
-          "businessTier": "192.168.2.0/24",
-          "applicationGW": "192.168.3.0/24"
-        }
+      "linuxAdminUsername": {
+        "value": "azureuser"
+      },
+      "sshRSAPublicKey": {
+        "value": "azureuser"
       }
     }
   }
