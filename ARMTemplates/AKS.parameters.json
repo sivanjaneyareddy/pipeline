@@ -5,6 +5,9 @@
       "clusterName": {
         "value": "aks101cluster"
       },
+      "location": {
+      "value": "[resourceGroup().location]"
+      },
       "osDiskSizeGB": {
         "value": "1023"
       },
