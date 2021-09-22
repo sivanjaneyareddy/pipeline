@@ -24,7 +24,7 @@
       }
     },
     "osDiskSizeGB": {
-      "type": "string",
+      "type": "int",
       "defaultValue": 0,
       "maxValue": 1023,
       "minValue": 0,
