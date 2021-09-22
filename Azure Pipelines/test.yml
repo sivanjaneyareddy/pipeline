@@ -4,14 +4,6 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-variables:
-  - name: klodb
-    value: KLODB
-  - name: klousername
-    value: KLOUsername
-  - name: klopassword
-    value: KLOPassword
-
 resources:
  repositories:
      - repository: Vprofile
@@ -23,13 +15,12 @@ parameters:
   displayName: ENVIRONMENTS
   values:
       - QA
-      - KLO
       - STG
 
 stages:
     - stage: BUILD
       variables:
-        - group: QAVprofile
+        - group: ${{parameters.Environments}}Vprofile
       jobs:
           - job: build
             steps:
