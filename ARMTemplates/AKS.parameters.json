@@ -9,7 +9,7 @@
       "value": "[resourceGroup().location]"
       },
       "dnsPrefix": {
-      "value": null
+      "value": "myakscluster"
      },
       "osDiskSizeGB": {
         "value": "1023"
