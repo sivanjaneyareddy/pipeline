@@ -8,6 +8,9 @@
       "location": {
       "value": "[resourceGroup().location]"
       },
+      "dnsPrefix": {
+      "value": null
+     },
       "osDiskSizeGB": {
         "value": "1023"
       },
