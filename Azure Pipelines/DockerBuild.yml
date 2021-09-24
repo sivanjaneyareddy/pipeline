@@ -76,6 +76,14 @@ stages:
         command: 'build'
         Dockerfile: '**/Vprofile/Pipeline/Docker-Web/Dockerfile'
         buildContext: Vprofile
+    
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: 'pranay05/vproapp'
+        command: 'build'
+        Dockerfile: '**/Vprofile/Pipeline/Docker-db/Dockerfile'
+        buildContext: 'Docker-db'
    
     - task: PublishPipelineArtifact@1
       inputs:
