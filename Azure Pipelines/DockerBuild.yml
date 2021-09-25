@@ -73,17 +73,18 @@ stages:
       inputs:
         containerRegistry: 'Docker Hub'
         repository: 'pranay05/vproapp'
-        command: 'build'
+        command: 'buildAndPush'
         Dockerfile: '**/Vprofile/Pipeline/Docker-Web/Dockerfile'
         buildContext: Vprofile
+    
     
     - task: Docker@2
       inputs:
         containerRegistry: 'Docker Hub'
-        repository: 'pranay05/vproapp'
-        command: 'build'
+        repository: 'pranay05/vprodb'
+        command: 'buildAndPush'
         Dockerfile: '**/Vprofile/Pipeline/Docker-db/Dockerfile'
-        buildContext: Vprofile/Pipeline/Docker-db
+        buildContext: 'Vprofile/Pipeline/Docker-db'
    
     - task: PublishPipelineArtifact@1
       inputs:
