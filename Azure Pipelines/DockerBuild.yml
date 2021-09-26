@@ -85,6 +85,14 @@ stages:
         command: 'buildAndPush'
         Dockerfile: '**/Vprofile/Pipeline/Docker-db/Dockerfile'
         buildContext: 'Vprofile/Pipeline/Docker-db'
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'Docker Hub'
+        repository: 'pranay05/vpronginx'
+        command: 'buildAndPush'
+        Dockerfile: '**/Vprofile/Pipeline/Docker-App/Dockerfile'
+        buildContext: 'Vprofile/Pipeline/Docker-App'
    
     - task: PublishPipelineArtifact@1
       inputs:
