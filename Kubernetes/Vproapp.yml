@@ -1,50 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vprofile-deployment
+  name: vprofile-nginx-deployment
   labels:
-    app: vprofile
+    app: vprofile-nginx
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: vprofile
+      app: vprofile-nginx
   template:
     metadata:
       labels:
-        app: vprofile
+        app: vprofile-nginx
     spec:
       containers:
         - name: vprofile-nginx
           image: pranay05/vpronginx:241
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 80
-          # Requests & Limits   
-          resources:
-            requests:
-              cpu: "100m" 
-              memory: "128Mi"
-            limits:
-              cpu: "200m"
-              memory: "256Mi"
-
-        - name: vprofile-app
-          image: pranay05/vproapp:241
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
-          # Requests & Limits   
-          resources:
-            requests:
-              cpu: "100m" 
-              memory: "128Mi"
-            limits:
-              cpu: "200m"
-              memory: "256Mi"
-
-        - name: vprofile-db
-          image: pranay05/vprodb:241
           imagePullPolicy: Always
           ports:
             - containerPort: 80
