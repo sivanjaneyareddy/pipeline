@@ -11,5 +11,5 @@ spec:
     app: backend-restapp
   ports:
     - name: http
-      port: 8080 # ClusterIP Service Port
-      targetPort: 8080 # Container Port
+      port: 3306 # ClusterIP Service Port
+      targetPort: 3306 # Container Port
