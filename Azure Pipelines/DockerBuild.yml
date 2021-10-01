@@ -33,8 +33,8 @@ stages:
           $Config_path = "$(System.DefaultWorkingDirectory)/Vprofile/src/main/resources/application.properties"
           $Contents = get-content $Config_path 
           $ChangedValues = $Contents -replace "dbservername", "$(mysql.connectionstring)"
-          $ChangedValues = $ChangedValues -replace "dbusername", "$(mysql.password)"
-          $ChangedValues = $ChangedValues -replace "dbpassword", "$(mysql.username)"
+          $ChangedValues = $ChangedValues -replace "dbusername", "$(mysql.username)"
+          $ChangedValues = $ChangedValues -replace "dbpassword", "$(mysql.password)"
           $ChangedValues > $Config_path
     # - task: Maven@3
     #   inputs:
