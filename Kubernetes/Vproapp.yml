@@ -15,7 +15,7 @@ spec:
         app: vprofile-app
     spec:
       containers:
-        - name: vprofile-nginx
+        - name: vprofile-app
           image: pranay05/vproapp:241
           imagePullPolicy: Always
           ports:
