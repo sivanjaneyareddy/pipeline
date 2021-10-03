@@ -94,7 +94,10 @@
       "applicationGW": "[tolower(concat('applicationGWpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]"
     },
     "fqdn": {
-      "mysqlvm": "[tolower(concat(variables('vmName').mysqlvm, '.eastus.cloudapp.azure.com'))]"
+      "mysqlvm": "[tolower(concat(variables('vmName').mysqlvm, '.eastus.cloudapp.azure.com'))]",
+      "appvm": "[tolower(concat(variables('vmName').appvm, '.eastus.cloudapp.azure.com'))]",
+      "webvm": "[tolower(concat(variables('vmName').webvm, '.eastus.cloudapp.azure.com'))]",
+      "cachevm": "[tolower(concat(variables('vmName').cachevm, '.eastus.cloudapp.azure.com'))]"
     },
     "location": "[resourceGroup().location]",
     "nicName": {
@@ -147,7 +150,11 @@
     "name": "[variables('dnsNameForPublicIP').frontend]",
     "location": "[variables('location')]",
     "properties": {
-      "publicIPAllocationMethod": "Static"
+      "publicIPAllocationMethod": "Static",
+      "dnsSettings": {
+        "domainNameLabel": "[variables('vmName').appvm]",
+        "fqdn": "[variables('fqdn').appvm]"
+        }
     },
     "tags": {
       "displayName": "PublicIPAddress - App"
@@ -169,6 +176,7 @@
           {
             "name": "ipconfig1",
             "properties": {
+              "privateIPAddress": "192.168.1.8",
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
               "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').frontend)]"
@@ -257,7 +265,11 @@
     "name": "[variables('dnsNameForPublicIP').businessTier]",
     "location": "[variables('location')]",
     "properties": {
-      "publicIPAllocationMethod": "Static"
+      "publicIPAllocationMethod": "Static",
+      "dnsSettings": {
+        "domainNameLabel": "[variables('vmName').webvm]",
+        "fqdn": "[variables('fqdn').webvm]"
+        }
     },
     "tags": {
       "displayName": "PublicIPAddress - Web"
@@ -279,6 +291,7 @@
           {
             "name": "ipconfig1",
             "properties": {
+              "privateIPAddress": "192.168.1.7",
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
               "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').businessTier)]"
@@ -367,7 +380,11 @@
     "name": "[variables('dnsNameForPublicIP').Memcache]",
     "location": "[variables('location')]",
     "properties": {
-      "publicIPAllocationMethod": "Static"
+      "publicIPAllocationMethod": "Static",
+      "dnsSettings": {
+        "domainNameLabel": "[variables('vmName').cachevm]",
+        "fqdn": "[variables('fqdn').cachevm]"
+        }
     },
     "tags": {
       "displayName": "PublicIPAddress - Memcache"
@@ -389,6 +406,7 @@
           {
             "name": "ipconfig1",
             "properties": {
+              "privateIPAddress": "192.168.1.5",
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
               "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').Memcache)]"
