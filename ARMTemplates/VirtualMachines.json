@@ -93,6 +93,9 @@
       "Memcache": "[tolower(concat('Memcachepip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
       "applicationGW": "[tolower(concat('applicationGWpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]"
     },
+    "fqdn": {
+      "mysqlvm": "[tolower(concat(variables('vmName').mysqlvm, '.eastus.cloudapp.azure.com'))]"
+    },
     "location": "[resourceGroup().location]",
     "nicName": {
       "frontend": "[tolower(concat('frontendnic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
@@ -474,7 +477,11 @@
     "name": "[variables('dnsNameForPublicIP').backend]",
     "location": "[variables('location')]",
     "properties": {
-      "publicIPAllocationMethod": "Static"
+      "publicIPAllocationMethod": "Static",
+      "dnsSettings": {
+        "domainNameLabel": "[variables('vmName').mysqlvm]",
+        "fqdn": "[variables('fqdn').mysqlvm]"
+        }
     },
     "tags": {
       "displayName": "PublicIPAddress - MySQL"
@@ -496,6 +503,7 @@
           {
             "name": "ipconfig1",
             "properties": {
+              "privateIPAddress": "192.168.1.4",
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
               "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').backend)]"
@@ -512,7 +520,6 @@
       "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName').mysqlvm]",
-      "apiVersion": "2021-03-01",
       "location": "[variables('location')]",
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').backend)]"
@@ -528,8 +535,21 @@
         },
         "storageProfile": {
           "imageReference": {
-            "id": "[variables('MySQLImageReference')]"
-          }
+            "publisher": "[parameters('imagePublisherCOS')]",
+            "offer": "[parameters('imageOfferCOS')]",
+            "sku": "[parameters('imageSkuCOS')]",
+            "version": "latest"
+          },
+          "osDisk": {
+                "createOption": "FromImage"
+          },
+          "dataDisks": [
+                {
+                    "diskSizeGB": 30,
+                    "lun": 0,
+                    "createOption": "Empty"
+                }
+          ]
         },
         "networkProfile": {
           "networkInterfaces": [
