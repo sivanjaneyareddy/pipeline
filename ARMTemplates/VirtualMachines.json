@@ -1,4 +1,540 @@
- {
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "apiProfile": "2018-03-01-hybrid",
+  "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the Virtual Machine. Default value is localadmin"
+      },
+      "defaultValue": "localadmin"
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "defaultValue": "[concat('Subscription#',substring(resourcegroup().id,15,36))]",
+      "metadata": {
+        "description": "Password for the Virtual Machine. Default value is 'Subscription#<subscription id>'"
+      }
+    },
+    "imagePublisher": {
+      "type": "string",
+      "defaultValue": "Canonical",
+      "metadata": {
+        "description": "Maps to the publisher in the Azure Stack Platform Image Repository manifest file Eg: Canonical, Suse, OpenLogic "
+      }
+    },
+    "imagePublisherCOS": {
+      "type": "string",
+      "defaultValue": "Canonical",
+      "metadata": {
+        "description": "Maps to the publisher in the Azure Stack Platform Image Repository manifest file Eg: Canonical, Suse, OpenLogic "
+      }
+    },
+    "imageOffer": {
+      "type": "string",
+      "defaultValue": "UbuntuServer",
+      "metadata": {
+        "description": "Maps to the Offer in the Azure Stack Platform Image Repository manifest file Eg: UbuntuServer, SlesServer, CentOS "
+      }
+    },
+    "imageOfferCOS": {
+      "type": "string",
+      "defaultValue": "UbuntuServer",
+      "metadata": {
+        "description": "Maps to the Offer in the Azure Stack Platform Image Repository manifest file Eg: UbuntuServer, SlesServer, CentOS "
+      }
+    },
+    "imageSku": {
+      "type": "string",
+      "defaultValue": "16.04-LTS",
+      "metadata": {
+        "description": "Maps to the sku in the Azure Stack Platform Image Repository manifest file Eg: 12.SP1, 6.7 , 7.2"
+      }
+    },
+    "imageSkuCOS": {
+      "type": "string",
+      "defaultValue": "16.04-LTS",
+      "metadata": {
+        "description": "Maps to the sku in the Azure Stack Platform Image Repository manifest file Eg: 12.SP1, 6.7 , 7.2"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_A1",
+      "metadata": {
+        "description": "The size of the Virtual Machine."
+      }
+    },
+    "application": {
+      "type": "string",
+      "defaultValue": "Vprofile",
+      "metadata": {
+        "description": "Name of the virtual network"
+      }
+    },
+    "envName": {
+      "type": "string",
+      "defaultValue": "Qa1",
+      "metadata": {
+        "description": "Name of the virtual network"
+      }
+    },
+    "listToDeploy": {
+      "type": "array",
+      "defaultValue": []
+    }
+  },
+  "variables": {
+    "dnsNameForPublicIP": {
+      "frontend": "[tolower(concat('frontendpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "backend": "[tolower(concat('backendpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "businessTier": "[tolower(concat('businessTierpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "Memcache": "[tolower(concat('Memcachepip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "applicationGW": "[tolower(concat('applicationGWpip', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]"
+    },
+    "fqdn": {
+      "mysqlvm": "[tolower(concat(variables('vmName').mysqlvm, '.eastus.cloudapp.azure.com'))]",
+      "appvm": "[tolower(concat(variables('vmName').appvm, '.eastus.cloudapp.azure.com'))]",
+      "webvm": "[tolower(concat(variables('vmName').webvm, '.eastus.cloudapp.azure.com'))]",
+      "cachevm": "[tolower(concat(variables('vmName').cachevm, '.eastus.cloudapp.azure.com'))]"
+    },
+    "location": "[resourceGroup().location]",
+    "nicName": {
+      "frontend": "[tolower(concat('frontendnic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "backend": "[tolower(concat('backendnic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "businessTier": "[tolower(concat('businessTiernic-','EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "Memcache": "[tolower(concat('Memcachenic', '-', 'EUS','-', parameters('envName'),'-',parameters('application')))]",
+      "applicationGW": "[tolower(concat('applicationGWnic-','EUS','-', parameters('envName'),'-',parameters('application')))]"
+    },
+    "subnet": {
+      "frontend": "[concat('frontendSub-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
+      "backend": "[concat('backendSub','-', 'EUS','-', parameters('envName'),'-',parameters('application'))]",
+      "businessTier": "[concat('businessTierSub','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
+      "applicationGW": "[concat('applicationGWsub','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
+    },
+    "vmName": {
+      "appvm": "[tolower(concat('appvm','EUS',parameters('envName'),parameters('application')))]",
+      "webvm": "[tolower(concat('webvm','EUS',parameters('envName'),parameters('application')))]",
+      "cachevm": "[tolower(concat('memcachevm','EUS',parameters('envName'),parameters('application')))]",
+      "mysqlvm": "[tolower(concat('mysqlvm','EUS',parameters('envName'),parameters('application')))]"
+    },
+    "VMextensionName": "LinuxCustomScriptExtension",
+    "extensionName": {
+      "appvm": "[concat(variables('vmName').appvm,'/',variables('VMextensionName'))]",
+      "webvm": "[concat(variables('vmName').webvm,'/',variables('VMextensionName'))]",
+      "cachevm": "[concat(variables('vmName').cachevm,'/',variables('VMextensionName'))]",
+      "mysqlvm": "[concat(variables('vmName').mysqlvm,'/',variables('VMextensionName'))]"
+    },
+    "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('vnet'))]",
+    "subnetRef": {
+      "frontend": "[concat(variables('vnetID'),'/subnets/',variables('subnet').frontend)]",
+      "backend": "[concat(variables('vnetID'),'/subnets/',variables('subnet').backend)]",
+      "businessTier": "[concat(variables('vnetID'),'/subnets/',variables('subnet').businessTier)]",
+      "applicationGW": "[concat(variables('vnetID'),'/subnets/',variables('subnet').applicationGW)]"
+    },
+    "networkSecurityGroupName": {
+        "frontend": "[concat('frontendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "backend": "[concat('backendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "businessTier": "[concat('businessTierNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]",
+        "applicationGW": "[concat('applicationGWNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
+    },
+    "MySQLImageReference": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/RG-EUS-QA-Vprofile/providers/Microsoft.Compute/galleries/MyCustomImages/images/MySQL/versions/0.0.1"
+  },
+  "resources": [
+    {
+    "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
+    "apiVersion": "2015-06-15",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "name": "[variables('dnsNameForPublicIP').frontend]",
+    "location": "[variables('location')]",
+    "properties": {
+      "publicIPAllocationMethod": "Static",
+      "dnsSettings": {
+        "domainNameLabel": "[variables('vmName').appvm]",
+        "fqdn": "[variables('fqdn').appvm]"
+        }
+    },
+    "tags": {
+      "displayName": "PublicIPAddress - App"
+    }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName').frontend]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').frontend)]"
+      ],
+      "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
+        },
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "192.168.1.8",
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').frontend)]"
+            },
+              "subnet": {
+                "id": "[variables('subnetRef').frontend]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName').appvm]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').frontend)]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName').appvm]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('imagePublisher')]",
+            "offer": "[parameters('imageOffer')]",
+            "sku": "[parameters('imageSku')]",
+            "version": "latest"
+          },
+          "osDisk": {
+                "createOption": "FromImage"
+          },
+          "dataDisks": [
+                {
+                    "diskSizeGB": 30,
+                    "lun": 0,
+                    "createOption": "Empty"
+                }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').frontend)]"
+            }
+          ]
+        }
+      }
+    },
+    {
+       "condition": "[contains(parameters('listToDeploy'),'APPVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName').appvm]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').appvm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/AppVM.sh"
+                    ],
+                    "commandToExecute": "sh AppVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
+      }
+    },
+    {
+    "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
+    "apiVersion": "2015-06-15",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "name": "[variables('dnsNameForPublicIP').businessTier]",
+    "location": "[variables('location')]",
+    "properties": {
+      "publicIPAllocationMethod": "Static",
+      "dnsSettings": {
+        "domainNameLabel": "[variables('vmName').webvm]",
+        "fqdn": "[variables('fqdn').webvm]"
+        }
+    },
+    "tags": {
+      "displayName": "PublicIPAddress - Web"
+    }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName').businessTier]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').businessTier)]"
+      ],
+      "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').businessTier)]"
+        },
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "192.168.1.7",
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').businessTier)]"
+            },
+              "subnet": {
+                "id": "[variables('subnetRef').businessTier]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName').webvm]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').businessTier)]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName').webvm]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('imagePublisher')]",
+            "offer": "[parameters('imageOffer')]",
+            "sku": "[parameters('imageSku')]",
+            "version": "latest"
+          },
+          "osDisk": {
+                "createOption": "FromImage"
+          },
+          "dataDisks": [
+                {
+                    "diskSizeGB": 30,
+                    "lun": 0,
+                    "createOption": "Empty"
+                }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').businessTier)]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'WEBVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName').webvm]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').webvm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/WebVM.sh"
+                    ],
+                    "commandToExecute": "sh WebVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
+      }
+    },
+    {
+    "condition": "[contains(parameters('listToDeploy'),'CacheVM')]",
+    "apiVersion": "2015-06-15",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "name": "[variables('dnsNameForPublicIP').Memcache]",
+    "location": "[variables('location')]",
+    "properties": {
+      "publicIPAllocationMethod": "Static",
+      "dnsSettings": {
+        "domainNameLabel": "[variables('vmName').cachevm]",
+        "fqdn": "[variables('fqdn').cachevm]"
+        }
+    },
+    "tags": {
+      "displayName": "PublicIPAddress - Memcache"
+    }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'CacheVM')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName').Memcache]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').Memcache)]"
+      ],
+      "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').backend)]"
+        },
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "192.168.1.5",
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').Memcache)]"
+            },
+              "subnet": {
+                "id": "[variables('subnetRef').backend]"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'CacheVM')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[variables('vmName').cachevm]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[concat('Microsoft.Network/networkInterfaces/', variables('nicName').Memcache)]"
+      ],
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "osProfile": {
+          "computerName": "[variables('vmName').cachevm]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[parameters('imagePublisherCOS')]",
+            "offer": "[parameters('imageOfferCOS')]",
+            "sku": "[parameters('imageSkuCOS')]",
+            "version": "latest"
+          },
+          "osDisk": {
+                "createOption": "FromImage"
+          },
+          "dataDisks": [
+                {
+                    "diskSizeGB": 30,
+                    "lun": 0,
+                    "createOption": "Empty"
+                }
+          ]
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName').Memcache)]"
+            }
+          ]
+        }
+      }
+    },
+        {
+      "condition": "[contains(parameters('listToDeploy'),'CacheVM')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[variables('extensionName').cachevm]",
+      "location": "[resourceGroup().location]",
+           "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName').cachevm)]"
+      ],
+      "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.1",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                },
+                "protectedSettings": {
+                    "fileUris": [
+                        "https://saeusqavprofile.blob.core.windows.net/customscripts/CacheVM.sh"
+                    ],
+                    "commandToExecute": "sh CacheVM.sh",
+                    "storageAccountName": "saeusqavprofile",
+                    "storageAccountKey": "fLidUpKYcOKTh55DWPWSF8lJbAX/HRFRrBhPt11trAPdgA5yqm3eskk5J+O0M0wwMdJj37DCJuTrMkujf6pOrg=="
+                }
+      }
+    },
+    {
+    "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
+    "apiVersion": "2015-06-15",
+    "type": "Microsoft.Network/publicIPAddresses",
+    "name": "[variables('dnsNameForPublicIP').backend]",
+    "location": "[variables('location')]",
+    "properties": {
+      "publicIPAllocationMethod": "Static",
+      "dnsSettings": {
+        "domainNameLabel": "[variables('vmName').mysqlvm]",
+        "fqdn": "[variables('fqdn').mysqlvm]"
+        }
+    },
+    "tags": {
+      "displayName": "PublicIPAddress - MySQL"
+    }
+    },
+    {
+      "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName').backend]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').backend)]"
+      ],
+      "properties": {
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').backend)]"
+        },
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "192.168.1.4",
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+              "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('dnsNameForPublicIP').backend)]"
+            },
+              "subnet": {
+                "id": "[variables('subnetRef').backend]"
+              }
+            }
+          }
+        ]
+      }
+    },
+     {
       "condition": "[contains(parameters('listToDeploy'),'MySQLVM')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName').mysqlvm]",
@@ -30,3 +566,5 @@
         }
       }
     }
+  ]
+}
