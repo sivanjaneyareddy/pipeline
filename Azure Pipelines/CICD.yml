@@ -149,18 +149,19 @@ stages:
     steps:
     - checkout: self    
     - checkout: other
-    - task: CmdLine@2
+    - task: DownloadBuildArtifacts@1
       inputs:
-        script: |
-          cd $(build.artifactstagingdirectory)/drop/Vprofile/target'
-          
-          ls
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        itemPattern: '**/vprofile-v2.war'
+        downloadPath: '$(System.ArtifactsDirectory)'
     - task: TomcatDeployment@1
       inputs:
         TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
         Username: 'tomcat'
         Password: 'admin123'
-        Warfile: '$(Pipeline.Workspace)/**/vprofile-v2.war'
+        Warfile: '$(System.ArtifactsDirectory)/vprofile-v2.war'
         Context: '/v2'
         ServerVersion: '7OrAbove'
 
