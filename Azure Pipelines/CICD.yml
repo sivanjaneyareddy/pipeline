@@ -154,7 +154,7 @@ stages:
         TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
         Username: 'tomcat'
         Password: 'admin123'
-        Warfile: '$(System.DefaultWorkingDirectory)/Vprofile/target/vprofile-v2.war'
+        Warfile: '$(build.artifactstagingdirectory)/Vprofile/target/vprofile-v2.war'
         Context: '/v2'
         ServerVersion: '7OrAbove'
 
