@@ -110,6 +110,52 @@ stages:
   - job: Infrasetup
     steps:
     - checkout: self
-    
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'Azure-connection'
+        subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'RG-EUS-QA-JAVA'
+        location: 'East US'
+        templateLocation: 'Linked artifact'
+        csmFile: '$(System.DefaultWorkingDirectory)/_DevOps/ARMTemplates/Networking.json'
+        csmParametersFile: '$(System.DefaultWorkingDirectory)/_DevOps/ARMTemplates/Networking.parameter.json'
+        overrideParameters: '-envName "QA" -envLocation "East US" -application "Vprofile" -vnetAddressPrefix "192.168.0.0/16" -subnetAddressPrefix {"frontend":"192.168.0.0/24","backend":"192.168.1.0/24","businessTier":"192.168.2.0/24","applicationGW":"192.168.3.0/24"}'
+        deploymentMode: 'Incremental'
+        deploymentName: 'cicd-vnet'
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'Azure-connection'
+        subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'RG-EUS-QA-JAVA'
+        location: 'East US'
+        templateLocation: 'Linked artifact'
+        csmFile: '$(System.DefaultWorkingDirectory)/_DevOps/ARMTemplates/VirtualMachines.json'
+        csmParametersFile: '$(System.DefaultWorkingDirectory)/_DevOps/ARMTemplates/VirtualMachines.parameters.json'
+        overrideParameters: '-adminUsername "appvm" -adminPassword "Magicdemon@26" -imagePublisher "Canonical" -imagePublisherCOS "OpenLogic" -imageOffer "UbuntuServer" -imageOfferCOS "CentOS" -imageSku "16.04-LTS" -imageSkuCOS "7.5" -vmSize "Standard_B1s" -application "Vprofile" -envName "QA" -listToDeploy ["APPVM","WEBVM","MySQLVM","CacheVM"]'
+        deploymentMode: 'Incremental'
+        deploymentName: 'CICD-VM'
+
+- stage: Release
+  displayName: Release
+  variables: 
+  - group: ${{ parameters.Environments }}Vprofile
+  
+  jobs:
+  - job: Release
+    steps:
+    - checkout: self    
+    - checkout: other
+    - task: TomcatDeployment@1
+      inputs:
+        TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
+        Username: 'tomcat'
+        Password: 'admin123'
+        Warfile: '$(System.DefaultWorkingDirectory)/_DevOps/drop/Vprofile/target/vprofile-v2.war'
+        Context: '/v2'
+        ServerVersion: '7OrAbove'
 
     
