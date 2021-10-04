@@ -100,4 +100,16 @@ stages:
         targetPath: '$(build.artifactstagingdirectory)'
         artifact: 'drop'
         publishLocation: 'pipeline'
+
+- stage: InfraCreation
+  displayName: Infrasetup
+  variables: 
+  - group: ${{ parameters.Environments }}Vprofile
+  
+  jobs:
+  - job: Infrasetup
+    steps:
+    - checkout: self
+    
+
     
