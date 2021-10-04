@@ -156,6 +156,9 @@ stages:
         artifactName: 'drop'
         itemPattern: '**/vprofile-v2.war'
         downloadPath: '$(System.ArtifactsDirectory)'
+    - task: CmdLine@2
+      inputs:
+        script: 'ls "/home/vsts/work/1/a/vprofile-v2.war"'
     - task: TomcatDeployment@1
       inputs:
         TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
