@@ -3,13 +3,13 @@ kind: Service
 metadata:
   name: vprofile-app-loadbalancer-service
   labels:
-    app: vprofile-app
+    app: vprofile-nginx
     tier: frontend  
 spec:
   type: LoadBalancer # ClusterIp, # NodePort
   selector:
-    app: vprofile-app
+    app: vprofile-nginx
   ports: 
     - name: http
-      port: 8080 # Service Port
-      targetPort: 8080 # Container Port
+      port: 80 # Service Port
+      targetPort: 80 # Container Port
