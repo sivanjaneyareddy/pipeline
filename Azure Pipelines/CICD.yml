@@ -158,13 +158,13 @@ stages:
         downloadPath: '$(System.ArtifactsDirectory)'
     - task: CmdLine@2
       inputs:
-        script: 'ls "/home/vsts/work/1/a/Vprofile"'
+        script: 'ls "/home/vsts/work/1/a/Vprofile/target"'
     - task: TomcatDeployment@1
       inputs:
         TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
         Username: 'tomcat'
         Password: 'admin123'
-        Warfile: '$(System.ArtifactsDirectory)/**/vprofile-v2.war'
+        Warfile: '$(System.ArtifactsDirectory)/Vprofile/target/vprofile-v2.war'
         Context: '/v2'
         ServerVersion: '7OrAbove'
 
