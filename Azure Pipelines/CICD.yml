@@ -1,5 +1,6 @@
 pool:
   vmImage: 'ubuntu-latest'
+  demands: 'curl'
 resources:
   repositories:
     - repository: other
