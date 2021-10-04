@@ -570,7 +570,7 @@
   "outputs": {
     "SQLPrivateIP": {
       "type": "string",
-      "value":  "[reference(resourceId('Microsoft.Network/networkInterfaces',variables('nicName').backend)).IpAddress]"
+      "value":  "[reference(resourceId('Microsoft.Network/networkInterfaces',variables('nicName').backend)).ipConfigurations]"
     }
   }
 }
