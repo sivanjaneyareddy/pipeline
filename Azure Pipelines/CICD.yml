@@ -149,6 +149,9 @@ stages:
     steps:
     - checkout: self    
     - checkout: other
+    - task: CmdLine@2
+      inputs:
+        script: 'ls $(Pipeline.Workspace)/**/vprofile-v2.war'
     - task: TomcatDeployment@1
       inputs:
         TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
