@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vprofile-db-deployment
+  labels:
+    app: vprofile-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vprofile-db
+  template:
+    metadata:
+      labels:
+        app: vprofile-db
+    spec:
+      containers:
+        - name: vprofile-db
+          image: pranay05/vprodb:241
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3306
+          # Requests & Limits   
+          resources:
+            requests:
+              cpu: "100m" 
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
