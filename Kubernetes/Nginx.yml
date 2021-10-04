@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: vprofile-nginx-deployment
   labels:
-    app: vprofile-app
+    app: vprofile-nginx
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
         app: vprofile-nginx
     spec:
       containers:
-        - name: vprofile-app
+        - name: vprofile-nginx
           image: pranay05/vpronginx:241
           imagePullPolicy: Always
           ports:
