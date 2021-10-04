@@ -151,7 +151,7 @@ stages:
     - checkout: other
     - task: CmdLine@2
       inputs:
-        script: 'ls $(build.artifactstagingdirectory)/Vprofile/target'
+        script: 'ls $(build.artifactstagingdirectory)/drop/Vprofile/target'
     - task: TomcatDeployment@1
       inputs:
         TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
