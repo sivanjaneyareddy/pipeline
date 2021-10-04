@@ -35,6 +35,7 @@ stages:
           $ChangedValues = $Contents -replace "dbservername", "$(mysql.connectionstring)"
           $ChangedValues = $ChangedValues -replace "dbusername", "$(mysql.username)"
           $ChangedValues = $ChangedValues -replace "dbpassword", "$(mysql.password)"
+          $ChangedValues = $ChangedValues -replace "mc01", "$(cache.servername)"
           $ChangedValues > $Config_path
     # - task: Maven@3
     #   inputs:
