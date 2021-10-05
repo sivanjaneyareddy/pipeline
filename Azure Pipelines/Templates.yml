@@ -14,7 +14,9 @@ parameters:
       - QA
       - STG
       - PROD  
-
+  - name: listToDeploy
+    displayName: Select in the list
+    default: ["APPVM","WEBVM","MySQLVM","CacheVM"]
 stages:
 
 - stage: build
