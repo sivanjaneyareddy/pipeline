@@ -136,7 +136,7 @@ stages:
         templateLocation: 'Linked artifact'
         csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.json'
         csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.parameters.json'
-        overrideParameters: '-adminUsername "appvm" -adminPassword "Magicdemon@26" -imagePublisher "Canonical" -imagePublisherCOS "OpenLogic" -imageOffer "UbuntuServer" -imageOfferCOS "CentOS" -imageSku "16.04-LTS" -imageSkuCOS "7.5" -vmSize "Standard_B1s" -application "Vprofile" -envName "QA" -listToDeploy ["APPVM","WEBVM","MySQLVM","CacheVM"]'
+        overrideParameters: '-adminUsername "appvm" -adminPassword "Magicdemon@26" -imagePublisher "Canonical" -imagePublisherCOS "OpenLogic" -imageOffer "UbuntuServer" -imageOfferCOS "CentOS" -imageSku "16.04-LTS" -imageSkuCOS "7.5" -vmSize "Standard_B1s" -application "Vprofile" -envName "QA" -listToDeploy ["null","null","null","null"]'
         deploymentMode: 'Incremental'
         deploymentName: 'CICD-VM'
 
