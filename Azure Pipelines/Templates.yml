@@ -33,7 +33,7 @@ stages:
   jobs:
   - template: Templates/Infra.yml
     parameters:
-      name: ${{ parameters.Environments }}
+      Environments: QA
   
 - stage: Release
   displayName: Release
