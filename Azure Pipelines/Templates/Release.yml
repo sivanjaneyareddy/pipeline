@@ -1,8 +1,4 @@
-- stage: Release
-  displayName: Release
-  variables: 
-  - group: ${{ parameters.Environments }}Vprofile
-  
+
   jobs:
   - job: Release
     steps:
