@@ -1,26 +1,4 @@
-pool:
-  vmImage: 'ubuntu-latest'
-resources:
-  repositories:
-    - repository: other
-      type: git
-      name: Java Project/Vprofile
 
-parameters:
-  - name: Environments
-    displayName: Select Environment
-    default: QA
-      - QA
-      - STG
-      - PROD  
-
-stages:
-
-- stage: build
-  displayName: Build
-  variables: 
-  - group: ${{ parameters.Environments }}Vprofile
-  
   jobs:
   - job: Build
     steps:
