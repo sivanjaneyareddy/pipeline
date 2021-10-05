@@ -21,86 +21,9 @@ stages:
   displayName: Build
   variables: 
   - group: ${{ parameters.Environments }}Vprofile
-  
+ 
   jobs:
-  - job: Build
-    steps:
-    - checkout: self
-    - checkout: other   
-    - task: PowerShell@2
-      inputs:
-        targetType: 'inline'
-        script: |
-          $Config_path = "$(System.DefaultWorkingDirectory)/Vprofile/src/main/resources/application.properties"
-          $Contents = get-content $Config_path 
-          $ChangedValues = $Contents -replace "dbservername", "$(mysql.connectionstring)"
-          $ChangedValues = $ChangedValues -replace "dbusername", "$(mysql.username)"
-          $ChangedValues = $ChangedValues -replace "dbpassword", "$(mysql.password)"
-          $ChangedValues = $ChangedValues -replace "mc01", "$(cache.servername)"
-          $ChangedValues > $Config_path
-    # - task: Maven@3
-    #   inputs:
-    #     mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
-    #     publishJUnitResults: true
-    #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    #     javaHomeOption: 'JDKVersion'
-    #     mavenVersionOption: 'Default'
-    #     mavenAuthenticateFeed: false
-    #     effectivePomSkip: false
-    #     sonarQubeRunAnalysis: true
-    #     sqMavenPluginVersionChoice: 'pom'
-    
-    - task: Maven@3
-      inputs:
-        mavenPomFile: '$(system.defaultworkingdirectory)/Vprofile/pom.xml'
-        goals: 'clean package'
-        publishJUnitResults: false
-        javaHomeOption: 'JDKVersion'
-        mavenVersionOption: 'Default'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: false
-        checkStyleRunAnalysis: true
-        pmdRunAnalysis: true
-        findBugsRunAnalysis: true
-
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: '$(system.defaultworkingdirectory)'
-        Contents: |
-            **/Vprofile/src/main/resources/application.properties
-            **/Vprofile/target/vprofile-v2.war
-        TargetFolder: '$(build.artifactstagingdirectory)'
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker Hub'
-        repository: 'pranay05/vproapp'
-        command: 'buildAndPush'
-        Dockerfile: '**/Vprofile/Pipeline/Docker-Web/Dockerfile'
-        buildContext: Vprofile
-    
-    
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker Hub'
-        repository: 'pranay05/vprodb'
-        command: 'buildAndPush'
-        Dockerfile: '**/Vprofile/Pipeline/Docker-db/Dockerfile'
-        buildContext: 'Vprofile/Pipeline/Docker-db'
-
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker Hub'
-        repository: 'pranay05/vpronginx'
-        command: 'buildAndPush'
-        Dockerfile: '**/Vprofile/Pipeline/Docker-App/Dockerfile'
-        buildContext: 'Vprofile/Pipeline/Docker-App'
-   
-    - task: PublishPipelineArtifact@1
-      inputs:
-        targetPath: '$(build.artifactstagingdirectory)'
-        artifact: 'drop'
-        publishLocation: 'pipeline'
+  - template: Templates/BUILD.yml
 
 - stage: InfraCreation
   displayName: Infrasetup
@@ -108,38 +31,8 @@ stages:
   - group: ${{ parameters.Environments }}Vprofile
   
   jobs:
-  - job: Infrasetup
-    steps:
-    - checkout: self
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'Azure-connection'
-        subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'RG-EUS-QA-JAVA'
-        location: 'East US'
-        templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.parameter.json'
-        overrideParameters: '-envName "QA" -envLocation "East US" -application "Vprofile" -vnetAddressPrefix "192.168.0.0/16" -subnetAddressPrefix {"frontend":"192.168.0.0/24","backend":"192.168.1.0/24","businessTier":"192.168.2.0/24","applicationGW":"192.168.3.0/24"}'
-        deploymentMode: 'Incremental'
-        deploymentName: 'cicd-vnet'
-    - task: AzureResourceManagerTemplateDeployment@3
-      inputs:
-        deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'Azure-connection'
-        subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: 'RG-EUS-QA-JAVA'
-        location: 'East US'
-        templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.parameters.json'
-        overrideParameters: '-adminUsername "appvm" -adminPassword "Magicdemon@26" -imagePublisher "Canonical" -imagePublisherCOS "OpenLogic" -imageOffer "UbuntuServer" -imageOfferCOS "CentOS" -imageSku "16.04-LTS" -imageSkuCOS "7.5" -vmSize "Standard_B1s" -application "Vprofile" -envName "QA" -listToDeploy ["APPVM","WEBVM","MySQLVM","CacheVM"]'
-        deploymentMode: 'Incremental'
-        deploymentName: 'CICD-VM'
-
+  - template: Templates/Infra.yml
+  
 - stage: Release
   displayName: Release
   variables: 
