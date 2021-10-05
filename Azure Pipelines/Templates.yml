@@ -16,16 +16,20 @@ parameters:
       - PROD
 
   - name: AppVm
-    default: APPVM
+    default: null
+      - APPVM
 
   - name: WebVm
-    default: WEBVM
+    default: null
+      - WEBVM
 
   - name: MysqlVm
-    default: MySQLVM
+    default: null
+      - MySQLVM
 
   - name: CacheVm
-    default: CacheVM
+    default: null 
+      - CacheVM
 
 stages:
 
