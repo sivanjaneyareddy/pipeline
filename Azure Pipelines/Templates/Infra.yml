@@ -15,7 +15,11 @@
         templateLocation: 'Linked artifact'
         csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.json'
         csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.parameter.json'
-        overrideParameters: '-envName "QA" -envLocation "East US" -application "Vprofile" -vnetAddressPrefix "192.168.0.0/16" -subnetAddressPrefix {"frontend":"192.168.0.0/24","backend":"192.168.1.0/24","businessTier":"192.168.2.0/24","applicationGW":"192.168.3.0/24"}'
+        overrideParameters:  -envName "QA" 
+                             -envLocation "East US" 
+                             -application "Vprofile" 
+                             -vnetAddressPrefix "192.168.0.0/16" 
+                             -subnetAddressPrefix {"frontend":"192.168.0.0/24","backend":"192.168.1.0/24","businessTier":"192.168.2.0/24","applicationGW":"192.168.3.0/24"}
         deploymentMode: 'Incremental'
         deploymentName: 'cicd-vnet'
     - task: AzureResourceManagerTemplateDeployment@3
@@ -30,6 +34,17 @@
         templateLocation: 'Linked artifact'
         csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.json'
         csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.parameters.json'
-        overrideParameters: '-adminUsername "appvm" -adminPassword "Magicdemon@26" -imagePublisher "Canonical" -imagePublisherCOS "OpenLogic" -imageOffer "UbuntuServer" -imageOfferCOS "CentOS" -imageSku "16.04-LTS" -imageSkuCOS "7.5" -vmSize "Standard_B1s" -application "Vprofile" -envName "QA" -listToDeploy ["APPVM","WEBVM","MySQLVM","CacheVM"]'
+        overrideParameters: -adminUsername "appvm" 
+                            -adminPassword "Magicdemon@26" 
+                            -imagePublisher "Canonical" 
+                            -imagePublisherCOS "OpenLogic" 
+                            -imageOffer "UbuntuServer" 
+                            -imageOfferCOS "CentOS" 
+                            -imageSku "16.04-LTS" 
+                            -imageSkuCOS "7.5" 
+                            -vmSize "Standard_B1s" 
+                            -application "Vprofile" 
+                            -envName "QA" 
+                            -listToDeploy ["APPVM","WEBVM","MySQLVM","CacheVM"]
         deploymentMode: 'Incremental'
         deploymentName: 'CICD-VM'
