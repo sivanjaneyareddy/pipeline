@@ -1,8 +1,4 @@
-- stage: InfraCreation
-  displayName: Infrasetup
-  variables: 
-  - group: ${{ parameters.Environments }}Vprofile
-  
+
   jobs:
   - job: Infrasetup
     steps:
