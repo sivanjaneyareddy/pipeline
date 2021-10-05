@@ -51,31 +51,7 @@
             **/Vprofile/src/main/resources/application.properties
             **/Vprofile/target/vprofile-v2.war
         TargetFolder: '$(build.artifactstagingdirectory)'
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker Hub'
-        repository: 'pranay05/vproapp'
-        command: 'buildAndPush'
-        Dockerfile: '**/Vprofile/Pipeline/Docker-Web/Dockerfile'
-        buildContext: Vprofile
     
-    
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker Hub'
-        repository: 'pranay05/vprodb'
-        command: 'buildAndPush'
-        Dockerfile: '**/Vprofile/Pipeline/Docker-db/Dockerfile'
-        buildContext: 'Vprofile/Pipeline/Docker-db'
-
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'Docker Hub'
-        repository: 'pranay05/vpronginx'
-        command: 'buildAndPush'
-        Dockerfile: '**/Vprofile/Pipeline/Docker-App/Dockerfile'
-        buildContext: 'Vprofile/Pipeline/Docker-App'
-   
     - task: PublishPipelineArtifact@1
       displayName: Publishing the artifacts to drop folder
       inputs:
