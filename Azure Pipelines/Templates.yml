@@ -13,7 +13,19 @@ parameters:
     default: QA
       - QA
       - STG
-      - PROD  
+      - PROD
+
+  - name: AppVm
+    default: APPVM
+
+  - name: WebVm
+    default: WEBVM
+
+  - name: MysqlVm
+    default: MySQLVM
+
+  - name: CacheVm
+    default: CacheVM
 
 stages:
 
@@ -33,7 +45,11 @@ stages:
   jobs:
   - template: Templates/Infra.yml
     parameters:
-      Environments: QA
+      Environments: ${{ parameters.Environments }}
+      AppVm: ${{ parameters.AppVm }}
+      WebVm: ${{ parameters.WebVm }}
+      MysqlVm: ${{ parameters.MysqlVm }}
+      CacheVm: ${{ parameters.CacheVm }}
   
 - stage: Release
   displayName: Release
