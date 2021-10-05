@@ -8,10 +8,10 @@
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'Azure-connection'
-        subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
+        subscriptionId: '$(Nonprod.subscriptionId)'
         action: 'Create Or Update Resource Group'
-        resourceGroupName: 'RG-EUS-QA-JAVA'
-        location: 'East US'
+        resourceGroupName: '$(QA-RG)'
+        location: '$(Location)'
         templateLocation: 'Linked artifact'
         csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.json'
         csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.parameter.json'
