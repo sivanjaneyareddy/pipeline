@@ -45,6 +45,6 @@
                             -vmSize "$(QA-vmSize)" 
                             -application "Vprofile" 
                             -envName "${{ parameters.Environments }}" 
-                            -listToDeploy ["APPVM","WEBVM","MySQLVM","CacheVM"]
+                            -listToDeploy ["null","null","null","null"]
         deploymentMode: 'Incremental'
         deploymentName: 'CICD-VM'
