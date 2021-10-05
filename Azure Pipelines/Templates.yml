@@ -32,6 +32,8 @@ stages:
   
   jobs:
   - template: Templates/Infra.yml
+    parameters:
+      name: ${{ parameters.Environments }}
   
 - stage: Release
   displayName: Release
