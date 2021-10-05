@@ -4,6 +4,7 @@
     steps:
     - checkout: self
     - task: AzureResourceManagerTemplateDeployment@3
+      displayName: Creating Virtual Network
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'Azure-connection'
@@ -18,6 +19,7 @@
         deploymentMode: 'Incremental'
         deploymentName: 'cicd-vnet'
     - task: AzureResourceManagerTemplateDeployment@3
+      displayName: Creating Virtual Machines
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'Azure-connection'
