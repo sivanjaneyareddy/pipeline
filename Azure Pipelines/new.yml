@@ -24,5 +24,5 @@ jobs:
       - job: 
         displayName:  dash Deployment
         steps:
-          - script: list of enviprinments ${{ allenv.env }}
+          - script: list of enviprinments ${{ allenv.value }}
   
