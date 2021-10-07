@@ -1,6 +1,5 @@
 
   jobs:
-  - ${{each thing in parameters.Environments}}:
     - job:
       displayname: BUILDING ${{thing}} ENVIRONMENT
       variables:
