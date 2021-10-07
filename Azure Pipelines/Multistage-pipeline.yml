@@ -41,6 +41,10 @@ stages:
  
   jobs:
   - template: Templates/BUILD.yml
+    parameters:
+      Environments: ${{ parameters.Environments }}
+      NonProdEnvironments: ${{ parameters.NonProdEnvironments }}
+
 
 # - stage: InfraCreation
 #   displayName: Infrasetup
