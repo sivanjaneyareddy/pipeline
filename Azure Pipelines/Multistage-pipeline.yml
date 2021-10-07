@@ -1,10 +1,13 @@
 parameters:
-- name: foo
-  type: object
-  default: [qa]
+  - name: my_array_param
+    default: ['entry1', 'entry2']
+    type: object
 
 jobs:
-  - job:
+  - job: 
     steps:
-      - ${{each env in parameters.foo}}:
-        - script: echo ${{parameters.foo}}
+    - task: CmdLine@2
+      displayName: Log Parameters
+      inputs:
+       script: |
+        echo my_array_param: ${{join(' ',parameters.my_array_param)}}
