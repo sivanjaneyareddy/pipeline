@@ -1,9 +1,10 @@
 parameters:
   - name: my_array_param
-    default: ['entry1', 'entry2']
+    default: ['qa', 'stg']
     type: object
 
 jobs:
+- ${{each thing in parameters.my_array_param}}:
   - job: 
     steps:
     - task: CmdLine@2
