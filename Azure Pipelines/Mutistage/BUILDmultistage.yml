@@ -1,9 +1,9 @@
 
   jobs:
     - job:
-      displayName: BUILDING ${{Environments}} ENVIRONMENT
+      displayName: BUILDING ${{ parameters.Environments }} ENVIRONMENT
       variables:
-        - group: ${{Environments}}Vprofile
+        - group:${{ parameters.Environments }}Vprofile
       steps:
       - checkout: self
       - checkout: other   
