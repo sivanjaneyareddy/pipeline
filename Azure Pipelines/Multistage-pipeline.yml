@@ -16,28 +16,31 @@ parameters:
     default: None
       - STG
 
-  - name: AppVm
-    default: null
-      - APPVM
+  # - name: AppVm
+  #   default: null
+  #     - APPVM
 
-  - name: WebVm
-    default: null
-      - WEBVM
+  # - name: WebVm
+  #   default: null
+  #     - WEBVM
 
-  - name: MysqlVm
-    default: null
-      - MySQLVM
+  # - name: MysqlVm
+  #   default: null
+  #     - MySQLVM
 
-  - name: CacheVm
-    default: null 
-      - CacheVM
+  # - name: CacheVm
+  #   default: null 
+  #     - CacheVM
 
 stages:
 
 - stage: build
   displayName: Build
-  variables: 
-  - group: ${{ parameters.Environments }}Vprofile
+  variables:
+  - ${{ if contains(parameters.Environments, 'QA') }}: 
+    - group: ${{ parameters.Environments }}Vprofile
+  - ${{ if contains(parameters.NonProdEnvironments, 'STG') }}:
+    - group: ${{ parameters.NonProdEnvironments }}Vprofile
  
   jobs:
   - template: Mutistage/BUILDmultistage.yml
