@@ -10,10 +10,11 @@ resources:
 parameters:
   - name: Environments
     displayName: Select QA Environment
-    default: QA
+    default: None
+      - QA
   - name: NonProdEnvironments
-    type: object
-    default: [QA,STG]
+    default: None
+      - STG
 
   - name: AppVm
     default: null
