@@ -1,6 +1,8 @@
 parameters:
   - name: my_array_param
-    default: ['QA', 'STG']
+    default: 
+    - QA 
+    - STG
     type: object
 
 jobs:
