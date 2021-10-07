@@ -36,12 +36,12 @@ stages:
 #  #- group: ${{parameters.Environments }}Vprofile
  
   jobs:
-  - ${{each thing in parameters.Environments}}:
+  - ${{each env in parameters.Environments}}:
     - template: Mutistage/BUILDmultistage.yml
       
       parameters:
-        Environments: ${{thing}}
-        dependsOn: ${{thing}}
+        Environments: ${{env}}
+        dependsOn: ${{env}}
 # - stage: InfraCreation
 #   displayName: Infrasetup
 #   variables: 
