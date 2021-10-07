@@ -12,8 +12,8 @@ parameters:
     displayName: Select QA Environment
     default: QA
   - name: NonProdEnvironments
-    displayName: Select STG environment
-    default: STG
+    type: object
+    default: [QA,STG]
 
   - name: AppVm
     default: null
