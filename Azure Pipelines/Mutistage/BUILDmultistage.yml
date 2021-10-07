@@ -7,6 +7,7 @@
       - checkout: self
       - checkout: other   
       - task: PowerShell@2
+      - group: ${{thing}}Vprofile
         displayName: Replacing the environment specific values
         inputs:
           targetType: 'inline'
