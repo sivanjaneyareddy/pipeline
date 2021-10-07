@@ -1,14 +1,10 @@
 parameters:
   - name: my_array_param
-    default: 
-      env1: QA 
-      env2: STG
+    default: ['QA', 'STG']
     type: object
-
 jobs:
 - ${{each thing in parameters.my_array_param}}:
-- job: build
-  displayName: Build
-  variables: 
-  - group: ${{join(' ',parameters.my_array_param)}}Vprofile
+  - job: 
+    steps:
+    - pwsh: Write-Output ${{thing.value}}
       
