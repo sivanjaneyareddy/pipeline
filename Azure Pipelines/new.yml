@@ -21,7 +21,7 @@ parameters:
 jobs:
   - ${{ if ne(length(parameters.EnvironmentsToDeploy), 0) }}:
     - ${{ each allenv in parameters.EnvironmentsToDeploy }}:
-      - job: 
+      - job: 1
         displayName: Deployment
         steps:
         - task: PowerShell@2
