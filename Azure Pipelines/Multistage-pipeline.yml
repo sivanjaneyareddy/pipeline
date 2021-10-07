@@ -32,8 +32,8 @@ stages:
 
 - stage: build
   displayName: Build
-  variables: 
-  - group: ${{parameters.Environments }}Vprofile
+  #variables: 
+ #- group: ${{parameters.Environments }}Vprofile
  
   jobs:
  # - ${{each thing in parameters.Environments}}:
