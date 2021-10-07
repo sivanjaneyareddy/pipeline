@@ -1,8 +1,10 @@
 parameters:
 - name: foo
   type: object
-  default: []
+  default: [qa]
 
-steps:
-- ${{each env in parameters.foo}}:
-  - script: echo ${{parameters.foo}}
+jobs:
+  - job:
+    steps:
+      - ${{each env in parameters.foo}}:
+        - script: echo ${{parameters.foo}}
