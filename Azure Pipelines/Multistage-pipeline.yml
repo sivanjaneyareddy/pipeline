@@ -8,5 +8,5 @@ stages:
 - stage: build
   displayName: Build
   variables: 
-  - group: ${{ parameters.Environments }}Vprofile
+  - group: ${{parameters.my_array_param }}Vprofile
       
