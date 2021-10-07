@@ -2,8 +2,8 @@ parameters:
 - name: foo
   type: object
   default: 
-  - qa
-  - stg
+   - qa
+   - stg
 
 steps:
 - ${{each env in parameters.foo}}:
