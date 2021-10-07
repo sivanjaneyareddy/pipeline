@@ -2,10 +2,9 @@ parameters:
 - name: foo
   type: object
   default: 
-    - env: qa
-    - env: stg
+    env1: qa
+    env2: stg
 
 steps:
-- checkout: none
 - ${{each env in parameters.foo}}:
   - script: echo ${{parameters.foo}}
