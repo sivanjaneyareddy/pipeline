@@ -30,7 +30,7 @@ parameters:
 
 stages:
 
-- stage: build
+- stage: 
   displayName: Build
 #   #variables: 
 #  #- group: ${{parameters.Environments }}Vprofile
