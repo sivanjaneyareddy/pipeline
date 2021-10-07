@@ -9,11 +9,11 @@ resources:
 
 parameters:
   - name: Environments
-    displayName: Select Environment
+    displayName: Select QA Environment
     default: QA
-      - QA
-      - STG
-      - PROD
+  - name: NonProdEnvironments
+    displayName: Select STG environment
+    default: STG
 
   - name: AppVm
     default: null
@@ -41,26 +41,26 @@ stages:
   jobs:
   - template: Templates/BUILD.yml
 
-- stage: InfraCreation
-  displayName: Infrasetup
-  variables: 
-  - group: ${{ parameters.Environments }}Vprofile
+# - stage: InfraCreation
+#   displayName: Infrasetup
+#   variables: 
+#   - group: ${{ parameters.Environments }}Vprofile
   
-  jobs:
-  - template: Templates/Infra.yml
-    parameters:
-      Environments: ${{ parameters.Environments }}
-      AppVm: ${{ parameters.AppVm }}
-      WebVm: ${{ parameters.WebVm }}
-      MysqlVm: ${{ parameters.MysqlVm }}
-      CacheVm: ${{ parameters.CacheVm }}
+#   jobs:
+#   - template: Templates/Infra.yml
+#     parameters:
+#       Environments: ${{ parameters.Environments }}
+#       AppVm: ${{ parameters.AppVm }}
+#       WebVm: ${{ parameters.WebVm }}
+#       MysqlVm: ${{ parameters.MysqlVm }}
+#       CacheVm: ${{ parameters.CacheVm }}
   
-- stage: Release
-  displayName: Release
-  variables: 
-  - group: ${{ parameters.Environments }}Vprofile
+# - stage: Release
+#   displayName: Release
+#   variables: 
+#   - group: ${{ parameters.Environments }}Vprofile
   
-  jobs:
-  - template: Templates/Release.yml
+#   jobs:
+#   - template: Templates/Release.yml
 
     
