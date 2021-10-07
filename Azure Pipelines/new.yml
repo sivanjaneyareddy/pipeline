@@ -21,8 +21,8 @@ parameters:
 jobs:
   - ${{ if ne(length(parameters.EnvironmentsToDeploy), 0) }}:
     - ${{ each allenv in parameters.EnvironmentsToDeploy }}:
-      - job: NOP
-        displayName: NOP dash Deployment
+      - job: test
+        displayName:  dash Deployment
         steps:
           - script: list of enviprinments ${{ allenv.env }}
   
