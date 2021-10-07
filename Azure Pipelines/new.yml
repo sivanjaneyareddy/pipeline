@@ -28,7 +28,7 @@ jobs:
           inputs:
             targetType: 'inline'
             script: |
-              Write-Host {{ allenv.env}}
+              Write-Host ${{ allenv.env}}
                
               
   
