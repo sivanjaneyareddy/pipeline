@@ -1,8 +1,8 @@
 parameters:
   - name: my_array_param
     default: 
-    - QA 
-    - STG
+      env1: QA 
+      env2: STG
     type: object
 
 jobs:
