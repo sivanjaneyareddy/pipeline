@@ -1,56 +1,6 @@
 
-jobs:
-- ${{ if contains(parameters.Environments, 'QA') }}:
+  jobs:
   - job: Build
-      steps:
-      - checkout: self
-      - checkout: other   
-      - task: PowerShell@2
-        displayName: Replacing the environment specific values
-        inputs:
-          targetType: 'inline'
-          script: |
-            $Config_path = "$(System.DefaultWorkingDirectory)/Vprofile/src/main/resources/application.properties"
-            $Contents = get-content $Config_path 
-            $ChangedValues = $Contents -replace "dbservername", "$(mysql.connectionstring)"
-            $ChangedValues = $ChangedValues -replace "dbusername", "$(mysql.username)"
-            $ChangedValues = $ChangedValues -replace "dbpassword", "$(mysql.password)"
-            $ChangedValues = $ChangedValues -replace "mc01", "$(cache.servername)"
-           $ChangedValues > $Config_path
-    
-      - task: Maven@3
-        displayName: Building the application
-        inputs:
-          mavenPomFile: '$(system.defaultworkingdirectory)/Vprofile/pom.xml'
-          goals: 'clean package'
-          publishJUnitResults: false
-          javaHomeOption: 'JDKVersion'
-          mavenVersionOption: 'Default'
-          mavenAuthenticateFeed: false
-          effectivePomSkip: false
-          sonarQubeRunAnalysis: false
-          checkStyleRunAnalysis: true
-          pmdRunAnalysis: true
-          findBugsRunAnalysis: true
-
-      - task: CopyFiles@2
-        displayName: Copying the build artifacts to StageArtifactdirectory
-        inputs:
-          SourceFolder: '$(system.defaultworkingdirectory)'
-          Contents: |
-            **/Vprofile/src/main/resources/application.properties
-            **/Vprofile/target/vprofile-v2.war
-          TargetFolder: '$(build.artifactstagingdirectory)'
-    
-      - task: PublishPipelineArtifact@1
-        displayName: Publishing the artifacts to drop folder
-        inputs:
-          targetPath: '$(build.artifactstagingdirectory)'
-          artifact: '${{parameters.Environments }}-drop'
-          publishLocation: 'pipeline'
-
-- ${{ if contains(parameters.NonProdEnvironments, 'STG') }}:
-- job: Build
     steps:
     - checkout: self
     - checkout: other   
@@ -66,6 +16,17 @@ jobs:
           $ChangedValues = $ChangedValues -replace "dbpassword", "$(mysql.password)"
           $ChangedValues = $ChangedValues -replace "mc01", "$(cache.servername)"
           $ChangedValues > $Config_path
+    # - task: Maven@3
+    #   inputs:
+    #     mavenPomFile: '$(system.defaultworkingdirectory)\Vprofile\pom.xml'
+    #     publishJUnitResults: true
+    #     testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    #     javaHomeOption: 'JDKVersion'
+    #     mavenVersionOption: 'Default'
+    #     mavenAuthenticateFeed: false
+    #     effectivePomSkip: false
+    #     sonarQubeRunAnalysis: true
+    #     sqMavenPluginVersionChoice: 'pom'
     
     - task: Maven@3
       displayName: Building the application
@@ -95,6 +56,6 @@ jobs:
       displayName: Publishing the artifacts to drop folder
       inputs:
         targetPath: '$(build.artifactstagingdirectory)'
-        artifact: '${{parameters.NonProdEnvironments }}-drop'
+        artifact: 'drop'
         publishLocation: 'pipeline'
     
