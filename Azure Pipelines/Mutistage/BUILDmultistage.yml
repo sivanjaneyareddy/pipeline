@@ -3,11 +3,13 @@
   - ${{each thing in parameters.Environments}}:
     - job: Build
       displayname: BUILDING ${{thing}} ENVIRONMENT
+      variables:
+        - group: ${{thing}}Vprofile
       steps:
       - checkout: self
       - checkout: other   
       - task: PowerShell@2
-      - group: ${{thing}}Vprofile
+      
         displayName: Replacing the environment specific values
         inputs:
           targetType: 'inline'
