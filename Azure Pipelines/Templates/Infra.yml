@@ -10,7 +10,7 @@
         azureResourceManagerConnection: 'Azure-connection'
         subscriptionId: '$(Nonprod.subscriptionId)'
         action: 'Create Or Update Resource Group'
-        resourceGroupName: '$(QA-RG)'
+        resourceGroupName: '$(RG)'
         location: '$(Location)'
         templateLocation: 'Linked artifact'
         csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.json'
@@ -29,20 +29,20 @@
         azureResourceManagerConnection: 'Azure-connection'
         subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
         action: 'Create Or Update Resource Group'
-        resourceGroupName: '$(QA-RG)'
+        resourceGroupName: '$(RG)'
         location: '$(Location)'
         templateLocation: 'Linked artifact'
         csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.json'
         csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.parameters.json'
-        overrideParameters: -adminUsername "$(QA-adminusername)" 
-                            -adminPassword "$(QA-vmpassword)" 
+        overrideParameters: -adminUsername "$(adminusername)" 
+                            -adminPassword "$(vmpassword)" 
                             -imagePublisher "Canonical" 
                             -imagePublisherCOS "OpenLogic" 
                             -imageOffer "UbuntuServer" 
                             -imageOfferCOS "CentOS" 
                             -imageSku "16.04-LTS" 
                             -imageSkuCOS "7.5" 
-                            -vmSize "$(QA-vmSize)" 
+                            -vmSize "$(vmSize)" 
                             -application "Vprofile" 
                             -envName "${{ parameters.Environments }}" 
                             -listToDeploy ["${{ parameters.AppVm }}","${{ parameters.WebVm }}","${{ parameters.MysqlVm }}","${{ parameters.CacheVm }}"]
