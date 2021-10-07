@@ -38,9 +38,10 @@ stages:
   jobs:
   - ${{each thing in parameters.Environments}}:
     - template: Mutistage/BUILDmultistage.yml
+      
       parameters:
         Environments: ${{thing}}
-
+        dependsOn: ${{thing}}
 # - stage: InfraCreation
 #   displayName: Infrasetup
 #   variables: 
