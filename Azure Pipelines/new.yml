@@ -18,9 +18,11 @@ parameters:
     - env: stg
 
 
-job:
-  jobs:
+jobs:
   - ${{ if ne(length(parameters.EnvironmentsToDeploy), 0) }}:
-    - ${{ each dashEnv in parameters.EnvironmentsToDeploy }}:
-  steps:
+    - ${{ each allenv in parameters.EnvironmentsToDeploy }}:
+      - job: NOP
+        displayName: NOP dash Deployment
+        steps:
+          - script: list of enviprinments ${{ allenv.env }}
   
