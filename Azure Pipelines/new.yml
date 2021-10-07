@@ -24,5 +24,11 @@ jobs:
       - job: 
         displayName:  dash Deployment
         steps:
-          - script: list of enviprinments ${{ allenv.value }}
+        - task: PowerShell@2
+          inputs:
+            targetType: 'inline'
+            script: |
+              Write-Host {{ allenv.env}}
+               
+              
   
