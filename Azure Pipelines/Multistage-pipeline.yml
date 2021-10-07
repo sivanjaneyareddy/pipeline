@@ -40,7 +40,7 @@ stages:
   - group: ${{ parameters.Environments }}Vprofile
  
   jobs:
-  - template: Templates/BUILD.yml
+  - template: Mutistage/BUILDmultistage.yml
     parameters:
       Environments: ${{ parameters.Environments }}
       NonProdEnvironments: ${{ parameters.NonProdEnvironments }}
