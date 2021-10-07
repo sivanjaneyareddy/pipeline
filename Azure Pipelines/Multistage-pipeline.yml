@@ -8,5 +8,5 @@ jobs:
 - job: build
   displayName: Build
   variables: 
-  - group: ${{parameters.my_array_param }}Vprofile
+  - group: ${{join(' ',parameters.my_array_param)}}Vprofile
       
