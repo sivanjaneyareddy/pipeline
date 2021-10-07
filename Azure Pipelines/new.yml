@@ -22,7 +22,7 @@ jobs:
   - ${{ if ne(length(parameters.EnvironmentsToDeploy), 0) }}:
     - ${{ each allenv in parameters.EnvironmentsToDeploy }}:
       - job: 
-        displayName:  dash Deployment
+        displayName: Deployment
         steps:
         - task: PowerShell@2
           inputs:
