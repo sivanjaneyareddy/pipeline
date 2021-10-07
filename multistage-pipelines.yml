@@ -1,0 +1,66 @@
+pool:
+  vmImage: 'ubuntu-latest'
+  demands: 'curl'
+resources:
+  repositories:
+    - repository: other
+      type: git
+      name: Java Project/Vprofile
+
+parameters:
+  - name: Environments
+    displayName: Select Environment
+    default: QA
+      - QA
+      - STG
+      - PROD
+
+  - name: AppVm
+    default: null
+      - APPVM
+
+  - name: WebVm
+    default: null
+      - WEBVM
+
+  - name: MysqlVm
+    default: null
+      - MySQLVM
+
+  - name: CacheVm
+    default: null 
+      - CacheVM
+
+stages:
+
+- stage: build
+  displayName: Build
+  variables: 
+  - group: ${{ parameters.Environments }}Vprofile
+ 
+  jobs:
+  - template: Templates/BUILD.yml
+
+- stage: InfraCreation
+  displayName: Infrasetup
+  variables: 
+  - group: ${{ parameters.Environments }}Vprofile
+  
+  jobs:
+  - template: Templates/Infra.yml
+    parameters:
+      Environments: ${{ parameters.Environments }}
+      AppVm: ${{ parameters.AppVm }}
+      WebVm: ${{ parameters.WebVm }}
+      MysqlVm: ${{ parameters.MysqlVm }}
+      CacheVm: ${{ parameters.CacheVm }}
+  
+- stage: Release
+  displayName: Release
+  variables: 
+  - group: ${{ parameters.Environments }}Vprofile
+  
+  jobs:
+  - template: Templates/Release.yml
+
+    
