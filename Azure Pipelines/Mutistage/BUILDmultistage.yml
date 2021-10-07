@@ -1,7 +1,7 @@
 
   jobs:
     - job:
-      displayname: BUILDING ${{thing}} ENVIRONMENT
+      displayName: BUILDING ${{thing}} ENVIRONMENT
       variables:
         - group: ${{thing}}Vprofile
       steps:
