@@ -3,7 +3,7 @@
     - job:
       displayName: BUILDING ${{ parameters.Environments }} ENVIRONMENT
       variables:
-        - group:${{ parameters.Environments }}Vprofile
+        - group: ${{ parameters.Environments }}Vprofile
       steps:
       - checkout: self
       - checkout: other   
@@ -50,6 +50,6 @@
         displayName: Publishing the artifacts to drop folder
         inputs:
           targetPath: '$(build.artifactstagingdirectory)'
-          artifact: '${{Environments}}drop'
+          artifact: '${{ parameters.Environments }}drop'
           publishLocation: 'pipeline'
     
