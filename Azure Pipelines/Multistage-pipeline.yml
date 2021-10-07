@@ -3,9 +3,9 @@ parameters:
     default: ['QA', 'STG']
     type: object
 
-stages:
+jobs:
 - ${{each thing in parameters.my_array_param}}:
-- stage: build
+- job: build
   displayName: Build
   variables: 
   - group: ${{parameters.my_array_param }}Vprofile
