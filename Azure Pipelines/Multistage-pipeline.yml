@@ -28,16 +28,16 @@ parameters:
   #   default: null 
   #     - CacheVM
 
-# stages:
+stages:
 
-# - stage: build
-#   displayName: Build
+- stage: build
+  displayName: Build
 #   #variables: 
 #  #- group: ${{parameters.Environments }}Vprofile
  
-jobs:
+  jobs:
  # - ${{each thing in parameters.Environments}}:
-- template: Mutistage/BUILDmultistage.yml
+  - template: Mutistage/BUILDmultistage.yml
 
 # - stage: InfraCreation
 #   displayName: Infrasetup
