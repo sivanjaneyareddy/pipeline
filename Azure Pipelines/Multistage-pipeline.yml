@@ -12,21 +12,21 @@ parameters:
     default: ['QA', 'STG']
     type: object
 
-  # - name: AppVm
-  #   default: null
-  #     - APPVM
+  - name: AppVm
+    default: null
+      - APPVM
 
-  # - name: WebVm
-  #   default: null
-  #     - WEBVM
+  - name: WebVm
+    default: null
+      - WEBVM
 
-  # - name: MysqlVm
-  #   default: null
-  #     - MySQLVM
+  - name: MysqlVm
+    default: null
+      - MySQLVM
 
-  # - name: CacheVm
-  #   default: null 
-  #     - CacheVM
+  - name: CacheVm
+    default: null 
+      - CacheVM
 
 stages:
 
@@ -42,20 +42,49 @@ stages:
       parameters:
         Environments: ${{env}}
         dependsOn: ${{env}}
-# - stage: InfraCreation
-#   displayName: Infrasetup
-#   variables: 
-#   - group: ${{ parameters.Environments }}Vprofile
+
+- stage: QA InfraCreation-Release
+  displayName: Infrasetup and Release
+  variables: 
+  - group: QAVprofile
   
-#   jobs:
-#   - template: Templates/Infra.yml
-#     parameters:
-#       Environments: ${{ parameters.Environments }}
-#       AppVm: ${{ parameters.AppVm }}
-#       WebVm: ${{ parameters.WebVm }}
-#       MysqlVm: ${{ parameters.MysqlVm }}
-#       CacheVm: ${{ parameters.CacheVm }}
+  jobs:
   
+    - job: Infrasetup
+      displayName: InfrasetUP
+    - template: Mutistage/Inframultistage.yml
+      parameters:
+        Environments: QA
+        AppVm: ${{ parameters.AppVm }}
+        WebVm: ${{ parameters.WebVm }}
+        MysqlVm: ${{ parameters.MysqlVm }}
+        CacheVm: ${{ parameters.CacheVm }}
+    - job: Release
+      displayName: Release
+      dependsOn: Infrasetup
+    - template: Mutistage/Releasemultistage.yml
+
+- stage: STG InfraCreation-Release
+  displayName: Infrasetup and Release
+  variables: 
+  - group: STGVprofile
+  
+  jobs:
+  
+    - job: Infrasetup
+      displayName: InfrasetUP
+    - template: Mutistage/Inframultistage.yml
+      parameters:
+        Environments: STG
+        AppVm: ${{ parameters.AppVm }}
+        WebVm: ${{ parameters.WebVm }}
+        MysqlVm: ${{ parameters.MysqlVm }}
+        CacheVm: ${{ parameters.CacheVm }}
+    - job: Release
+      displayName: Release
+      dependsOn: Infrasetup
+    - template: Mutistage/Releasemultistage.yml
+
 # - stage: Release
 #   displayName: Release
 #   variables: 
