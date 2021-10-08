@@ -1,5 +1,4 @@
 
-  jobs:
   - job: Infrasetup${{ parameters.Environments }}
     steps:
     - checkout: self
