@@ -51,7 +51,7 @@ stages:
   
   jobs:
   
-    - job: Infrasetup
+    - job: InfrasetupQA
       displayName: InfrasetUP
     - template: Mutistage/Inframultistage.yml
       parameters:
@@ -61,7 +61,7 @@ stages:
         MysqlVm: ${{ parameters.MysqlVm }}
         CacheVm: ${{ parameters.CacheVm }}
     - job: Release
-      displayName: Release
+      displayName: ReleaseQA
       dependsOn: Infrasetup
     - template: Mutistage/Releasemultistage.yml
 
@@ -73,7 +73,7 @@ stages:
   
   jobs:
   
-    - job: Infrasetup
+    - job: InfrasetupSTG
       displayName: InfrasetUP
     - template: Mutistage/Inframultistage.yml
       parameters:
@@ -82,7 +82,7 @@ stages:
         WebVm: ${{ parameters.WebVm }}
         MysqlVm: ${{ parameters.MysqlVm }}
         CacheVm: ${{ parameters.CacheVm }}
-    - job: Release
+    - job: ReleaseSTG
       displayName: Release
       dependsOn: Infrasetup
     - template: Mutistage/Releasemultistage.yml
