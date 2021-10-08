@@ -1,4 +1,4 @@
-Steps:
+steps:
 - checkout: self    
 - checkout: other
 - task: DownloadBuildArtifacts@1
