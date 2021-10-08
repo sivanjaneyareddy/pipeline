@@ -303,7 +303,7 @@
                 },
                 "identityProfile": {
                     "kubeletidentity": {
-                        "resourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name'))]",
+                        "kubeResourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name'))]",
                         "clientId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name')).clientId]",
                         "objectId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name')).principalId]"
                     }
