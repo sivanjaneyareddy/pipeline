@@ -24,7 +24,7 @@
         },
         "aksPoolCount": {
             "defaultValue": "0",
-            "type": "int"
+            "type": "integer"
         },
         "agentpool_managedid_name": {
             "defaultValue": "aksdemo1-agentpool",
