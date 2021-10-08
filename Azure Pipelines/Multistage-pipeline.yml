@@ -86,7 +86,8 @@ stages:
     - job: ReleaseSTG
       displayName: Release
       dependsOn: Infrasetup
-    - template: Mutistage/Releasemultistage.yml
+      steps:
+      - template: Mutistage/Releasemultistage.yml
 
 # - stage: Release
 #   displayName: Release
