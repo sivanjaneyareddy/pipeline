@@ -308,8 +308,8 @@
                 "identityProfile": {
                     "kubeletidentity": {
                         "kubeResourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name'))]",
-                        "clientId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name')).tenantId]",
-                        "objectId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name')).principalId]"
+                        "clientId": "51a05f2d-60dc-4790-b2ee-3f1bd4f8083c",
+                        "objectId": "725f6857-7647-4239-bcb6-b50fb3e562c0"
                     }
                 }
             }
