@@ -24,7 +24,7 @@
         },
         "aksPoolCount": {
             "defaultValue": "0",
-            "type": "String"
+            "type": "int"
         },
         "agentpool_managedid_name": {
             "defaultValue": "aksdemo1-agentpool",
@@ -36,7 +36,7 @@
         },
         "aksPoolOsDiskSize": {
             "defaultValue": "128",
-            "type": "String"
+            "type": "int"
         },
         "aksPoolOsDiskType": {
             "defaultValue": "Managed",
