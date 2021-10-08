@@ -1,6 +1,6 @@
 
   jobs:
-  - job: Release
+  - job: Release${{ parameters.Environments }}
     steps:
     - checkout: self    
     - checkout: other
