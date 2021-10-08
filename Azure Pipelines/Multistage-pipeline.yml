@@ -30,7 +30,7 @@ parameters:
 
 stages:
 
-- stage: 
+- stage: Build 
   displayName: Build
 #   #variables: 
 #  #- group: ${{parameters.Environments }}Vprofile
@@ -45,6 +45,7 @@ stages:
 
 - stage: QA InfraCreation-Release
   displayName: Infrasetup and Release
+  dependsOn: Build
   variables: 
   - group: QAVprofile
   
@@ -66,6 +67,7 @@ stages:
 
 - stage: STG InfraCreation-Release
   displayName: Infrasetup and Release
+  dependsOn: Build
   variables: 
   - group: STGVprofile
   
