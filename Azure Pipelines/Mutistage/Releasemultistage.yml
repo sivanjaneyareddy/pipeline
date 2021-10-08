@@ -9,7 +9,7 @@
       inputs:
         buildType: 'current'
         downloadType: 'single'
-        artifactName: 'drop'
+        artifactName: '${{ parameters.Environments }}drop'
         itemPattern: '**/vprofile-v2.war'
         downloadPath: '$(System.ArtifactsDirectory)'
     - task: CmdLine@2
