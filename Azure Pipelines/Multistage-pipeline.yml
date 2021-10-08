@@ -48,11 +48,8 @@ stages:
   dependsOn: Build
   variables: 
   - group: QAVprofile
-  
+
   jobs:
-  
-    - job: InfrasetupQA
-      displayName: InfrasetUP
     - template: Mutistage/Inframultistage.yml
       parameters:
         Environments: QA
@@ -60,10 +57,24 @@ stages:
         WebVm: ${{ parameters.WebVm }}
         MysqlVm: ${{ parameters.MysqlVm }}
         CacheVm: ${{ parameters.CacheVm }}
-    - job: ReleaseQA
-      displayName: ReleaseQA
-      dependsOn: Infrasetup
     - template: Mutistage/Releasemultistage.yml
+    
+  
+  # jobs:
+  
+  #   - job: InfrasetupQA
+  #     displayName: InfrasetUP
+  #   - template: Mutistage/Inframultistage.yml
+  #     parameters:
+  #       Environments: QA
+  #       AppVm: ${{ parameters.AppVm }}
+  #       WebVm: ${{ parameters.WebVm }}
+  #       MysqlVm: ${{ parameters.MysqlVm }}
+  #       CacheVm: ${{ parameters.CacheVm }}
+  #   - job: ReleaseQA
+  #     displayName: ReleaseQA
+  #     dependsOn: Infrasetup
+  #   - template: Mutistage/Releasemultistage.yml
 
 # - stage: STG_InfraCreation_Release
 #   displayName: Infrasetup and Release
