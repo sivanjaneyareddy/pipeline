@@ -1,21 +1,24 @@
-steps:
-- checkout: self    
-- checkout: other
-- task: DownloadBuildArtifacts@1
-  inputs:
-    buildType: 'current'
-    downloadType: 'single'
-    artifactName: 'drop'
-    itemPattern: '**/vprofile-v2.war'
-    downloadPath: '$(System.ArtifactsDirectory)'
-- task: CmdLine@2
-  inputs:
-    script: 'ls "/home/vsts/work/1/a/Vprofile/target"'
-- task: TomcatDeployment@1
-  inputs:
-    TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
-    Username: 'tomcat'
-    Password: 'admin123'
-    Warfile: '$(System.ArtifactsDirectory)/Vprofile/target/vprofile-v2.war'
-    Context: '/v2'
-    ServerVersion: '7OrAbove'
+
+  jobs:
+  - job: Release
+    steps:
+    - checkout: self    
+    - checkout: other
+    - task: DownloadBuildArtifacts@1
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        itemPattern: '**/vprofile-v2.war'
+        downloadPath: '$(System.ArtifactsDirectory)'
+    - task: CmdLine@2
+      inputs:
+        script: 'ls "/home/vsts/work/1/a/Vprofile/target"'
+    - task: TomcatDeployment@1
+      inputs:
+        TomcatUrl: 'http://webvmeusqavprofile.eastus.cloudapp.azure.com:8080'
+        Username: 'tomcat'
+        Password: 'admin123'
+        Warfile: '$(System.ArtifactsDirectory)/Vprofile/target/vprofile-v2.war'
+        Context: '/v2'
+        ServerVersion: '7OrAbove'
