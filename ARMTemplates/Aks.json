@@ -1,0 +1,342 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "managedClusters_aksdemo1_name": {
+            "defaultValue": "aksdemo1",
+            "type": "String"
+        },
+        "location": {
+            "defaultValue": "eastus",
+            "type": "String"
+        },
+        "aksSku": {
+            "defaultValue": "Free",
+            "type": "String"
+        },
+        "aksVersion": {
+            "defaultValue": "1.20.9",
+            "type": "String"
+        },
+        "aksPoolName": {
+            "defaultValue": "agentpool",
+            "type": "String"
+        },
+        "aksPoolCount": {
+            "defaultValue": "0",
+            "type": "String"
+        },
+        "agentpool_managedid_name": {
+            "defaultValue": "aksdemo1-agentpool",
+            "type": "String"
+        },
+        "aksPoolVmSize": {
+            "defaultValue": "Standard_DS2_v2",
+            "type": "String"
+        },
+        "aksPoolOsDiskSize": {
+            "defaultValue": "128",
+            "type": "String"
+        },
+        "aksPoolOsDiskType": {
+            "defaultValue": "Managed",
+            "type": "String"
+        },
+        "aksPoolMode": {
+            "defaultValue": "System",
+            "type": "String"
+        },
+        "aksPoolOsType": {
+            "defaultValue": "Linux",
+            "type": "String"
+        },
+        "aksPoolOsSku": {
+            "defaultValue": "Ubuntu",
+            "type": "String"
+        },
+        "aksWinUserName": {
+            "defaultValue": "azureuser",
+            "type": "String"
+        },
+        "aks_publicIP_name": {
+            "defaultValue": "aks_publicIP",
+            "type": "String"
+        },
+        "aksManagedRgName": {
+            "defaultValue": "aksManagedRg",
+            "type": "String"
+        },
+        "envName": {
+            "type": "string",
+            "defaultValue": "dev",
+            "metadata": {
+            "description": "Name of the virtual network"
+            }
+          },
+          "application": {
+            "type": "string",
+            "defaultValue": "EUS",
+            "metadata": {
+              "description": "Name of the virtual network"
+            }
+          },
+          "vnetAddressPrefix": {
+            "type": "string",
+            "defaultValue": "192.168.0.0/16",
+            "metadata": {
+              "description": "Name of the virtual network"
+            }
+          },
+          "subnetAddressPrefix": {
+            "type": "object",
+            "metadata": {
+              "description": "Pricing Tier of app service plan"
+            }
+          },
+        "virtualNetworks_NetworkWatcherRG_vnet_externalid": {
+            "defaultValue": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/NetworkWatcherRG/providers/Microsoft.Network/virtualNetworks/NetworkWatcherRG-vnet",
+            "type": "String"
+        },
+        "workspaces_DefaultWorkspace_d468f60e_bc7a_4a2b_ab0f_bf1e1ac6284c_EUS_externalid": {
+            "defaultValue": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/DefaultResourceGroup-EUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c-EUS",
+            "type": "String"
+        },
+        "publicIPAddresses_9368cdb3_3345_4b9c_93ba_bd00827888f1_externalid": {
+            "defaultValue": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/MC_NetworkWatcherRG_aksdemo1_eastus/providers/Microsoft.Network/publicIPAddresses/9368cdb3-3345-4b9c-93ba-bd00827888f1",
+            "type": "String"
+        },
+        "userAssignedIdentities_aksdemo1_agentpool_externalid": {
+            "defaultValue": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/MC_NetworkWatcherRG_aksdemo1_eastus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aksdemo1-agentpool",
+            "type": "String"
+        }
+    },
+    "variables": { 
+        "vnet": "[concat('vnet','-', 'EUS', '-',parameters('envName'),'-',parameters('application'))]",
+        "subnet": {
+            "frontend": "[concat('frontendSub-', 'EUS','-', parameters('envName'),'-',parameters('application'))]"
+        },
+        "subnetName": {
+            "frontend": "[concat(variables('vnet'), '/', variables('subnet').frontend)]"
+        },
+        "networkSecurityGroupName": {
+            "frontend": "[concat('frontendNSG','-','EUS','-', parameters('envName'),'-',parameters('application'))]"
+        }
+      },
+    "resources": [
+        {
+            "comments": "Default Network Security Group for template",
+            "type": "Microsoft.Network/networkSecurityGroups",
+            "apiVersion": "2019-08-01",
+            "tags": {
+              "Project": "Vprofile",
+              "Environment": "[parameters('envName')]"
+            },
+            "name": "[variables('networkSecurityGroupName').frontend]",
+            "location": "[parameters('envLocation')]",
+            "properties": {
+              "securityRules": [
+                {
+                  "name": "default-allow-3389",
+                  "properties": {
+                    "priority": 1000,
+                    "access": "Allow",
+                    "direction": "Inbound",
+                    "destinationPortRange": "3389",
+                    "protocol": "Tcp",
+                    "sourceAddressPrefix": "*",
+                    "sourcePortRange": "*",
+                    "destinationAddressPrefix": "*"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2017-06-01",
+            "name": "[variables('vnet')]",
+            "location": "[parameters('envLocation')]",
+            "dependsOn": ["[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').applicationGW)]"],
+            "tags": {
+              "Project": "Vprofile",
+              "Environment": "[parameters('envName')]"
+            },
+            "properties": {
+              "addressSpace": {
+                "addressPrefixes": [
+                  "[parameters('vnetAddressPrefix')]"
+                ]
+              }
+            }
+          },
+          {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2017-06-01",
+            "name": "[variables('subnetName').frontend]",
+            "dependsOn": [
+                        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+            ],
+                 "properties": {
+              "addressPrefix": "[parameters('subnetAddressPrefix').frontend]",
+              "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
+              }
+            }
+          },
+          {
+            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
+            "apiVersion": "2018-11-30",
+            "name": "[parameters('agentpool_managedid_name')]",
+            "location": "eastus"
+        },
+        {
+            "type": "Microsoft.Network/publicIPAddresses",
+            "apiVersion": "2020-11-01",
+            "name": "[parameters('aks_publicIP_name')]",
+            "location": "eastus",
+            "tags": {
+                "type": "aks-slb-managed-outbound-ip"
+            },
+            "sku": {
+                "name": "Standard",
+                "tier": "Regional"
+            },
+            "zones": [
+                "2",
+                "3",
+                "1"
+            ],
+            "properties": {
+                "ipAddress": "20.62.233.0",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Static",
+                "idleTimeoutInMinutes": 30,
+                "ipTags": []
+            }
+        },
+        {
+            "type": "Microsoft.ContainerService/managedClusters",
+            "apiVersion": "2021-07-01",
+            "name": "[parameters('managedClusters_aksdemo1_name')]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Basic",
+                "tier": "[parameters('aksSku')]"
+            },
+            "identity": {
+                "principalId": "2f40cbc5-149b-4d5d-9a3c-846d51656b32",
+                "tenantId": "28743320-645e-4840-8154-b4babd41162c",
+                "type": "SystemAssigned"
+            },
+            "properties": {
+                "kubernetesVersion": "[parameters('aksVersion')]",
+                "dnsPrefix": "[concat(parameters('managedClusters_aksdemo1_name'), '-dns')]",
+                "agentPoolProfiles": [
+                    {
+                        "name": "[parameters('aksPoolName')]",
+                        "count": "[parameters('aksPoolCount')]",
+                        "vmSize": "[parameters('aksPoolVmSize')]",
+                        "osDiskSizeGB": "[parameters('aksPoolOsDiskSize')]",
+                        "osDiskType": "[parameters('aksPoolOsDiskType')]",
+                        "kubeletDiskType": "OS",
+                        "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnet'))]",
+                        "maxPods": 110,
+                        "type": "VirtualMachineScaleSets",
+                        "availabilityZones": [
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "enableAutoScaling": false,
+                        "orchestratorVersion": "1.20.9",
+                        "mode": "[parameters('aksPoolMode')]",
+                        "osType": "[parameters('aksPoolOsType')]",
+                        "osSKU": "[parameters('aksPoolOsSku')]Ubuntu",
+                        "enableFIPS": false
+                    }
+                ],
+                "windowsProfile": {
+                    "adminUsername": "[parameters('aksWinUserName')]",
+                    "enableCSIProxy": true
+                },
+                "servicePrincipalProfile": {
+                    "clientId": "msi"
+                },
+                "addonProfiles": {
+                    "azurepolicy": {
+                        "enabled": false
+                    },
+                    "httpApplicationRouting": {
+                        "enabled": false
+                    },
+                    "omsAgent": {
+                        "enabled": true,
+                        "config": {
+                            "logAnalyticsWorkspaceResourceID": "[parameters('workspaces_DefaultWorkspace_d468f60e_bc7a_4a2b_ab0f_bf1e1ac6284c_EUS_externalid')]"
+                        }
+                    }
+                },
+                "nodeResourceGroup": "[parameters('aksManagedRgName')]",
+                "enableRBAC": true,
+                "networkProfile": {
+                    "networkPlugin": "azure",
+                    "networkPolicy": "azure",
+                    "loadBalancerSku": "Standard",
+                    "loadBalancerProfile": {
+                        "managedOutboundIPs": {
+                            "count": 1
+                        },
+                        "effectiveOutboundIPs": [
+                            {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('aks_publicIP_name'))]"
+                            }
+                        ]
+                    },
+                    "serviceCidr": "10.0.0.0/16",
+                    "dnsServiceIP": "10.0.0.10",
+                    "dockerBridgeCidr": "172.17.0.1/16",
+                    "outboundType": "loadBalancer"
+                },
+                "apiServerAccessProfile": {
+                    "enablePrivateCluster": false
+                },
+                "identityProfile": {
+                    "kubeletidentity": {
+                        "resourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name'))]",
+                        "clientId": "4f296e16-977d-4291-9521-0a5fbc5fc15b",
+                        "objectId": "725f6857-7647-4239-bcb6-b50fb3e562c0"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.ContainerService/managedClusters/agentPools",
+            "apiVersion": "2021-07-01",
+            "name": "[concat(parameters('managedClusters_aksdemo1_name'), '/agentpool')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_aksdemo1_name'))]"
+            ],
+            "properties": {
+                "count": 0,
+                "vmSize": "Standard_DS2_v2",
+                "osDiskSizeGB": 128,
+                "osDiskType": "Managed",
+                "kubeletDiskType": "OS",
+                "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnet'))]",
+                "maxPods": 110,
+                "type": "VirtualMachineScaleSets",
+                "availabilityZones": [
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "enableAutoScaling": false,
+                "orchestratorVersion": "1.20.9",
+                "mode": "System",
+                "osType": "Linux",
+                "osSKU": "Ubuntu",
+                "enableFIPS": false
+            }
+        }
+    ]
+}
