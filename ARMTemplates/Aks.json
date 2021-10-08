@@ -221,7 +221,7 @@
             "name": "[parameters('managedClusters_aksdemo1_name')]",
             "dependsOn": [
                         "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
-                        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnet').frontend)]"
+                        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName').frontend)]"
             ],
             "location": "[parameters('location')]",
             "sku": {
@@ -244,7 +244,7 @@
                         "osDiskSizeGB": "[parameters('aksPoolOsDiskSize')]",
                         "osDiskType": "[parameters('aksPoolOsDiskType')]",
                         "kubeletDiskType": "OS",
-                        "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnet').frontend)]",
+                        "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName').frontend)]",
                         "maxPods": 110,
                         "type": "VirtualMachineScaleSets",
                         "availabilityZones": [
