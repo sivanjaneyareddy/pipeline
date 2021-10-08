@@ -308,7 +308,7 @@
                 "identityProfile": {
                     "kubeletidentity": {
                         "kubeResourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name'))]",
-                        "clientId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name')).clientId]",
+                        "clientId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name')).tenantId]",
                         "objectId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name')).principalId]"
                     }
                 }
