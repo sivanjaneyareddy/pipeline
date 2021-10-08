@@ -244,7 +244,7 @@
                         "osDiskSizeGB": "[parameters('aksPoolOsDiskSize')]",
                         "osDiskType": "[parameters('aksPoolOsDiskType')]",
                         "kubeletDiskType": "OS",
-                        "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnet'),variables('subnetName').frontend)]",
+                        "vnetSubnetID": "[concat(/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/AKS-RG/providers/Microsoft.Network/virtualNetworks/vnet-EUS-dev-EUS, '/subnets/frontendSub-EUS-dev-EUS')]",
                         "maxPods": 110,
                         "type": "VirtualMachineScaleSets",
                         "availabilityZones": [
