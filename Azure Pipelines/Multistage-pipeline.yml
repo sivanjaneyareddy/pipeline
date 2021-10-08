@@ -43,7 +43,7 @@ stages:
         Environments: ${{env}}
         dependsOn: ${{env}}
 
-- stage: QA InfraCreation-Release
+- stage: QA InfraCreation Release
   displayName: Infrasetup and Release
   dependsOn: Build
   variables: 
@@ -65,7 +65,7 @@ stages:
       dependsOn: Infrasetup
     - template: Mutistage/Releasemultistage.yml
 
-- stage: STG InfraCreation-Release
+- stage: STG InfraCreation Release
   displayName: Infrasetup and Release
   dependsOn: Build
   variables: 
