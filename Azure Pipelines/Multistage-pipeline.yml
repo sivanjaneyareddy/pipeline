@@ -65,27 +65,27 @@ stages:
       dependsOn: Infrasetup
     - template: Mutistage/Releasemultistage.yml
 
-- stage: STG_InfraCreation_Release
-  displayName: Infrasetup and Release
-  dependsOn: Build
-  variables: 
-  - group: STGVprofile
+# - stage: STG_InfraCreation_Release
+#   displayName: Infrasetup and Release
+#   dependsOn: Build
+#   variables: 
+#   - group: STGVprofile
   
-  jobs:
+#   jobs:
   
-    - job: InfrasetupSTG
-      displayName: InfrasetUP
-    - template: Mutistage/Inframultistage.yml
-      parameters:
-        Environments: STG
-        AppVm: ${{ parameters.AppVm }}
-        WebVm: ${{ parameters.WebVm }}
-        MysqlVm: ${{ parameters.MysqlVm }}
-        CacheVm: ${{ parameters.CacheVm }}
-    - job: ReleaseSTG
-      displayName: Release
-      dependsOn: Infrasetup
-    - template: Mutistage/Releasemultistage.yml
+#     - job: InfrasetupSTG
+#       displayName: InfrasetUP
+#     - template: Mutistage/Inframultistage.yml
+#       parameters:
+#         Environments: STG
+#         AppVm: ${{ parameters.AppVm }}
+#         WebVm: ${{ parameters.WebVm }}
+#         MysqlVm: ${{ parameters.MysqlVm }}
+#         CacheVm: ${{ parameters.CacheVm }}
+#     - job: ReleaseSTG
+#       displayName: Release
+#       dependsOn: Infrasetup
+#     - template: Mutistage/Releasemultistage.yml
 
 # - stage: Release
 #   displayName: Release
