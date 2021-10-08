@@ -1,6 +1,6 @@
 
   jobs:
-  - job: Infrasetup
+  - job: Infrasetup${{ parameters.Environments }}
     steps:
     - checkout: self
     - task: AzureResourceManagerTemplateDeployment@3
