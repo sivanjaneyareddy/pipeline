@@ -327,7 +327,7 @@
                 "osDiskSizeGB": 128,
                 "osDiskType": "Managed",
                 "kubeletDiskType": "OS",
-                "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnet'))]",
+                "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName'))]",
                 "maxPods": 110,
                 "type": "VirtualMachineScaleSets",
                 "availabilityZones": [
