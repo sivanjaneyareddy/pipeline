@@ -1,48 +1,47 @@
-
-    steps:
-    - checkout: self
-    - task: AzureResourceManagerTemplateDeployment@3
-      displayName: Creating Virtual Network
-      inputs:
-        deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'Azure-connection'
-        subscriptionId: '$(Nonprod.subscriptionId)'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: '$(RG)'
-        location: '$(Location)'
-        templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.parameter.json'
-        overrideParameters:  -envName "${{ parameters.Environments }}" 
-                             -envLocation "$(Location)" 
-                             -application "Vprofile" 
-                             -vnetAddressPrefix "192.168.0.0/16" 
-                             -subnetAddressPrefix {"frontend":"192.168.0.0/24","backend":"192.168.1.0/24","businessTier":"192.168.2.0/24","applicationGW":"192.168.3.0/24"}
-        deploymentMode: 'Incremental'
-        deploymentName: 'cicd-vnet'
-    - task: AzureResourceManagerTemplateDeployment@3
-      displayName: Creating Virtual Machines
-      inputs:
-        deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'Azure-connection'
-        subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: '$(RG)'
-        location: '$(Location)'
-        templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.parameters.json'
-        overrideParameters: -adminUsername "$(adminusername)" 
-                            -adminPassword "$(vmpassword)" 
-                            -imagePublisher "Canonical" 
-                            -imagePublisherCOS "OpenLogic" 
-                            -imageOffer "UbuntuServer" 
-                            -imageOfferCOS "CentOS" 
-                            -imageSku "16.04-LTS" 
-                            -imageSkuCOS "7.5" 
-                            -vmSize "$(vmSize)" 
-                            -application "Vprofile" 
-                            -envName "${{ parameters.Environments }}" 
-                            -listToDeploy ["${{ parameters.AppVm }}","${{ parameters.WebVm }}","${{ parameters.MysqlVm }}","${{ parameters.CacheVm }}"]
-        deploymentMode: 'Incremental'
-        deploymentName: 'CICD-VM'
+steps:
+- checkout: self
+- task: AzureResourceManagerTemplateDeployment@3
+  displayName: Creating Virtual Network
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Azure-connection'
+    subscriptionId: '$(Nonprod.subscriptionId)'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: '$(RG)'
+    location: '$(Location)'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.json'
+    csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/Networking.parameter.json'
+    overrideParameters:  -envName "${{ parameters.Environments }}" 
+                         -envLocation "$(Location)" 
+                         -application "Vprofile" 
+                         -vnetAddressPrefix "192.168.0.0/16" 
+                         -subnetAddressPrefix {"frontend":"192.168.0.0/24","backend":"192.168.1.0/24","businessTier":"192.168.2.0/24","applicationGW":"192.168.3.0/24"}
+    deploymentMode: 'Incremental'
+    deploymentName: 'cicd-vnet'
+- task: AzureResourceManagerTemplateDeployment@3
+  displayName: Creating Virtual Machines
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Azure-connection'
+    subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: '$(RG)'
+    location: '$(Location)'
+    templateLocation: 'Linked artifact'
+    csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.json'
+    csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplates/VirtualMachines.parameters.json'
+    overrideParameters: -adminUsername "$(adminusername)" 
+                        -adminPassword "$(vmpassword)" 
+                        -imagePublisher "Canonical" 
+                        -imagePublisherCOS "OpenLogic" 
+                        -imageOffer "UbuntuServer" 
+                        -imageOfferCOS "CentOS" 
+                        -imageSku "16.04-LTS" 
+                        -imageSkuCOS "7.5" 
+                        -vmSize "$(vmSize)" 
+                        -application "Vprofile" 
+                        -envName "${{ parameters.Environments }}" 
+                        -listToDeploy ["${{ parameters.AppVm }}","${{ parameters.WebVm }}","${{ parameters.MysqlVm }}","${{ parameters.CacheVm }}"]
+    deploymentMode: 'Incremental'
+    deploymentName: 'CICD-VM'
