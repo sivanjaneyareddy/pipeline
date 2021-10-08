@@ -59,7 +59,7 @@ stages:
         CacheVm: ${{ parameters.CacheVm }}
     - template: Mutistage/Releasemultistage.yml
       parameters:
-        Environments: STG
+        Environments: QA
 
 - stage: STG_InfraCreation_Release
   displayName: Infrasetup and Release
