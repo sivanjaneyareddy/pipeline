@@ -60,7 +60,7 @@ stages:
         WebVm: ${{ parameters.WebVm }}
         MysqlVm: ${{ parameters.MysqlVm }}
         CacheVm: ${{ parameters.CacheVm }}
-    - job: Release
+    - job: ReleaseQA
       displayName: ReleaseQA
       dependsOn: Infrasetup
     - template: Mutistage/Releasemultistage.yml
