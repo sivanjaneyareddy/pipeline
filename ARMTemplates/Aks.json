@@ -178,7 +178,7 @@
                         "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
             ],
                  "properties": {
-              "addressPrefix": "[parameters('subnetAddressPrefix').frontend]",
+              "addressPrefix": "[parameters('subnetAddressPrefix')]",
               "networkSecurityGroup": {
                 "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName').frontend)]"
               }
