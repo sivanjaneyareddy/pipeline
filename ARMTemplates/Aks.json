@@ -219,6 +219,10 @@
             "type": "Microsoft.ContainerService/managedClusters",
             "apiVersion": "2021-07-01",
             "name": "[parameters('managedClusters_aksdemo1_name')]",
+            "dependsOn": [
+                        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
+                        "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnet').frontend)]"
+            ],
             "location": "[parameters('location')]",
             "sku": {
                 "name": "Basic",
