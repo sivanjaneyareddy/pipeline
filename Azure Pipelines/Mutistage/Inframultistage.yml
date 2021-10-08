@@ -1,4 +1,4 @@
-Steps:
+steps:
 - checkout: self
 - task: AzureResourceManagerTemplateDeployment@3
   displayName: Creating Virtual Network
