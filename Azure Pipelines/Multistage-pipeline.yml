@@ -58,6 +58,23 @@ stages:
         MysqlVm: ${{ parameters.MysqlVm }}
         CacheVm: ${{ parameters.CacheVm }}
     - template: Mutistage/Releasemultistage.yml
+
+
+- stage: STG_InfraCreation_Release
+  displayName: Infrasetup and Release
+  dependsOn: Build
+  variables: 
+  - group: STGVprofile
+
+  jobs:
+    - template: Mutistage/Inframultistage.yml
+      parameters:
+        Environments: STG
+        AppVm: ${{ parameters.AppVm }}
+        WebVm: ${{ parameters.WebVm }}
+        MysqlVm: ${{ parameters.MysqlVm }}
+        CacheVm: ${{ parameters.CacheVm }}
+    - template: Mutistage/Releasemultistage.yml
     
   
   # jobs:
