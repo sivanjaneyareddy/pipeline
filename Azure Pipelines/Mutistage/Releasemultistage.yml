@@ -1,6 +1,7 @@
 
   jobs:
   - job: Release
+    dependsOn: Infrasetup
     steps:
     - checkout: self    
     - checkout: other
