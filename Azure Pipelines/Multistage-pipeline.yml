@@ -75,13 +75,14 @@ stages:
   
     - job: InfrasetupSTG
       displayName: InfrasetUP
-    - template: Mutistage/Inframultistage.yml
-      parameters:
-        Environments: STG
-        AppVm: ${{ parameters.AppVm }}
-        WebVm: ${{ parameters.WebVm }}
-        MysqlVm: ${{ parameters.MysqlVm }}
-        CacheVm: ${{ parameters.CacheVm }}
+      steps:
+        - template: Mutistage/Inframultistage.yml
+          parameters:
+            Environments: STG
+            AppVm: ${{ parameters.AppVm }}
+            WebVm: ${{ parameters.WebVm }}
+            MysqlVm: ${{ parameters.MysqlVm }}
+            CacheVm: ${{ parameters.CacheVm }}
     - job: ReleaseSTG
       displayName: Release
       dependsOn: Infrasetup
