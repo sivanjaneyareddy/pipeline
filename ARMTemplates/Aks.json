@@ -229,8 +229,8 @@
                 "tier": "[parameters('aksSku')]"
             },
             "identity": {
-                "principalId": "2f40cbc5-149b-4d5d-9a3c-846d51656b32",
-                "tenantId": "28743320-645e-4840-8154-b4babd41162c",
+                "principalId": null,
+                "tenantId": null,
                 "type": "SystemAssigned"
             },
             "properties": {
