@@ -220,7 +220,8 @@
             "apiVersion": "2021-07-01",
             "name": "[parameters('managedClusters_aksdemo1_name')]",
             "dependsOn": [
-                        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+                        "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]",
+                        "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name'))]"
                     //    "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName').frontend)]"
             ],
             "location": "[parameters('location')]",
