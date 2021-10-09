@@ -82,14 +82,14 @@
           },
           "vnetAddressPrefix": {
             "type": "string",
-            "defaultValue": "172.16.0.0/16",
+            "defaultValue": "172.0.0.0/8",
             "metadata": {
               "description": "Name of the virtual network"
             }
           },
           "subnetAddressPrefix": {
             "type": "string",
-            "defaultValue": "172.16.2.0/16",
+            "defaultValue": "172.240.0.0/16",
             "metadata": {
               "description": "Pricing Tier of app service plan"
             }
@@ -298,8 +298,8 @@
                             }
                         ]
                     },
-                    "serviceCidr": "172.16.0.0/16",
-                    "dnsServiceIP": "172.16.0.10",
+                    "serviceCidr": "172.0.0.0/16",
+                    "dnsServiceIP": "172.0.0.10",
                     "dockerBridgeCidr": "172.17.0.1/16",
                     "outboundType": "loadBalancer"
                 },
