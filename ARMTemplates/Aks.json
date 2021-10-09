@@ -239,7 +239,7 @@
                 "agentPoolProfiles": [
                     {
                         "name": "[parameters('aksPoolName')]",
-                        "count": "[parameters('aksPoolCount')]",
+                        "count": "0",
                         "vmSize": "[parameters('aksPoolVmSize')]",
                         "osDiskSizeGB": "[parameters('aksPoolOsDiskSize')]",
                         "osDiskType": "[parameters('aksPoolOsDiskType')]",
