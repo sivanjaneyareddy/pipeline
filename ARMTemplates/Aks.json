@@ -4,23 +4,23 @@
     "parameters": {
         "managedClusters_aksdemo1_name": {
             "defaultValue": "aksdemo1",
-            "type": "String"
+            "type": "string"
         },
         "location": {
             "defaultValue": "eastus",
-            "type": "String"
+            "type": "string"
         },
         "aksSku": {
             "defaultValue": "Free",
-            "type": "String"
+            "type": "string"
         },
         "aksVersion": {
             "defaultValue": "1.20.9",
-            "type": "String"
+            "type": "string"
         },
         "aksPoolName": {
             "defaultValue": "agentpool",
-            "type": "String"
+            "type": "string"
         },
         "aksPoolCount": {
             "defaultValue": "0",
@@ -28,43 +28,43 @@
         },
         "agentpool_managedid_name": {
             "defaultValue": "aksdemo1-agentpool",
-            "type": "String"
+            "type": "string"
         },
         "aksPoolVmSize": {
             "defaultValue": "Standard_DS2_v2",
-            "type": "String"
+            "type": "string"
         },
         "aksPoolOsDiskSize": {
             "defaultValue": "128",
-            "type": "String"
+            "type": "string"
         },
         "aksPoolOsDiskType": {
             "defaultValue": "Managed",
-            "type": "String"
+            "type": "string"
         },
         "aksPoolMode": {
             "defaultValue": "System",
-            "type": "String"
+            "type": "string"
         },
         "aksPoolOsType": {
             "defaultValue": "Linux",
-            "type": "String"
+            "type": "string"
         },
         "aksPoolOsSku": {
             "defaultValue": "Ubuntu",
-            "type": "String"
+            "type": "string"
         },
         "aksWinUserName": {
             "defaultValue": "azureuser",
-            "type": "String"
+            "type": "string"
         },
         "aks_publicIP_name": {
             "defaultValue": "aks_publicIP",
-            "type": "String"
+            "type": "string"
         },
         "aksManagedRgName": {
             "defaultValue": "aksManagedRg",
-            "type": "String"
+            "type": "string"
         },
         "envName": {
             "type": "string",
@@ -96,19 +96,19 @@
           },
         "virtualNetworks_NetworkWatcherRG_vnet_externalid": {
             "defaultValue": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/NetworkWatcherRG/providers/Microsoft.Network/virtualNetworks/NetworkWatcherRG-vnet",
-            "type": "String"
+            "type": "string"
         },
         "workspaces_DefaultWorkspace_d468f60e_bc7a_4a2b_ab0f_bf1e1ac6284c_EUS_externalid": {
             "defaultValue": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/DefaultResourceGroup-EUS/providers/Microsoft.OperationalInsights/workspaces/DefaultWorkspace-d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c-EUS",
-            "type": "String"
+            "type": "string"
         },
         "publicIPAddresses_9368cdb3_3345_4b9c_93ba_bd00827888f1_externalid": {
             "defaultValue": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/MC_NetworkWatcherRG_aksdemo1_eastus/providers/Microsoft.Network/publicIPAddresses/9368cdb3-3345-4b9c-93ba-bd00827888f1",
-            "type": "String"
+            "type": "string"
         },
         "userAssignedIdentities_aksdemo1_agentpool_externalid": {
             "defaultValue": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/MC_NetworkWatcherRG_aksdemo1_eastus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aksdemo1-agentpool",
-            "type": "String"
+            "type": "string"
         }
     },
     "variables": { 
