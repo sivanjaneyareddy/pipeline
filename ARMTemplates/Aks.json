@@ -184,12 +184,6 @@
               }
             }
           },
-          {
-            "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
-            "apiVersion": "2018-11-30",
-            "name": "[parameters('agentpool_managedid_name')]",
-            "location": "eastus"
-        },
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2020-11-01",
@@ -229,11 +223,11 @@
                 "name": "Basic",
                 "tier": "[parameters('aksSku')]"
             },
-        //    "identity": {
-        //        "principalId": null,
-        //        "tenantId": null,
-        //        "type": "SystemAssigned"
-        //    },
+            "identity": {
+                "principalId": null,
+                "tenantId": null,
+                "type": "SystemAssigned"
+            },
             "properties": {
                 "kubernetesVersion": "[parameters('aksVersion')]",
                 "dnsPrefix": "[concat(parameters('managedClusters_aksdemo1_name'), '-dns')]",
@@ -306,13 +300,6 @@
                 },
                 "apiServerAccessProfile": {
                     "enablePrivateCluster": false
-                },
-                "identityProfile": {
-                    "kubeletidentity": {
-                        "kubeResourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('agentpool_managedid_name'))]",
-                        "clientId": "51a05f2d-60dc-4790-b2ee-3f1bd4f8083c",
-                        "objectId": "d3157bae-85ed-4141-8404-aba303aaa6d6"
-                    }
                 }
             }
         },
