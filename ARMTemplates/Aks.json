@@ -241,7 +241,7 @@
                         "name": "[parameters('aksPoolName')]",
                         "count": 0,
                         "vmSize": "[parameters('aksPoolVmSize')]",
-                        "osDiskSizeGB": "[parameters('aksPoolOsDiskSize')]",
+                        "osDiskSizeGB": 128,
                         "osDiskType": "[parameters('aksPoolOsDiskType')]",
                         "kubeletDiskType": "OS",
                         "vnetSubnetID": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/AKS-RG/providers/Microsoft.Network/virtualNetworks/vnet-EUS-dev-EUS/subnets/frontendSub-EUS-dev-EUS",
