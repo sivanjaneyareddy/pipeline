@@ -17,6 +17,7 @@
             }
         },
         "dnsPrefix": {
+            "defaultValue": "K8s-test",
             "type": "string",
             "metadata": {
                 "description": "Optional DNS prefix to use with hosted Kubernetes API server FQDN."
