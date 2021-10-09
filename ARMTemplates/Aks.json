@@ -82,14 +82,14 @@
           },
           "vnetAddressPrefix": {
             "type": "string",
-            "defaultValue": "10.0.0.0/16",
+            "defaultValue": "127.0.0.0/8",
             "metadata": {
               "description": "Name of the virtual network"
             }
           },
           "subnetAddressPrefix": {
             "type": "string",
-            "defaultValue": "10.0.2.0/24",
+            "defaultValue": "127.240.2.0/16",
             "metadata": {
               "description": "Pricing Tier of app service plan"
             }
