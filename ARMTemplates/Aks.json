@@ -22,10 +22,10 @@
             "defaultValue": "agentpool",
             "type": "string"
         },
-        "aksPoolCount": {
-            "defaultValue": "0",
-            "type": "int"
-        },
+    //    "aksPoolCount": {
+    //        "defaultValue": "0",
+    //        "type": "int"
+    //    },
         "agentpool_managedid_name": {
             "defaultValue": "aksdemo1-agentpool",
             "type": "string"
