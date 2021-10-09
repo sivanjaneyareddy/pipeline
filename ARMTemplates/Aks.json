@@ -302,37 +302,37 @@
                     "enablePrivateCluster": false
                 }
             }
-        },
-        {
-            "type": "Microsoft.ContainerService/managedClusters/agentPools",
-            "apiVersion": "2021-07-01",
-            "name": "[concat(parameters('managedClusters_aksdemo1_name'), '/agentpool')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_aksdemo1_name'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
-            ],
-            "properties": {
-                "count": 0,
-                "vmSize": "Standard_DS2_v2",
-                "osDiskSizeGB": 128,
-                "osDiskType": "Managed",
-                "kubeletDiskType": "OS",
-                "vnetSubnetID": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/AKS-RG/providers/Microsoft.Network/virtualNetworks/vnet-EUS-dev-EUS/subnets/frontendSub-EUS-dev-EUS",
-              //  "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName'))]",
-                "maxPods": 110,
-                "type": "VirtualMachineScaleSets",
-                "availabilityZones": [
-                    "1",
-                    "2",
-                    "3"
-                ],
-                "enableAutoScaling": false,
-                "orchestratorVersion": "1.20.9",
-                "mode": "System",
-                "osType": "Linux",
-                "osSKU": "Ubuntu",
-                "enableFIPS": false
-            }
+        }
+        // {
+        //     "type": "Microsoft.ContainerService/managedClusters/agentPools",
+        //     "apiVersion": "2021-07-01",
+        //     "name": "[concat(parameters('managedClusters_aksdemo1_name'), '/agentpool')]",
+        //     "dependsOn": [
+        //         "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_aksdemo1_name'))]",
+        //         "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
+        //     ],
+        //     "properties": {
+        //         "count": 0,
+        //         "vmSize": "Standard_DS2_v2",
+        //         "osDiskSizeGB": 128,
+        //         "osDiskType": "Managed",
+        //         "kubeletDiskType": "OS",
+        //         "vnetSubnetID": "/subscriptions/d468f60e-bc7a-4a2b-ab0f-bf1e1ac6284c/resourceGroups/AKS-RG/providers/Microsoft.Network/virtualNetworks/vnet-EUS-dev-EUS/subnets/frontendSub-EUS-dev-EUS",
+        //       //  "vnetSubnetID": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('subnetName'))]",
+        //         "maxPods": 110,
+        //         "type": "VirtualMachineScaleSets",
+        //         "availabilityZones": [
+        //             "1",
+        //             "2",
+        //             "3"
+        //         ],
+        //         "enableAutoScaling": false,
+        //         "orchestratorVersion": "1.20.9",
+        //         "mode": "System",
+        //         "osType": "Linux",
+        //         "osSKU": "Ubuntu",
+        //         "enableFIPS": false
+        //     }
         }
     ]
 }
