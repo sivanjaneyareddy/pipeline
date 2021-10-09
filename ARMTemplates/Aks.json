@@ -89,7 +89,7 @@
           },
           "subnetAddressPrefix": {
             "type": "string",
-            "defaultValue": "10.240.0.0/24",
+            "defaultValue": "10.0.2.0/24",
             "metadata": {
               "description": "Pricing Tier of app service plan"
             }
