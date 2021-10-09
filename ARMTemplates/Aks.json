@@ -262,6 +262,7 @@
                 ],
                 "windowsProfile": {
                     "adminUsername": "[parameters('aksWinUserName')]",
+                    "adminPassword": "anglo@123",
                     "enableCSIProxy": true
                 },
                 "servicePrincipalProfile": {
