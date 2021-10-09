@@ -228,11 +228,11 @@
                 "name": "Basic",
                 "tier": "[parameters('aksSku')]"
             },
-            "identity": {
-                "principalId": null,
-                "tenantId": null,
-                "type": "SystemAssigned"
-            },
+        //    "identity": {
+        //        "principalId": null,
+        //        "tenantId": null,
+        //        "type": "SystemAssigned"
+        //    },
             "properties": {
                 "kubernetesVersion": "[parameters('aksVersion')]",
                 "dnsPrefix": "[concat(parameters('managedClusters_aksdemo1_name'), '-dns')]",
