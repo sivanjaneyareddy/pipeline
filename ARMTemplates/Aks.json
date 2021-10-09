@@ -320,7 +320,8 @@
             "apiVersion": "2021-07-01",
             "name": "[concat(parameters('managedClusters_aksdemo1_name'), '/agentpool')]",
             "dependsOn": [
-                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_aksdemo1_name'))]"
+                "[resourceId('Microsoft.ContainerService/managedClusters', parameters('managedClusters_aksdemo1_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks', variables('vnet'))]"
             ],
             "properties": {
                 "count": 0,
