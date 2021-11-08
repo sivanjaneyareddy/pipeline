@@ -21,11 +21,6 @@
       "type": "string",
 
       "defaultValue": "East US"},
-
-     "containerName": {
-      "type": "string",
-      "defaultValue": "qablob"
-    },
      
 
       "storageAccountName": {
@@ -34,9 +29,11 @@
 
       "defaultValue": "saqajava"
 
-      }
-
-
+      },
+      "containerName": {
+      "type": "string",
+      "defaultValue": "qablob"
+    }
 
      },
 
