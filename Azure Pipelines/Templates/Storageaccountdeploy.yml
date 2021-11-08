@@ -1,2 +1,20 @@
-pool: ubuntu-latest
- 
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+    - stage: SACreation
+      displayName: Storage account creation
+      jobs:
+          - job: sacreation
+            steps:
+             - task: AzureResourceManagerTemplateDeployment@3
+               inputs:
+                    deploymentScope: 'Resource Group'
+                    azureResourceManagerConnection: 'Azure-connection'
+                    subscriptionId: 'ec29e3b9-18a1-4b2e-8393-5d00d9989b71'
+                    action: 'Create Or Update Resource Group'
+                    resourceGroupName: 'RG-EUS-QA-JAVA'
+                    location: 'East US'
+                    templateLocation: 'Linked artifact'
+                    csmFile: 'ARMTemplates/RefTemplates/Stoargeaccountdeploy.json'
+                    deploymentMode: 'Incremental'
