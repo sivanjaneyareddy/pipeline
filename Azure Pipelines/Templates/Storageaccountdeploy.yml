@@ -19,7 +19,7 @@ stages:
             #         csmFile: 'ARMTemplates/RefTemplates/Stoargeaccountdeploy.json'
             #         deploymentMode: 'Incremental'
               
-             - task: AzureCLI@2
+             - task: AzureCLI@2.33.1
                inputs:
                   scriptType: 'bash'
                   scriptLocation: 'inlineScript'
